@@ -112,15 +112,16 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			// getItem is called to instantiate the fragment for the given page.
-			// Return a DummySectionFragment (defined as a static inner class
-			// below) with the page number as its lone argument.
 			Fragment fragment;
 			Bundle args = new Bundle();
 			
 			switch(position) {
-			case 1:
+			case 0:
 				fragment = new MapFragment();
+				break;
+			case 1:
+				fragment = new DummySectionFragment();
+				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
 				break;
 			default:
 				fragment = new DummySectionFragment();
@@ -134,8 +135,7 @@ public class MainActivity extends FragmentActivity implements
 
 		@Override
 		public int getCount() {
-			// Show 3 total pages.
-			return 3;
+			return 2;
 		}
 
 		@Override
@@ -146,8 +146,6 @@ public class MainActivity extends FragmentActivity implements
 				return getString(R.string.title_section1).toUpperCase(l);
 			case 1:
 				return getString(R.string.title_section2).toUpperCase(l);
-			case 2:
-				return getString(R.string.title_section3).toUpperCase(l);
 			}
 			return null;
 		}
@@ -187,6 +185,7 @@ public class MainActivity extends FragmentActivity implements
 		public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_main_map,
 					container, false);
+			
 			return rootView;
 		}
 	}
