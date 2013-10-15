@@ -1,6 +1,6 @@
-lint.xml
-build.gradle
-proguard.cfg
+#lint.xml
+#build.gradle
+#proguard.cfg
 
 ############
 ## Eclipse
