@@ -1,5 +1,10 @@
 /bin/
 /gen/
-/.project
 /.classpath
 *.keystore
+
+##
+# Eclipse files
+##
+/.project
+/.settings/
