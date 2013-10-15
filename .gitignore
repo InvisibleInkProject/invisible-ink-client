@@ -1,0 +1,34 @@
+lint.xml
+build.gradle
+proguard.cfg
+
+############
+## Eclipse
+############
+ 
+.settings/
+.classpath
+bin/
+
+############
+## Android
+############
+ 
+gen/
+
+############
+## Java
+############
+ 
+# Compiled object files
+*.class
+
+############
+## Windows
+############
+ 
+# Windows image file caches
+Thumbs.db
+ 
+# Folder config file
+Desktop.ini
