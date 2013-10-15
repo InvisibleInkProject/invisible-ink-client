@@ -6,5 +6,11 @@
 ##
 # Eclipse files
 ##
-/.project
-/.settings/
+.project
+.settings/
+project.properties
+
+##
+# Android
+##
+lint.xml
