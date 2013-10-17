@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Ink {
 
+	private int id;
 	private LatLng latLng;
 	private double radiusInMeters;
 	private String title;
@@ -17,7 +18,8 @@ public class Ink {
 	private CircleOptions circleOptions;
 	private MarkerOptions markerOptions;
 	
-	public Ink(LatLng latLng, double radiusInMeters, String title, String message) {
+	public Ink(int id, LatLng latLng, double radiusInMeters, String title, String message) {
+		this.id = id;
 		this.latLng = latLng;
 		this.radiusInMeters = radiusInMeters;
 		this.title = title;
@@ -39,6 +41,10 @@ public class Ink {
 		this.markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
 	}
 
+	public int getId() {
+		return this.id;
+	}
+	
 	public CircleOptions getCircleOptions() {
 		return this.circleOptions;
 	}
