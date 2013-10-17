@@ -45,7 +45,7 @@ public class LocationHelper implements OnMyLocationChangeListener, OnCameraChang
 	public void onMyLocationChange(Location location) {
 		__debug("location lat: " + location.getLatitude() + ", lng:" + location.getLongitude());
 		float distanceInMeters = location.distanceTo(myLastLocation);
-		__debug("distence= " + distanceInMeters + "m to old location");
+		__debug("distence=" + distanceInMeters + "m to old location");
 		this.myLastLocation = location;
 		if(distanceInMeters > DISTANCE_CHANGE_TO_SERVER_REQUEST_IN_METERS || checkTimerToRequestServer()) {
 			requestServer();
@@ -60,7 +60,7 @@ public class LocationHelper implements OnMyLocationChangeListener, OnCameraChang
 
 	@Override
 	public void onCameraChange(CameraPosition camera) {
-		if (LOG_ON) Log.d("Map", "camera zoom: " + camera.zoom);		
+		__debug("camera zoom: " + camera.zoom);		
 	}
 	
 	private void requestServer() {		
