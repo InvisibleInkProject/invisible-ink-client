@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.example.mapdemo;
+package no.invisibleink.mapdemo;
 
+import no.invisibleink.mapdemo.view.FeatureView;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +30,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.example.mapdemo.view.FeatureView;
 
 /**
  * The main activity of the API library demo gallery.

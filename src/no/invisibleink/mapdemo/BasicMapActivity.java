@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.mapdemo;
+package no.invisibleink.mapdemo;
 
 import java.util.LinkedList;
 import java.util.List;

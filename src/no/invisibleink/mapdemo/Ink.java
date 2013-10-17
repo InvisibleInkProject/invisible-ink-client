@@ -1,4 +1,4 @@
-package com.example.mapdemo;
+package no.invisibleink.mapdemo;
 
 import android.graphics.Color;
 import android.util.Log;
