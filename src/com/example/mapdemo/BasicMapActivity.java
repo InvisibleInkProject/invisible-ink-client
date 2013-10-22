@@ -50,6 +50,7 @@ public class BasicMapActivity extends FragmentActivity implements OnMyLocationCh
         super.onCreate(savedInstanceState);
         setContentView(R.layout.basic_demo);
         setUpMapIfNeeded();
+        while(mMap.getMyLocation() == null);
     }
 
     @Override
@@ -134,6 +135,10 @@ public class BasicMapActivity extends FragmentActivity implements OnMyLocationCh
     
     private void addInk(LatLng position, double radiusInMeters, String title, String message) {
     	Ink newInk = new Ink(position, radiusInMeters, title, message);
+    	newInk.setIsVisible(mMap.getMyLocation());
+    	boolean isVisible = newInk.getIsVisible();    
+    	newInk.setCircleOptions(isVisible);
+    	
     	this.inks.add(newInk);
     	mMap.addCircle(newInk.getCircleOptions());
     	mMap.addMarker(newInk.getMarkerOptions());
