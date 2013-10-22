@@ -16,21 +16,18 @@
 
 package no.invisibleink.mapdemo;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
+import no.invisibleink.inks.Ink;
+import no.invisibleink.inks.InkWell;
+import no.invisibleink.inks.LocationHelper;
+
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 
 /**
  * This shows how to create a simple activity with a map and a marker on the map.
@@ -52,7 +49,7 @@ public class BasicMapActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.basic_demo);
         setUpMapIfNeeded();
-        while(mMap.getMyLocation() == null);
+        inks = InkWell.getInstance().getInks();
     }
 
     @Override
@@ -104,10 +101,8 @@ public class BasicMapActivity extends FragmentActivity {
 		mMap.setIndoorEnabled(true);
     	mMap.setOnMyLocationChangeListener(locationHelper);
     	mMap.setOnCameraChangeListener(locationHelper);
-
-        this.addInk(0, new LatLng(59.942724, 10.717987), 50, "HelloWorld", "This is a ink with a sample message");
-        this.addInk(1, new LatLng(59.944554, 10.716855), 40, "HelloInk", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
     }
+
         
     private void addInk(int id, LatLng position, double radiusInMeters, String title, String message) {
     	Ink newInk = new Ink(id, position, radiusInMeters, title, message);

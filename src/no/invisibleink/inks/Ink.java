@@ -1,5 +1,7 @@
-package no.invisibleink.mapdemo;
+package no.invisibleink.inks;
 
+import no.invisibleink.mapdemo.R;
+import no.invisibleink.mapdemo.R.drawable;
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;

@@ -1,7 +1,8 @@
-package no.invisibleink.mapdemo;
+package no.invisibleink.inks;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 import android.location.Location;
 import android.util.Log;
@@ -21,6 +22,7 @@ public class LocationHelper implements OnMyLocationChangeListener, OnCameraChang
 	private List<Ink> inks;
 	
 	private static final boolean LOG_ON = true;
+	
 	
 	/**
 	 * If the distance between the current location and the last
@@ -46,9 +48,8 @@ public class LocationHelper implements OnMyLocationChangeListener, OnCameraChang
 		__debug("location lat: " + location.getLatitude() + ", lng:" + location.getLongitude());
 		float distanceInMeters = location.distanceTo(myLastLocation);
 		__debug("distence=" + distanceInMeters + "m to old location");
-		this.myLastLocation = location;
 		if(distanceInMeters > DISTANCE_CHANGE_TO_SERVER_REQUEST_IN_METERS || checkTimerToRequestServer()) {
-			requestServer();
+			requestServer(location);
 		}
 /*		if(distanceInMeters > DISTANCE_CHANGE_TO_SERVER_REQUEST_IN_METERS) {
 			__debug("yes2");
@@ -63,9 +64,11 @@ public class LocationHelper implements OnMyLocationChangeListener, OnCameraChang
 		__debug("camera zoom: " + camera.zoom);		
 	}
 	
-	private void requestServer() {		
+	private void requestServer(Location location) {		
 		// TODO: instead of real request at the moment just a log output
 		try {
+			this.myLastLocation = location;
+
 			__debug("requestServer():");
 			__debug("myLocation=(" + getMyLocationLatLng() + "), lastRequest=" + this.lastServerRequest + "ms, localIDs=" + this.getInkIds());
 		} catch (Exception e) {
