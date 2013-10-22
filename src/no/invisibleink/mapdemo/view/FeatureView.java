@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.example.mapdemo.view;
+package no.invisibleink.mapdemo.view;
 
+import no.invisibleink.mapdemo.R;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.example.mapdemo.R;
 
 /**
  * A widget that describes an activity that demonstrates a feature.

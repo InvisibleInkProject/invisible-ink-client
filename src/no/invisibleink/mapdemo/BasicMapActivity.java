@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package com.example.mapdemo;
+package no.invisibleink.mapdemo;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,13 +38,14 @@ import android.util.Log;
  * Notice how we deal with the possibility that the Google Play services APK is not
  * installed/enabled/updated on a user's device.
  */
-public class BasicMapActivity extends FragmentActivity implements OnMyLocationChangeListener, OnCameraChangeListener {
+public class BasicMapActivity extends FragmentActivity {
 	
     /**
      * Note that this may be null if the Google Play services APK is not available.
      */
     private GoogleMap mMap;
     private List<Ink> inks;
+    private LocationHelper locationHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,49 +98,23 @@ public class BasicMapActivity extends FragmentActivity implements OnMyLocationCh
     private void setUpMap() {
     	inks = new LinkedList<Ink>();
     	
+    	locationHelper = new LocationHelper(this.mMap, this.inks);
+    	
     	mMap.setMyLocationEnabled(true);
 		mMap.setIndoorEnabled(true);
-    	mMap.setOnMyLocationChangeListener(this);
-    	mMap.setOnCameraChangeListener(this);
+    	mMap.setOnMyLocationChangeListener(locationHelper);
+    	mMap.setOnCameraChangeListener(locationHelper);
 
-        this.addInk(new LatLng(59.942724, 10.717987), 50, "HelloWorld", "This is a ink with a sample message");
-        this.addInk(new LatLng(59.944554, 10.716855), 40, "HelloInk", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
+        this.addInk(0, new LatLng(59.942724, 10.717987), 50, "HelloWorld", "This is a ink with a sample message");
+        this.addInk(1, new LatLng(59.944554, 10.716855), 40, "HelloInk", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.");
     }
-
-	/**
-     * Zooms the map to the current location.
-     * 
-     * @param zoom Zoom level
-     */
-    private void zoomMapToCurrentLocation(float zoom) {
-    	try {
-			mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getMyLocationLatLng(), zoom));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}    	
-    }
-    
-    /**
-     * Get current location as LatLng object.
-     * 
-     * @return Current location is LatLng object
-     * @throws Exception When current location is null
-     */
-    private LatLng getMyLocationLatLng() throws Exception {
-    	Location myLocation = mMap.getMyLocation();
-    	if (myLocation != null) {
-        	return new LatLng(myLocation.getLatitude(), myLocation.getLongitude());    		
-    	} else {
-    		throw new Exception("Current location is null.");
-    	}
-    }
-    
-    private void addInk(LatLng position, double radiusInMeters, String title, String message) {
-    	Ink newInk = new Ink(position, radiusInMeters, title, message);
+        
+    private void addInk(int id, LatLng position, double radiusInMeters, String title, String message) {
+    	Ink newInk = new Ink(id, position, radiusInMeters, title, message);
     	newInk.setIsVisible(mMap.getMyLocation());
     	boolean isVisible = newInk.getIsVisible();    
     	newInk.setCircleOptions(isVisible);
-    	
+
     	this.inks.add(newInk);
     	mMap.addCircle(newInk.getCircleOptions());
     	mMap.addMarker(newInk.getMarkerOptions());
@@ -156,14 +132,4 @@ public class BasicMapActivity extends FragmentActivity implements OnMyLocationCh
 			*/
     }
 
-	@Override
-	public void onMyLocationChange(Location location) {
-//		zoomMapToCurrentLocation(16);
-		Log.d("Map", "location lat: " + location.getLatitude() + ", lng:" + location.getLongitude());
-	}
-
-	@Override
-	public void onCameraChange(CameraPosition camera) {
-		Log.d("Map", "camera zoom: " + camera.zoom);		
-	}
 }

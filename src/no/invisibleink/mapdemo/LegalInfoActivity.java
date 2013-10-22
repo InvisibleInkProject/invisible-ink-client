@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.mapdemo;
+package no.invisibleink.mapdemo;
 
 import com.google.android.gms.common.GooglePlayServicesUtil;
 
