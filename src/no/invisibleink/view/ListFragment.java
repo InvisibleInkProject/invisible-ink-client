@@ -1,5 +1,8 @@
-package no.invisibleink;
+package no.invisibleink.view;
 
+import no.invisibleink.R;
+import no.invisibleink.R.id;
+import no.invisibleink.R.layout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,7 +14,7 @@ import android.widget.TextView;
  * A dummy fragment representing a section of the app, but that simply
  * displays dummy text.
  */
-public class DummySectionFragment extends Fragment {
+public class ListFragment extends Fragment {
 
 	/**
 	 * The fragment argument representing the section number for this
@@ -19,7 +22,7 @@ public class DummySectionFragment extends Fragment {
 	 */
 	public static final String ARG_SECTION_NUMBER = "section_number";
 
-	public DummySectionFragment() {
+	public ListFragment() {
 	}
 
 	@Override
