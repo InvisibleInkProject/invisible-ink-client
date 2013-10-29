@@ -1,6 +1,12 @@
-package no.invisibleink;
+package no.invisibleink.view;
 
 import java.util.Locale;
+
+import no.invisibleink.R;
+import no.invisibleink.R.id;
+import no.invisibleink.R.layout;
+import no.invisibleink.R.menu;
+import no.invisibleink.R.string;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -12,8 +18,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 
-public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
 	/**
 	 * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -116,12 +121,12 @@ public class MainActivity extends FragmentActivity implements
 				fragment = new MapFragment();
 				break;
 			case 1:
-				fragment = new DummySectionFragment();
-				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				fragment = new ListFragment();
+				args.putInt(ListFragment.ARG_SECTION_NUMBER, position + 1);
 				break;
 			default:
-				fragment = new DummySectionFragment();
-				args.putInt(DummySectionFragment.ARG_SECTION_NUMBER, position + 1);
+				fragment = new ListFragment();
+				args.putInt(ListFragment.ARG_SECTION_NUMBER, position + 1);
 				break;
 			}
 			
