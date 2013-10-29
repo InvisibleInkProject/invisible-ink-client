@@ -8,7 +8,7 @@ import com.google.android.gms.maps.model.LatLng;
 public class InkWell {
 	private static InkWell mInstance = null;
 	private List<Ink> inks;
-	private LocationHelper locationHelper;
+	private LocationManager locationHelper;
 	
 	private InkWell() {
 		inks = new LinkedList<Ink>();
@@ -26,7 +26,7 @@ public class InkWell {
 		return inks;
 	}
 	
-	public LocationHelper getLocationHelper() {
+	public LocationManager getLocationHelper() {
 		return locationHelper;
 	}
 	

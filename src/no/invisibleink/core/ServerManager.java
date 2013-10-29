@@ -33,8 +33,15 @@ public class ServerManager {
 	/**
 	 * If the time since the last server request is greater as this
 	 * value, the server will be requested.
+	 * 
+	 * unit: seconds
 	 */
 	public static final long REQUEST_TIME_PERIOD = 1000;
+	
+	public ServerManager() {
+		lastRequestLocation = new Location("");
+		lastRequestTime = 0;
+	}
 	
 	public boolean isRequestNecessary(Location location) {
 		float distanceInMeters = location.distanceTo(lastRequestLocation);
@@ -50,6 +57,7 @@ public class ServerManager {
 		// TODO: instead of real request at the moment just a log output
 		try {
 			lastRequestLocation = location;
+			lastRequestTime = System.currentTimeMillis();
 
 			__debug("requestServer():");
 			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime + "ms, localIDs=" + inkIDs);
@@ -57,7 +65,6 @@ public class ServerManager {
 			e.printStackTrace();
 		}
 		
-		lastRequestTime = System.currentTimeMillis();
 	}
 	
 	
