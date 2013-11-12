@@ -42,6 +42,32 @@ public class ServerManager {
 		lastRequestLocation = new Location("");
 		lastRequestTime = 0;
 	}
+
+	/**
+	 * Request the server, if it is necessary.
+	 * 
+	 * @param location
+	 *            Current location
+	 * @param inkIDs
+	 *            IDs of all local inks
+	 * @return true, if server was requested
+	 */
+	public boolean request(Location location, List<Integer> inkIDs) {
+		if (isRequestNecessary(location)) {
+
+			// TODO: instead of real request at the moment just a log output			
+			
+			lastRequestLocation = location;
+			lastRequestTime = System.currentTimeMillis();
+
+			__debug("requestServer():");
+			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime + "ms, localIDs=" + inkIDs);
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
 	public boolean isRequestNecessary(Location location) {
 		float distanceInMeters = location.distanceTo(lastRequestLocation);
@@ -52,21 +78,6 @@ public class ServerManager {
 			return false;
 		}
 	}
-	
-	public void requestServer(Location location, List<Integer> inkIDs) {		
-		// TODO: instead of real request at the moment just a log output
-		try {
-			lastRequestLocation = location;
-			lastRequestTime = System.currentTimeMillis();
-
-			__debug("requestServer():");
-			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime + "ms, localIDs=" + inkIDs);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-	}
-	
 	
 	/**
 	 * 
