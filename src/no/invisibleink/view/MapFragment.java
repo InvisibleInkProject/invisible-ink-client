@@ -1,11 +1,9 @@
 package no.invisibleink.view;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import no.invisibleink.R;
 import no.invisibleink.core.Ink;
-import no.invisibleink.core.InkWell;
 import no.invisibleink.core.LocationManager;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -13,11 +11,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 
 public class MapFragment extends Fragment {
@@ -44,36 +40,17 @@ public class MapFragment extends Fragment {
     }*/
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main_dummy,
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_main_map,
 				container, false);
-		TextView dummyTextView = (TextView) rootView
-				.findViewById(R.id.section_label);
-		dummyTextView.setText(Integer.toString(getArguments().getInt(
-				ARG_SECTION_NUMBER)));
+		// TODO: Test
+		setUpMapIfNeeded();
 		return rootView;
-	}    
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
+	}
 
 	
-	
-	public MapFragment() {}
-	
-//	@Override
-//	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//		View rootView = inflater.inflate(R.layout.fragment_main_map,
-//				container, false);
-		
-//		SupportMapFragment mMap = (SupportMapFragment)rootView.findViewById(R.id.main_map);
-		
-//		return rootView;
-//	}
+// TODO: test?	
+//	public MapFragment() {}
 	
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
