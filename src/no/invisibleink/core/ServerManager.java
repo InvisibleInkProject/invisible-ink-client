@@ -1,7 +1,9 @@
 package no.invisibleink.core;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
@@ -55,8 +57,18 @@ public class ServerManager {
 	public boolean request(Location location, List<Integer> inkIDs) {
 		if (isRequestNecessary(location)) {
 
-			// TODO: instead of real request at the moment just a log output			
-			
+			// TODO: instead of real request at the moment just a log output	
+			GetMessageTask gmt = new GetMessageTask();
+			gmt.execute(location);
+			try {
+				List<Ink>inks = gmt.get();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			lastRequestLocation = location;
 			lastRequestTime = System.currentTimeMillis();
 
@@ -68,6 +80,18 @@ public class ServerManager {
 			return false;
 		}
 	}
+	
+
+	public void createInk(Location location, String message, Context context){
+		PostMessageTask pmt = new PostMessageTask(context);
+		pmt.execute(location, message);
+	}
+	
+	public void readAll(Location location){
+		GetMessageTask gmt = new GetMessageTask();
+		gmt.execute(location);
+	}
+	
 	
 	public boolean isRequestNecessary(Location location) {
 		float distanceInMeters = location.distanceTo(lastRequestLocation);
