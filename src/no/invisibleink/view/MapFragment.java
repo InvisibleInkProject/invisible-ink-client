@@ -47,6 +47,7 @@ public class MapFragment extends Fragment {
 		setUpMapIfNeeded();
 		return rootView;
 	}
+	
 
 	
 // TODO: test?	

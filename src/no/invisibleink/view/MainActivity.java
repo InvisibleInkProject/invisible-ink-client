@@ -7,6 +7,7 @@ import no.invisibleink.R.id;
 import no.invisibleink.R.layout;
 import no.invisibleink.R.menu;
 import no.invisibleink.R.string;
+import no.invisibleink.core.ServerManager;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -74,6 +75,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 					.setText(mSectionsPagerAdapter.getPageTitle(i))
 					.setTabListener(this));
 		}
+		
+//		ServerManager sm = new ServerManager();
+//		sm.readAll(null);
 	}
 
 	@Override
@@ -89,6 +93,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		// When the given tab is selected, switch to the corresponding page in
 		// the ViewPager.
 		mViewPager.setCurrentItem(tab.getPosition());
+		
+		
 	}
 
 	@Override
