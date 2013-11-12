@@ -18,8 +18,11 @@ public class LocationManager implements OnMyLocationChangeListener, OnCameraChan
 	 */
 	private static final boolean LOG_ON = true;
 	
+	/** Ink well object to call update function */
+	private InkWell inkWell;
 	
-	public LocationManager() {
+	public LocationManager(InkWell inkWell) {
+		this.inkWell = inkWell;
 	}
 
 	/**
@@ -45,6 +48,7 @@ public class LocationManager implements OnMyLocationChangeListener, OnCameraChan
 	@Override
 	public void onMyLocationChange(Location location) {
 		__debug("location lat: " + location.getLatitude() + ", lng:" + location.getLongitude());
+		this.inkWell.update(location);
 	}
 
 	@Override

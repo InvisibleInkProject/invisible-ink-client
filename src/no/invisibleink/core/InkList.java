@@ -22,20 +22,33 @@ public class InkList extends ArrayList<Ink> {
     	return ids;
     }
     
-    public void add(int id, Location position, double radius, String title, String message) {
-    	Ink newInk = new Ink(id, position, radius, title, message);
-    	this.add(newInk);
-    	// TODO: stuff:
+//    public boolean add(Ink newInk) {
+//    	this.add(newInk);
+//    	// TODO: stuff:
 //    	newInk.setIsVisible(mMap.getMyLocation());
 //    	boolean isVisible = newInk.getIsVisible();    
 //    	newInk.setCircleOptions(isVisible);
 
 //    	mMap.addCircle(newInk.getCircleOptions());
 //    	mMap.addMarker(newInk.getMarkerOptions());
-    }
+//    }
     
+	/**
+	 * Updates the visibility of all inks depend on the given location and the
+	 * visibility radius of the inks.
+	 * 
+	 * @param location Current user location
+	 */
     public void updateVisibility(Location location) {
-    	// TODO: implement function
+    	// TODO: more efficient implementation?
+    	for (Ink i : this) {
+    		// Check if distance to center of the ink is smaller then its visibility radius
+    		if (i.getLocation().distanceTo(location) <= i.getRadius() ) {
+    			i.visible(true);
+    		} else {
+    			i.visible(false);
+    		}
+    	}
     }
     
 }
