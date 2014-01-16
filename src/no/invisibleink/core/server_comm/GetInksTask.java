@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 public class GetInksTask extends AsyncTask<Object, Void, List<Ink>>{
 
 	//TODO: globalise me ! 
-		private String SERVER = "http://server.invisibleink.no/api/v1/message/60.0,10.0/";
+	private final String SERVER = "http://server.invisibleink.no/api/v1/message/60.0,10.0/";
 	
 	@Override
 	protected List<Ink> doInBackground(Object... params) {
@@ -65,21 +65,13 @@ public class GetInksTask extends AsyncTask<Object, Void, List<Ink>>{
 				GsonInk ink = new Gson().fromJson(ar.get(i).toString(), GsonInk.class);
 				Log.d("ink:"+i,ink.toString());
 			}
-			
-			
-			
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		
 		//parse&return:		
 		return null;

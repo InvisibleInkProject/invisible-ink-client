@@ -70,10 +70,8 @@ public class Ink {
 		this.title = title;
 		this.message = message;
 		this.author = author;
-		this.timestamp = timestamp;
-		
-		// TODO: change to false;
-		this.isVisible = true;
+		this.timestamp = timestamp;		
+		this.isVisible = false;
 		
 		// Set map circle
 		this.circleOptions = new CircleOptions()
@@ -149,16 +147,5 @@ public class Ink {
 		this.markerOptions.visible(isVisible);
 		this.circleOptions.visible(isVisible);
 	}
-
-	// TODO: Necessary?	 
-	 public void setIsVisible(Location currentLoc) {
-/*		 double distance = distanceTo(currentLoc, this);
-		 if (distance > radius) {
-			 this.isVisible = false;
-		 }
-		 else {
-			 this.isVisible = true;
-		 }*/		 
-	 }
 	 
 }

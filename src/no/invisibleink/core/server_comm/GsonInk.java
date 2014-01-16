@@ -4,6 +4,15 @@ import java.util.Date;
 
 public class GsonInk {
 
+	private Date created;
+	private double distance;
+	private int id;
+	private double location_lat;
+	private double location_lon;
+	private String resource_uri;
+	private String text;
+	private Date updated;	
+	
 	public Date getCreated() {
 		return created;
 	}
@@ -52,14 +61,7 @@ public class GsonInk {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
-	private Date created;
-	private double distance;
-	private int id;
-	private double location_lat;
-	private double location_lon;
-	private String resource_uri;
-	private String text;
-	private Date updated;
+
 	@Override
 	public String toString() {
 		return "GsonInk [created=" + created + ", distance=" + distance
@@ -68,7 +70,5 @@ public class GsonInk {
 				+ resource_uri + ", text=" + text + ", updated=" + updated
 				+ "]";
 	}
-	
-	
 	
 }

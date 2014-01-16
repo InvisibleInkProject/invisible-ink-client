@@ -5,11 +5,9 @@ import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
-import com.google.android.gms.maps.model.CameraPosition;
 
-public class LocationManager implements OnMyLocationChangeListener, OnCameraChangeListener {
+public class LocationManager implements OnMyLocationChangeListener {
 
 	/** Map object */
 	private GoogleMap map;
@@ -50,11 +48,6 @@ public class LocationManager implements OnMyLocationChangeListener, OnCameraChan
 	public void onMyLocationChange(Location location) {
 		__debug("location lat: " + location.getLatitude() + ", lng:" + location.getLongitude());
 		this.inkWell.update(location);
-	}
-
-	@Override
-	public void onCameraChange(CameraPosition camera) {
-		__debug("camera zoom: " + camera.zoom);		
 	}
     
 	/**
