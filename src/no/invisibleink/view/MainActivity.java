@@ -7,7 +7,7 @@ import no.invisibleink.R.id;
 import no.invisibleink.R.layout;
 import no.invisibleink.R.menu;
 import no.invisibleink.R.string;
-import no.invisibleink.core.ServerManager;
+import no.invisibleink.core.manager.ServerManager;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;

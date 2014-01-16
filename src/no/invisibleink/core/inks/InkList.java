@@ -1,4 +1,4 @@
-package no.invisibleink.core;
+package no.invisibleink.core.inks;
 
 import java.util.ArrayList;
 import java.util.List;

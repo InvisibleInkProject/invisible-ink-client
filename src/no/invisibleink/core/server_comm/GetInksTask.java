@@ -1,10 +1,12 @@
-package no.invisibleink.core;
+package no.invisibleink.core.server_comm;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import no.invisibleink.core.inks.Ink;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -21,7 +23,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
-public class GetMessageTask extends AsyncTask<Object, Void, List<Ink>>{
+public class GetInksTask extends AsyncTask<Object, Void, List<Ink>>{
 
 	//TODO: globalise me ! 
 		private String SERVER = "http://server.invisibleink.no/api/v1/message/60.0,10.0/";

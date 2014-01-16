@@ -1,4 +1,4 @@
-package no.invisibleink.core;
+package no.invisibleink.core.server_comm;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package no.invisibleink.core;
+package no.invisibleink.core.server_comm;
 
 import java.io.IOException;
 
@@ -17,14 +17,14 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class PostMessageTask extends AsyncTask<Object, Void, Boolean>{
+public class PostInkTask extends AsyncTask<Object, Void, Boolean>{
 
 	//TODO: globalise me ! 
 	private String SERVER = "http://server.invisibleink.no/api/v1/message/";
 	
 	private Context context;
 	
-	public PostMessageTask(Context c){
+	public PostInkTask(Context c){
 		context = c;
 	}
 	
