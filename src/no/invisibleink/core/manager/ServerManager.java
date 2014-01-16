@@ -1,7 +1,11 @@
-package no.invisibleink.core;
+package no.invisibleink.core.manager;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import no.invisibleink.core.inks.Ink;
+import no.invisibleink.core.server_comm.GetInksTask;
+import no.invisibleink.core.server_comm.PostInkTask;
 
 import android.content.Context;
 import android.location.Location;
@@ -58,7 +62,7 @@ public class ServerManager {
 		if (isRequestNecessary(location)) {
 
 			// TODO: instead of real request at the moment just a log output	
-			GetMessageTask gmt = new GetMessageTask();
+			GetInksTask gmt = new GetInksTask();
 			gmt.execute(location);
 			try {
 				List<Ink>inks = gmt.get();
@@ -83,12 +87,12 @@ public class ServerManager {
 	
 
 	public void createInk(Location location, String message, Context context){
-		PostMessageTask pmt = new PostMessageTask(context);
+		PostInkTask pmt = new PostInkTask(context);
 		pmt.execute(location, message);
 	}
 	
 	public void readAll(Location location){
-		GetMessageTask gmt = new GetMessageTask();
+		GetInksTask gmt = new GetInksTask();
 		gmt.execute(location);
 	}
 	

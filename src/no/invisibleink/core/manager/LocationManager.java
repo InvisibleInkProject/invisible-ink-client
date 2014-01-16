@@ -1,5 +1,6 @@
-package no.invisibleink.core;
+package no.invisibleink.core.manager;
 
+import no.invisibleink.core.InkWell;
 import android.location.Location;
 import android.util.Log;
 

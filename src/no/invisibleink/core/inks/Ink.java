@@ -1,6 +1,4 @@
-package no.invisibleink.core;
-
-import java.util.Date;
+package no.invisibleink.core.inks;
 
 import android.graphics.Color;
 import android.location.Location;
