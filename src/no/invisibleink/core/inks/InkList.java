@@ -22,17 +22,6 @@ public class InkList extends ArrayList<Ink> {
     	return ids;
     }
     
-//    public boolean add(Ink newInk) {
-//    	this.add(newInk);
-//    	// TODO: stuff:
-//    	newInk.setIsVisible(mMap.getMyLocation());
-//    	boolean isVisible = newInk.getIsVisible();    
-//    	newInk.setCircleOptions(isVisible);
-
-//    	mMap.addCircle(newInk.getCircleOptions());
-//    	mMap.addMarker(newInk.getMarkerOptions());
-//    }
-    
 	/**
 	 * Updates the visibility of all inks depend on the given location and the
 	 * visibility radius of the inks.

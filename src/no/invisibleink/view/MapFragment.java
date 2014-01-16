@@ -97,6 +97,6 @@ public class MapFragment extends Fragment {
     	mMap.setMyLocationEnabled(true);
 		mMap.setIndoorEnabled(true);
     	mMap.setOnMyLocationChangeListener(locationHelper);
-    	mMap.setOnCameraChangeListener(locationHelper);
+//    	mMap.setOnCameraChangeListener(locationHelper);
     }    
 }

@@ -1,8 +1,6 @@
 package no.invisibleink.view;
 
 import no.invisibleink.R;
-import no.invisibleink.R.id;
-import no.invisibleink.R.layout;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
