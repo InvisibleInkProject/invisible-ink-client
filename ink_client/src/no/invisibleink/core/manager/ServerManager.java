@@ -60,23 +60,20 @@ public class ServerManager {
 	 */
 	public boolean request(Location location, List<Integer> inkIDs) {
 		if (isRequestNecessary(location)) {
-
-			// TODO: instead of real request at the moment just a log output	
+			__debug("requestServer():");
 			GetInksTask gmt = new GetInksTask();
 			gmt.execute(location);
 			try {
-				List<Ink>inks = gmt.get();
+				List<Ink> inks = gmt.get();
+				__debug("Received inks" + inks.toString());
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			lastRequestLocation = location;
 			lastRequestTime = System.currentTimeMillis();
-
-			__debug("requestServer():");
+			// TODO: instead of real request at the moment just a log output
 			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime + "ms, localIDs=" + inkIDs);
 			
 			return true;
@@ -85,18 +82,24 @@ public class ServerManager {
 		}
 	}
 	
-
-	public void createInk(Location location, String message, Context context){
-		PostInkTask pmt = new PostInkTask(context);
-		pmt.execute(location, message);
-	}
+	// TODO: necessary: no one uses this function? (Fabian)
+//	public void createInk(Location location, String message, Context context){
+//		PostInkTask pmt = new PostInkTask(context);
+//		pmt.execute(location, message);
+//	}
 	
-	public void readAll(Location location){
-		GetInksTask gmt = new GetInksTask();
-		gmt.execute(location);
-	}
+	// TODO: necessary: no one uses this function? (Fabian)
+//	public void readAll(Location location){
+//		GetInksTask gmt = new GetInksTask();
+//		gmt.execute(location);
+//	}
 	
-	
+	/**
+	 * TODO: comment
+	 * 
+	 * @param location
+	 * @return
+	 */
 	public boolean isRequestNecessary(Location location) {
 		float distanceInMeters = location.distanceTo(lastRequestLocation);
 		__debug("distence=" + distanceInMeters + "m to old location");

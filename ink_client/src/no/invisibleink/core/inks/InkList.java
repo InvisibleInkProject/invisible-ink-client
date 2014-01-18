@@ -5,6 +5,12 @@ import java.util.List;
 
 import android.location.Location;
 
+/**
+ * List with hold all local inks.
+ * 
+ * @author Fabian
+ *
+ */
 public class InkList extends ArrayList<Ink> {
 
 	private static final long serialVersionUID = 1L;
