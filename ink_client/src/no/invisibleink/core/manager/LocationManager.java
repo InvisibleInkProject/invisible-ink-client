@@ -7,6 +7,14 @@ import android.util.Log;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 
+/**
+ * The Manager takes care of the location, implements the
+ * OnMyLocationChangeListener and holds the GoogleMap object (we get the
+ * location from this object).
+ * 
+ * @author Fabian
+ * 
+ */
 public class LocationManager implements OnMyLocationChangeListener {
 
 	/** Map object */
@@ -22,6 +30,7 @@ public class LocationManager implements OnMyLocationChangeListener {
 	
 	public LocationManager(InkWell inkWell) {
 		this.inkWell = inkWell;
+		Log.d("noooop", "creat loc");
 	}
 
 	/**

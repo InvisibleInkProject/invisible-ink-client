@@ -1,0 +1,25 @@
+*.keystore
+
+############
+## Eclipse
+############
+
+.project
+.settings/
+.classpath
+bin/
+project.properties
+
+############
+## Android
+############
+ 
+gen/
+lint.xml
+
+############
+## Java
+############
+ 
+# Compiled object files
+*.class

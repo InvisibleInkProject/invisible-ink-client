@@ -9,6 +9,12 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * Class to represent an ink as object.
+ * 
+ * @author Fabian
+ *
+ */
 public class Ink {
 
 	/** ID of the ink */
@@ -16,9 +22,6 @@ public class Ink {
 	
 	/** Location of the ink */
 	private Location location;
-	
-	/** Location of the ink in LatLng format */
-	private LatLng locationLatLng;
 	
 	/** Visible radius of the ink in meters */
 	private double radius;
@@ -65,7 +68,6 @@ public class Ink {
 	public Ink(int id, Location location, double radius, String title, String message, String author, long timestamp) {
 		this.id = id;
 		this.location = location;
-		this.locationLatLng = new LatLng(location.getLatitude(), location.getLongitude());
 		this.radius = radius;
 		this.title = title;
 		this.message = message;
@@ -75,14 +77,14 @@ public class Ink {
 		
 		// Set map circle
 		this.circleOptions = new CircleOptions()
-			.center(locationLatLng)
+			.center(new LatLng(location.getLatitude(), location.getLongitude()))
 			.radius(radius)
 			.strokeColor(Color.GRAY)
 			.strokeWidth(2)
 			.fillColor(0x30000000); 
 		// Set map marker
 		this.markerOptions = new MarkerOptions()
-			.position(locationLatLng)
+			.position(new LatLng(location.getLatitude(), location.getLongitude()))
 			.title(title)
 			.snippet(message)
 			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
