@@ -27,7 +27,7 @@ public class InkWell {
 	private InkWell() {
 		inks = new InkList();
 		locationHelper = new LocationManager(this);
-		serverManager = new ServerManager();
+		serverManager = new ServerManager(this);
 	}
 	
 	/**
@@ -48,8 +48,18 @@ public class InkWell {
 	 * 
 	 * @return List with all local inks.
 	 */
-	public InkList getInks() {
+	public InkList getInkList() {
 		return inks;
+	}
+	
+	/**
+	 * Clears old list and added all new inks.
+	 * 
+	 * @param inkList List with inks
+	 */
+	public void setInkList(InkList inkList) {
+		this.inks.clear();
+		this.inks.addAll(inkList);
 	}
 	
 	/**

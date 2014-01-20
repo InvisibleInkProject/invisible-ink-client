@@ -1,5 +1,7 @@
 package no.invisibleink.core.inks;
 
+import java.util.Date;
+
 import android.graphics.Color;
 import android.location.Location;
 import android.util.Log;
@@ -30,7 +32,7 @@ public class Ink {
 	private String title;
 	
 	/** Timestamp of the ink */
-	private long timestamp;
+	private Date date;
 	
 	/** Message of the ink */
 	private String message;
@@ -62,21 +64,21 @@ public class Ink {
 	 *            Content of the ink
 	 * @param author
 	 *            Author name
-	 * @param timestamp
-	 *            Timestamp
+	 * @param date
+	 *            Date
 	 */
-	public Ink(int id, Location location, double radius, String title, String message, String author, long timestamp) {
+	public Ink(int id, Location location, double radius, String title, String message, String author, Date date) {
 		this.id = id;
 		this.location = location;
 		this.radius = radius;
 		this.title = title;
 		this.message = message;
 		this.author = author;
-		this.timestamp = timestamp;		
+		this.date = date;		
 		this.isVisible = false;
 		
 		// Set map circle
-		this.circleOptions = new CircleOptions()
+/*		this.circleOptions = new CircleOptions()
 			.center(new LatLng(location.getLatitude(), location.getLongitude()))
 			.radius(radius)
 			.strokeColor(Color.GRAY)
@@ -88,6 +90,7 @@ public class Ink {
 			.title(title)
 			.snippet(message)
 			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+*/			
 	}
 
 	/**
@@ -115,6 +118,10 @@ public class Ink {
 	 */
 	public double getRadius() {
 		return this.radius;
+	}
+	
+	public String getMessage() {
+		return this.message;
 	}
 	
 	/**

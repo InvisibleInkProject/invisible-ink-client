@@ -2,7 +2,10 @@ package no.invisibleink.view;
 
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
+import no.invisibleink.core.inks.Ink;
+import no.invisibleink.core.inks.InkList;
 import android.location.Location;
+import android.media.MediaRecorder.OutputFormat;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
@@ -38,8 +41,16 @@ public class MainActivity extends Activity {
     	Location stubLocation = inkWell.getLocationManager().getMyLocation();
     	inkWell.getLocationManager().onMyLocationChange(stubLocation);
 
+    	InkList inkList = inkWell.getInkList();
+    	
     	TextView selection = (TextView) findViewById(R.id.textView1);
-    	selection.setText("Hey, size" + inkWell.getInks().size());
+    	String ouput = new String();
+    	ouput.concat("Location: " + stubLocation + "\n");
+    	ouput.concat("Received inks: " + inkList.size() + "\n");
+    	for(Ink i : inkList) {
+    		ouput.concat(i.getID() + " " + stubLocation.distanceTo(i.getLocation()) + "m\n" );	
+    	}
+    	selection.setText(ouput);
     }
     
 }
