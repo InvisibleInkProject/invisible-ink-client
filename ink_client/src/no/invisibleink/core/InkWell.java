@@ -4,8 +4,7 @@ import java.util.Observable;
 
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 
-import no.invisibleink.core.manager.ServerManager;
-import no.invisibleink.model.Ink;
+import no.invisibleink.core.server_comm.ServerManager;
 import no.invisibleink.model.InkList;
 import android.location.Location;
 import android.util.Log;
@@ -29,7 +28,7 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
 	 */
 	private InkWell() {
 		inkList = new InkList();
-		serverManager = new ServerManager(this);
+		serverManager = new ServerManager();
 	}
 	
 	/**
@@ -78,7 +77,6 @@ Log.d(this.getClass().getName(), "setInkList()");
     	this.inkList.updateVisibility(this.currentLocation);
     	this.serverManager.request(this.currentLocation);	
     }
-    
 
 	@Override
 	public void onMyLocationChange(Location location) {

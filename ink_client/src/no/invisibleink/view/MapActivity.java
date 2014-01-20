@@ -87,15 +87,13 @@ public class MapActivity extends FragmentActivity implements Observer {
 
 	@Override
 	public void update(Observable observable, Object data) {
-Log.d(this.getClass().getName(), "update(..)");	
-mMap.clear();
+		Log.d(this.getClass().getName(), "update(..)");	
+		mMap.clear();
 		InkList inkList = (InkList) data;
 		for(Ink i : inkList) {
 			mMap.addCircle(i.getCircleOptions());
 			mMap.addMarker(i.getMarkerOptions());
 		}
-		// TODO Auto-generated method stub
-		
 	}    
     
 }
