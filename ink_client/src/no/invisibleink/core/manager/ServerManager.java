@@ -51,11 +51,9 @@ public class ServerManager {
 	 * 
 	 * @param location
 	 *            Current location
-	 * @param inkIDs
-	 *            IDs of all local inks
 	 * @return true, if server was requested
 	 */
-	public boolean request(Location location, List<Integer> inkIDs) {
+	public boolean request(Location location) {
 		if (isRequestNecessary(location)) {
 			__debug("requestServer():");
 			GetInksTask gmt = new GetInksTask();
@@ -71,7 +69,7 @@ public class ServerManager {
 			lastRequestLocation = location;
 			lastRequestTime = System.currentTimeMillis();
 			// TODO: instead of real request at the moment just a log output
-			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime + "ms, localIDs=" + inkIDs);
+			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime);
 			
 			return true;
 		} else {
