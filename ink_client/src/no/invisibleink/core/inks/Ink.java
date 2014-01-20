@@ -152,9 +152,10 @@ public class Ink {
 
 	// TODO: Necessary?
 	public void visible(boolean isVisible) {
+		this.isVisible = false;
 		Log.d("Ink", "isVisible" + isVisible);
-		this.markerOptions.visible(isVisible);
-		this.circleOptions.visible(isVisible);
+//		this.markerOptions.visible(isVisible);
+//		this.circleOptions.visible(isVisible);
 	}
 	 
 }

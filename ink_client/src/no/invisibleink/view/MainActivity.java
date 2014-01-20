@@ -44,13 +44,15 @@ public class MainActivity extends Activity {
     	InkList inkList = inkWell.getInkList();
     	
     	TextView selection = (TextView) findViewById(R.id.textView1);
-    	String ouput = new String();
-    	ouput.concat("Location: " + stubLocation + "\n");
-    	ouput.concat("Received inks: " + inkList.size() + "\n");
+    	String output = new String();
+    	output += "Location: " + stubLocation.getLatitude() + "," + stubLocation.getLongitude() + "\n";
+    	output += "Received inks: " + inkList.size() + "\n";
     	for(Ink i : inkList) {
-    		ouput.concat(i.getID() + " " + stubLocation.distanceTo(i.getLocation()) + "m\n" );	
-    	}
-    	selection.setText(ouput);
+    		// Shorten message, if it is too long.
+    		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
+    		output += i.getID() + ", " + stubLocation.distanceTo(i.getLocation()) + "m, " + messagePreview + "\n";	
+    	}    	
+    	selection.setText(output);
     }
     
 }
