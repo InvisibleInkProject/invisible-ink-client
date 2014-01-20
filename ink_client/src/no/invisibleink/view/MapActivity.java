@@ -5,13 +5,10 @@ import java.util.Observer;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
-import no.invisibleink.core.inks.Ink;
-import no.invisibleink.core.inks.InkList;
+import no.invisibleink.model.Ink;
+import no.invisibleink.model.InkList;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -85,7 +82,7 @@ public class MapActivity extends FragmentActivity implements Observer {
     	mMap.setMyLocationEnabled(true);
 		mMap.setIndoorEnabled(true);
 // TODO:
-    	mMap.setOnMyLocationChangeListener(inkWell.getLocationManager());   	
+    	mMap.setOnMyLocationChangeListener(inkWell);   	
     }
 
 	@Override
