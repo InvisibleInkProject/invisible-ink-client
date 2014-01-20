@@ -111,6 +111,16 @@ public class Ink {
 		return this.location;
 	}
 	
+	
+	/**
+	 * Get the message of th ink.
+	 * 
+	 * @return Message of the ink
+	 */
+	public String getMessage() {
+		return this.message;
+	}
+	
 	/**
 	 * Get the visibility radius in meters.
 	 * 
@@ -118,10 +128,6 @@ public class Ink {
 	 */
 	public double getRadius() {
 		return this.radius;
-	}
-	
-	public String getMessage() {
-		return this.message;
 	}
 	
 	/**
