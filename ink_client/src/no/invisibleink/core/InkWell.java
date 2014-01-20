@@ -73,7 +73,7 @@ public class InkWell {
     /**
      * TODO: Called by server
      */
-    public void update() {
+/*    public void update() {
     	// TODO: Just stub inks
     	Location loc0 = new Location("");
     	loc0.setLatitude(59.942724);
@@ -87,7 +87,7 @@ public class InkWell {
     	
     	this.inks.add(myInk0);
     	this.inks.add(myInk1);
-    }
+    }*/
     
     /**
      * Update everything, which need a new location.

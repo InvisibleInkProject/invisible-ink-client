@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.invisibleink.core.inks.Ink;
+import no.invisibleink.core.inks.InkList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -57,13 +58,15 @@ public class GetInksTask extends AsyncTask<Object, Void, List<Ink>>{
 			}
 			br.close();
 			//Log.d("jsonResponse",jsonContent.toString());
-			List<Ink> inks = new ArrayList<Ink>();
+			InkList inkList = new InkList();
 			
 			JSONObject jo = new JSONObject(jsonContent.toString());
 			JSONArray ar = jo.getJSONArray("objects");
 			for(int i=0;i<ar.length();i++){
 				GsonInk ink = new Gson().fromJson(ar.get(i).toString(), GsonInk.class);
 				Log.d("ink:"+i,ink.toString());
+				// TODO: added line:
+				inkList.add(ink);
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
