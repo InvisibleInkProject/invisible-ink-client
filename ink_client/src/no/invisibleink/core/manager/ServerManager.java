@@ -60,13 +60,12 @@ public class ServerManager {
 	 */
 	public boolean request(Location location) {
 		if (isRequestNecessary(location)) {
-			__debug("requestServer():");
 			GetInksTask gmt = new GetInksTask();
 			gmt.execute(location);
 			try {
 				// TODO: instead of catch NullPointer check sucess request?
 				InkList inkList = gmt.get();
-				__debug("Received " + inkList.size() + " inks");
+				__debug("received: " + inkList.size() + " inks");
 				
 				lastRequestLocation = location;
 				lastRequestTime = System.currentTimeMillis();
