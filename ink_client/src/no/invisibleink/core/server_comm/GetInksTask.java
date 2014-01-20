@@ -3,11 +3,6 @@ package no.invisibleink.core.server_comm;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.inks.InkList;
 
 import org.apache.http.HttpResponse;

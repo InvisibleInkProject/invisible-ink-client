@@ -5,7 +5,6 @@ import no.invisibleink.core.InkWell;
 import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.inks.InkList;
 import android.location.Location;
-import android.media.MediaRecorder.OutputFormat;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
