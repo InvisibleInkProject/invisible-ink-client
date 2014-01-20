@@ -1,7 +1,5 @@
 package no.invisibleink.core;
 
-import no.invisibleink.R;
-import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.manager.LocationManager;
 import no.invisibleink.core.manager.ServerManager;
