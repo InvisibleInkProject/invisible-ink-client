@@ -6,29 +6,40 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import no.invisibleink.R;
+import no.invisibleink.core.InkWell;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 public class MapActivity extends FragmentActivity {
 
+	private InkWell inkWell;
+	
     /**
      * Note that this may be null if the Google Play services APK is not available.
      */
-    private GoogleMap mMap;	
+    private GoogleMap mMap;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_map);
+		setUpIfNeeded();
         setUpMapIfNeeded();		
 	}
 
     @Override
     protected void onResume() {
         super.onResume();
+		setUpIfNeeded();
         setUpMapIfNeeded();
     }
 
+    private void setUpIfNeeded() {
+    	if (inkWell == null) {
+//    		inkWell = InkWell.getInstance();
+    	}
+    }
+    
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -67,7 +78,7 @@ public class MapActivity extends FragmentActivity {
     	mMap.setMyLocationEnabled(true);
 		mMap.setIndoorEnabled(true);
 // TODO:
-//    	mMap.setOnMyLocationChangeListener(locationManager);   	
+//    	mMap.setOnMyLocationChangeListener(inkWell.getLocationManager());   	
         mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }    
     
