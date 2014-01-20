@@ -1,4 +1,4 @@
-package no.invisibleink.core.inks;
+package no.invisibleink.model;
 
 import java.util.ArrayList;
 import android.location.Location;

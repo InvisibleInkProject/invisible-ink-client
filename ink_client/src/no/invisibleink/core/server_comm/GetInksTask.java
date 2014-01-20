@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URI;
 
 import no.invisibleink.core.InkWell;
-import no.invisibleink.core.inks.InkList;
+import no.invisibleink.model.InkList;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
