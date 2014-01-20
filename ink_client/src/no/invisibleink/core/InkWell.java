@@ -3,6 +3,7 @@ package no.invisibleink.core;
 import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.manager.LocationManager;
+import no.invisibleink.core.manager.ServerManager;
 import android.location.Location;
 
 public class InkWell {
@@ -16,12 +17,16 @@ public class InkWell {
 	/** Location helper */
 	private LocationManager locationHelper;
 	
+	/** Server manager */
+	private ServerManager serverManager;	
+	
 	/**
 	 * 
 	 */
 	private InkWell() {
 		inkList = new InkList();
 		locationHelper = new LocationManager(this);
+		serverManager = new ServerManager(this);
 	}
 	
 	/**
@@ -42,9 +47,19 @@ public class InkWell {
 	 * 
 	 * @return List with all local inks.
 	 */
-	public InkList getInks() {
+	public InkList getInkList() {
 		return inkList;
 	}
+	
+	/**
+	 * Clears old list and added all new inks.
+	 * 
+	 * @param inkList List with inks
+	 */
+	public void setInkList(InkList inkList) {
+		this.inkList.clear();
+		this.inkList.addAll(inkList);
+	}	
 	
 	/**
 	 * Get location manager.
@@ -53,36 +68,17 @@ public class InkWell {
 	 */
 	public LocationManager getLocationManager() {
 		return locationHelper;
-	}	
-    
-    /**
-     * TODO: Called by server
-     */
-    public void update(Location location) {
-    	// TODO: Just stub inks
-    	this.inkList.clear();
 
-    	Location loc0 = new Location("");
-    	loc0.setLatitude(59.942724);
-    	loc0.setLongitude(10.717987);
-    	Ink myInk0 = new Ink(0, loc0, 50, "HelloWorld", "This is a ink with a sample message", "Hans", 000000);
+	}
 
-    	Location loc1 = new Location("");
-    	loc1.setLatitude(59.944554);
-    	loc1.setLongitude(10.716855);
-    	Ink myInk1 = new Ink(0, loc1, 40, "HelloInk", "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", "Peter", 000001);
-    	
-    	this.inkList.add(myInk0);
-    	this.inkList.add(myInk1);
-    }
-    
     /**
      * Update everything, which need a new location.
      * 
      * @param location Current location
      */
-//    public void update(Location location) {
-//    	this.inks.updateVisibility(location);
-//    }
+    public void update(Location location) {
+    	this.inkList.updateVisibility(location);
+    	this.serverManager.request(location);  	
+    }
  
 }
