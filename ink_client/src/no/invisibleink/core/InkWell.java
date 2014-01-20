@@ -6,8 +6,9 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 
 import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.server_comm.ServerManager;
-import no.invisibleink.view.Update;
+import no.invisibleink.view.UpdateView;
 import android.location.Location;
+import android.util.Log;
 
 public class InkWell extends Observable implements OnMyLocationChangeListener {
 	
@@ -28,7 +29,7 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
 	 */
 	private InkWell() {
 		inkList = new InkList();
-		serverManager = new ServerManager(this);
+		serverManager = new ServerManager();
 	}
 	
 	/**
@@ -59,12 +60,16 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
 	 * @param inkList List with inks
 	 */
 	public void setInkList(InkList inkList) {
-		this.inkList.clear();
-		this.inkList.addAll(inkList);
-//    	this.inkList.updateVisibility(getLocationManager().getMyLocation());
-		// TODO: add to map
-		this.setChanged();
-		notifyObservers(new Update(inkList, this.currentLocation));
+		if (inkList != null) {
+			this.inkList.clear();
+			this.inkList.addAll(inkList);
+	//    	this.inkList.updateVisibility(getLocationManager().getMyLocation());
+			// TODO: add to map
+			this.setChanged();
+			notifyObservers(new UpdateView(inkList, this.currentLocation));
+		} else {
+			Log.w(this.getClass().getName(), "Receive null inkList");			
+		}
 	}
 	
 	/**

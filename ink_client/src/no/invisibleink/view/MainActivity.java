@@ -11,7 +11,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;
 import android.util.Log;
-import android.view.Menu;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements Observer {
@@ -25,7 +24,7 @@ public class MainActivity extends Activity implements Observer {
 		setUp();
 		
 		Location stubLocation = new Location("");
-		stubLocation.setLongitude(0);
+		stubLocation.setLongitude(60);
 		stubLocation.setLatitude(0);
 		inkWell.onMyLocationChange(stubLocation);
 	}
@@ -37,11 +36,11 @@ public class MainActivity extends Activity implements Observer {
     
 	@Override
 	public void update(Observable observable, Object data) {
-		if (data instanceof Update) {
+		if (data instanceof UpdateView) {
 			Log.d(this.getClass().getName(), "update(..)");	
 
-	    	InkList inkList = ((Update) data).getInkList();
-	    	Location location = ((Update) data).getLocation();
+	    	InkList inkList = ((UpdateView) data).getInkList();
+	    	Location location = ((UpdateView) data).getLocation();
 	    	
 	    	TextView selection = (TextView) findViewById(R.id.textView1);
 	    	String output = new String();
