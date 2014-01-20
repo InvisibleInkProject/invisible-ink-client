@@ -1,10 +1,9 @@
-package no.invisibleink.core.manager;
+package no.invisibleink.core.server_comm;
 
 import java.util.concurrent.ExecutionException;
 
 import no.invisibleink.core.InkWell;
 import no.invisibleink.core.inks.InkList;
-import no.invisibleink.core.server_comm.GetInksTask;
 import android.location.Location;
 import android.util.Log;
 

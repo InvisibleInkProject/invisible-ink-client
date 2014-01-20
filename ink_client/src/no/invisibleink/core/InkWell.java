@@ -1,11 +1,15 @@
 package no.invisibleink.core;
 
+import java.util.Observable;
+
+import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
+
 import no.invisibleink.core.inks.InkList;
-import no.invisibleink.core.manager.LocationManager;
-import no.invisibleink.core.manager.ServerManager;
+import no.invisibleink.core.server_comm.ServerManager;
+import no.invisibleink.view.Update;
 import android.location.Location;
 
-public class InkWell {
+public class InkWell extends Observable implements OnMyLocationChangeListener {
 	
 	/** Singleton InkWell object */
 	private static InkWell mInstance = null;
@@ -13,18 +17,17 @@ public class InkWell {
 	/** List with all local inks */
 	private InkList inkList;
 	
-	/** Location helper */
-	private LocationManager locationHelper;
-	
 	/** Server manager */
 	private ServerManager serverManager;
+	
+	/** Current user location */
+	private Location currentLocation;
 	
 	/**
 	 * 
 	 */
 	private InkWell() {
 		inkList = new InkList();
-		locationHelper = new LocationManager(this);
 		serverManager = new ServerManager(this);
 	}
 	
@@ -58,15 +61,10 @@ public class InkWell {
 	public void setInkList(InkList inkList) {
 		this.inkList.clear();
 		this.inkList.addAll(inkList);
-	}
-	
-	/**
-	 * Get location manager.
-	 * 
-	 * @return Location manager.
-	 */
-	public LocationManager getLocationManager() {
-		return locationHelper;
+//    	this.inkList.updateVisibility(getLocationManager().getMyLocation());
+		// TODO: add to map
+		this.setChanged();
+		notifyObservers(new Update(inkList, this.currentLocation));
 	}
 	
 	/**
@@ -83,9 +81,15 @@ public class InkWell {
      * 
      * @param location Current location
      */
-    public void update(Location location) {
-    	this.inkList.updateVisibility(location);
-    	this.serverManager.request(location);    	
+    public void update() {
+    	this.inkList.updateVisibility(this.currentLocation);
+    	this.serverManager.request(this.currentLocation);    	
     }
+    
+	@Override
+	public void onMyLocationChange(Location location) {
+		this.currentLocation = location;
+		this.update();
+	}
  
 }
