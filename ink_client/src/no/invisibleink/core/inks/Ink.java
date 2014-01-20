@@ -156,7 +156,10 @@ public class Ink {
 	public void visible(boolean isVisible) {
 		Log.d("Ink", "isVisible" + isVisible);
 		this.markerOptions.visible(isVisible);
-		this.circleOptions.visible(isVisible);
+		if (!isVisible) {
+			this.circleOptions.fillColor(0x66ff0000); //RED
+		}
+//		this.circleOptions.visible(isVisible);
 	}
 	 
 }

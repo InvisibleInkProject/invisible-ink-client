@@ -1,12 +1,15 @@
 package no.invisibleink.core;
 
+import java.util.Observable;
+
 import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.manager.LocationManager;
 import no.invisibleink.core.manager.ServerManager;
 import android.location.Location;
+import android.util.Log;
 
-public class InkWell {
+public class InkWell extends Observable {
 	
 	/** Singleton InkWell object */
 	private static InkWell mInstance = null;
@@ -59,6 +62,11 @@ public class InkWell {
 	public void setInkList(InkList inkList) {
 		this.inkList.clear();
 		this.inkList.addAll(inkList);
+//    	this.inkList.updateVisibility(getLocationManager().getMyLocation());
+		// TODO: add to map
+Log.d(this.getClass().getName(), "setInkList()");	
+		this.setChanged();
+		notifyObservers(inkList);
 	}	
 	
 	/**
