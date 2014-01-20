@@ -3,12 +3,12 @@ package no.invisibleink.view;
 import android.location.Location;
 import no.invisibleink.core.inks.InkList;
 
-public class Update {
+public class UpdateView {
 
 	private InkList inkList;
 	private Location location;
 	
-	public Update(InkList inkList, Location location) {
+	public UpdateView(InkList inkList, Location location) {
 		this.inkList = inkList;
 		this.location = location;
 	}
