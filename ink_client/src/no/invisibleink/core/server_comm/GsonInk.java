@@ -4,7 +4,7 @@ import java.util.Date;
 
 import android.location.Location;
 
-import no.invisibleink.core.inks.Ink;
+import no.invisibleink.model.Ink;
 
 public class GsonInk {
 
@@ -67,7 +67,7 @@ public class GsonInk {
 	}
 	
 	/**
-	 * Convert GsonInk object to {@link no.invisibleink.core.inks.Ink} object.
+	 * Convert GsonInk object to {@link no.invisibleink.model.Ink} object.
 	 * 
 	 * @author Fabian
 	 * @return Converted Ink object

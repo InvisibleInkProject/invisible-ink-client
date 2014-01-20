@@ -1,7 +1,6 @@
-package no.invisibleink.view;
+package no.invisibleink.model;
 
 import android.location.Location;
-import no.invisibleink.core.inks.InkList;
 
 public class UpdateView {
 

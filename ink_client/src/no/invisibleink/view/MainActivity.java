@@ -5,8 +5,9 @@ import java.util.Observer;
 
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
-import no.invisibleink.core.inks.Ink;
-import no.invisibleink.core.inks.InkList;
+import no.invisibleink.model.Ink;
+import no.invisibleink.model.InkList;
+import no.invisibleink.model.UpdateView;
 import android.location.Location;
 import android.os.Bundle;
 import android.app.Activity;

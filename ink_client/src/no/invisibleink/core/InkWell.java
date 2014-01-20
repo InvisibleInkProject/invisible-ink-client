@@ -4,9 +4,9 @@ import java.util.Observable;
 
 import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
 
-import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.server_comm.ServerManager;
-import no.invisibleink.view.UpdateView;
+import no.invisibleink.model.InkList;
+import no.invisibleink.model.UpdateView;
 import android.location.Location;
 import android.util.Log;
 
