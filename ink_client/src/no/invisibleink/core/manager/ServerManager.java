@@ -5,9 +5,6 @@ import java.util.concurrent.ExecutionException;
 
 import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.server_comm.GetInksTask;
-import no.invisibleink.core.server_comm.PostInkTask;
-
-import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 

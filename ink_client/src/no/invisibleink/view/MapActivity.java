@@ -6,11 +6,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import no.invisibleink.R;
-import no.invisibleink.core.InkWell;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
-import android.view.Menu;
 
 public class MapActivity extends FragmentActivity {
 
