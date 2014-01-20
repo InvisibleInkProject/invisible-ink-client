@@ -1,4 +1,4 @@
-package no.invisibleink.core.inks;
+package no.invisibleink.model;
 
 import android.graphics.Color;
 import android.location.Location;

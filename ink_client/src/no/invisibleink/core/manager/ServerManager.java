@@ -1,8 +1,8 @@
 package no.invisibleink.core.manager;
 
 import no.invisibleink.core.InkWell;
-import no.invisibleink.core.inks.Ink;
-import no.invisibleink.core.inks.InkList;
+import no.invisibleink.model.Ink;
+import no.invisibleink.model.InkList;
 import android.location.Location;
 import android.util.Log;
 
@@ -83,40 +83,6 @@ public class ServerManager {
 //	public void readAll(Location location){
 //		GetInksTask gmt = new GetInksTask();
 //		gmt.execute(location);
-//	}
-	
-	/**
-	 * TODO: comment
-	 * 
-	 * @param location
-	 * @return
-	 */
-	public boolean isRequestNecessary(Location location) {
-		float distanceInMeters = location.distanceTo(lastRequestLocation);
-		__debug("distence=" + distanceInMeters + "m to old location");
-		if(distanceInMeters > REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/**
-	 * 
-	 * 
-	 * @return True, if server should requested again.
-	 */
-	private boolean checkTimerToRequestServer() {
-		return (System.currentTimeMillis() - this.lastRequestTime) > (REQUEST_TIME_PERIOD * 1000);
-	}
-	
-	/**
-	 * FOR DEBUG ONLY. Function prints messages in the log.
-	 * 
-	 * @param message Log message
-	 */
-	private void __debug(String message) {
-		if (LOG_ON) Log.d(this.getClass().getName(), message);		
-	}	
+//	}	
 	
 }
