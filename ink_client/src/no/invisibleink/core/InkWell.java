@@ -1,5 +1,6 @@
 package no.invisibleink.core;
 
+import no.invisibleink.R;
 import no.invisibleink.core.inks.Ink;
 import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.manager.LocationManager;
@@ -56,7 +57,7 @@ public class InkWell {
 	 * 
 	 * @return Location manager.
 	 */
-	public LocationManager getLocationHelper() {
+	public LocationManager getLocationManager() {
 		return locationHelper;
 	}
 	
@@ -96,7 +97,7 @@ public class InkWell {
      */
     public void update(Location location) {
     	this.inks.updateVisibility(location);
-    	this.serverManager.request(location, this.inks.getInkIds());
+    	this.serverManager.request(location);    	
     }
  
 }

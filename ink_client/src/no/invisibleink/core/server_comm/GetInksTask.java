@@ -66,7 +66,7 @@ public class GetInksTask extends AsyncTask<Object, Void, List<Ink>>{
 				GsonInk ink = new Gson().fromJson(ar.get(i).toString(), GsonInk.class);
 				Log.d("ink:"+i,ink.toString());
 				// TODO: added line:
-				inkList.add(ink);
+//				inkList.add(ink);
 			}
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

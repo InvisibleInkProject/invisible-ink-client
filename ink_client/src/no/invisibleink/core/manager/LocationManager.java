@@ -4,9 +4,6 @@ import no.invisibleink.core.InkWell;
 import android.location.Location;
 import android.util.Log;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
-
 /**
  * The Manager takes care of the location, implements the
  * OnMyLocationChangeListener and holds the GoogleMap object (we get the
@@ -15,33 +12,20 @@ import com.google.android.gms.maps.GoogleMap.OnMyLocationChangeListener;
  * @author Fabian
  * 
  */
-public class LocationManager implements OnMyLocationChangeListener {
-
-	/** Map object */
-	private GoogleMap map;
+public class LocationManager {
 
 	/**
 	 * NOTE: For debug only.
 	 */
-	private static final boolean LOG_ON = true;
+	private static final boolean LOG_ON = false;
 	
 	/** Ink well object to call update function */
 	private InkWell inkWell;
 	
 	public LocationManager(InkWell inkWell) {
 		this.inkWell = inkWell;
-		Log.d("noooop", "creat loc");
 	}
 
-	/**
-	 * Get map object.
-	 * 
-	 * @return Map object
-	 */
-	public GoogleMap getMap() {
-		return map;
-	}
-	
     /**
      * Get current location.
      * 
@@ -50,10 +34,12 @@ public class LocationManager implements OnMyLocationChangeListener {
      * @return Current location is LatLng object
      */
     public Location getMyLocation() {
-    	return map.getMyLocation();
+    	Location locationStub = new Location("");
+    	locationStub.setLatitude(60);
+    	locationStub.setLongitude(10);
+    	return locationStub;
     }
 
-	@Override
 	public void onMyLocationChange(Location location) {
 		__debug("location lat: " + location.getLatitude() + ", lng:" + location.getLongitude());
 		this.inkWell.update(location);
