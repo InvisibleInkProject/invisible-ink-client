@@ -2,13 +2,8 @@ package no.invisibleink.core.inks;
 
 import java.util.Date;
 
-import android.graphics.Color;
 import android.location.Location;
-import android.util.Log;
-
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -146,20 +141,15 @@ public class Ink {
 	 */
 	public MarkerOptions getMarkerOptions() {
 		return this.markerOptions;
-	}	
-	
-	
-	// TODO: Necessary?
-	public void setCircleOptions(boolean isVisible) {
-		if(!isVisible) {
-			this.circleOptions.fillColor(0xffff0000); //RED
-		}
 	}
 
-	// TODO: Necessary?
+	/**
+	 * Set visibility of an ink.
+	 * 
+	 * @param isVisible True, if it should visible
+	 */
 	public void visible(boolean isVisible) {
-		this.isVisible = false;
-		Log.d("Ink", "isVisible" + isVisible);
+		this.isVisible = isVisible;
 //		this.markerOptions.visible(isVisible);
 //		this.circleOptions.visible(isVisible);
 	}
