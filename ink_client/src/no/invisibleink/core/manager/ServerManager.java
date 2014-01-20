@@ -3,7 +3,9 @@ package no.invisibleink.core.manager;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import no.invisibleink.core.InkWell;
 import no.invisibleink.core.inks.Ink;
+import no.invisibleink.core.inks.InkList;
 import no.invisibleink.core.server_comm.GetInksTask;
 import android.location.Location;
 import android.util.Log;
@@ -41,9 +43,12 @@ public class ServerManager {
 	 */
 	public static final long REQUEST_TIME_PERIOD = 1000;
 	
-	public ServerManager() {
+	private InkWell inkWell;
+	
+	public ServerManager(InkWell inkWell) {
 		lastRequestLocation = new Location("");
 		lastRequestTime = 0;
+		this.inkWell = inkWell;
 	}
 
 	/**
@@ -51,7 +56,7 @@ public class ServerManager {
 	 * 
 	 * @param location
 	 *            Current location
-	 * @return true, if server was requested
+	 * @return true, if server was requested (even when it was not successful)
 	 */
 	public boolean request(Location location) {
 		if (isRequestNecessary(location)) {
@@ -59,18 +64,22 @@ public class ServerManager {
 			GetInksTask gmt = new GetInksTask();
 			gmt.execute(location);
 			try {
-				List<Ink> inks = gmt.get();
-				__debug("Received inks" + inks.toString());
+				// TODO: instead of catch NullPointer check sucess request?
+				InkList inkList = gmt.get();
+				__debug("Received " + inkList.size() + " inks");
+				
+				lastRequestLocation = location;
+				lastRequestTime = System.currentTimeMillis();
+				__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime);
+// TODO: check request was sucessfull?
+				inkWell.setInkList(inkList);
+			} catch (NullPointerException e) {
+				Log.w(this.getClass().getName(), e.getCause());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
 				e.printStackTrace();
-			}
-			lastRequestLocation = location;
-			lastRequestTime = System.currentTimeMillis();
-			// TODO: instead of real request at the moment just a log output
-			__debug("myLocation=(" + location + "), lastRequestTime=" + this.lastRequestTime);
-			
+			}			
 			return true;
 		} else {
 			return false;

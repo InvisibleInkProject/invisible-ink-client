@@ -2,6 +2,10 @@ package no.invisibleink.core.server_comm;
 
 import java.util.Date;
 
+import android.location.Location;
+
+import no.invisibleink.core.inks.Ink;
+
 public class GsonInk {
 
 	private Date created;
@@ -60,6 +64,19 @@ public class GsonInk {
 	}
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+	
+	/**
+	 * Convert GsonInk object to {@link no.invisibleink.core.inks.Ink} object.
+	 * 
+	 * @author Fabian
+	 * @return Converted Ink object
+	 */
+	public Ink toInk() {
+		Location location = new Location("");
+		location.setLatitude(location_lat);
+		location.setLongitude(location_lon);
+		return new Ink(id, location, distance, "--", text, "--", updated);
 	}
 
 	@Override
