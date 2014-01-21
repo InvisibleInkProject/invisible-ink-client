@@ -2,6 +2,8 @@ package no.invisibleink.core.server_comm;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
 
@@ -66,11 +68,16 @@ public class ServerManager {
 		}
 	}
 	
-	// TODO: necessary: no one uses this function? (Fabian)
-//	public void createInk(Location location, String message, Context context){
-//		PostInkTask pmt = new PostInkTask(context);
-//		pmt.execute(location, message);
-//	}
+	/**
+	 * 
+	 * @param location
+	 * @param message
+	 * @param context ??? for what
+	 */
+	public void postInk(Location location, String message, Context context){
+		PostInkTask pmt = new PostInkTask(/*context*/);
+		pmt.execute(location, message);
+	}
 	
 	// TODO: necessary: no one uses this function? (Fabian)
 //	public void readAll(Location location){

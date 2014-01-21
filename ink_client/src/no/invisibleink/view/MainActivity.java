@@ -37,7 +37,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -202,7 +205,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 		    	for(Ink i : inkList) {
 		    		// Shorten message, if it is too long.
 		    		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
-		    		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, " + messagePreview + "\n";	
+		    		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";	
 		    	}    	
 		    	selection.setText(output);			
 			}
@@ -220,6 +223,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             View rootView = inflater.inflate(R.layout.fragment_section_map, container, false);
             ((TextView) rootView.findViewById(android.R.id.text1)).setText(
                     getString(R.string.dummy_section_text));
+            
+            
+//    		Location stubLocation = new Location("");
+//    		stubLocation.setLongitude(60);
+//    		stubLocation.setLatitude(0);
+//          InkWell.getInstance().getServerManager().postInk(stubLocation, "hi", null);
+            
             return rootView;
         }
     }
@@ -229,12 +239,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     public static class PostSectionFragment extends Fragment {
 
+    	EditText form_message;
+    	SeekBar form_radius;
+    	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_section_map, container, false);
-            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                    getString(R.string.dummy_section_text));
+            View rootView = inflater.inflate(R.layout.fragment_section_post, container, false);
+            
+            form_message = (EditText) rootView.findViewById(R.id.editText1);
+            form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
+            
+            rootView.findViewById(R.id.button1)
+            .setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                	String message = form_message.getText().toString();
+                	int radius = form_radius.getProgress();
+                	Toast.makeText(getView().getContext(), "r:" + radius + "m:" + message, Toast.LENGTH_LONG).show();
+                }
+            });            
+                        
+            
             return rootView;
         }
     }    
