@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Invisible Ink</string>
@@ -7,6 +6,7 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
 
-    <string name="hello_world">Hello Ink!</string>    
+    <string name="debug_output">Wait for Inks!</string>
+    <string name="dummy_section_text">Section is just a dummy section.</string>
     
 </resources>
