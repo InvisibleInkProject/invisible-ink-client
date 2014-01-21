@@ -11,9 +11,13 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import android.content.Context;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 public class PostInkTask extends AsyncTask<Object, Void, Boolean>{
@@ -21,38 +25,46 @@ public class PostInkTask extends AsyncTask<Object, Void, Boolean>{
 	//TODO: globalise me ! 
 	private String SERVER = "http://server.invisibleink.no/api/v1/message/";
 	
-	private Context context;
+//	private Context context;
 	
-	public PostInkTask(Context c){
-		context = c;
-	}
+//	public PostInkTask(Context c){
+//		context = c;
+//	}
 	
 	@Override
 	protected Boolean doInBackground(Object... params) { //add Location to params ... 
-		Location l = (Location)params[0];
-		String message = (String)params[1];
-		// TODO Auto-generated method stub
+		Location l = (Location) params[0];
+		String message = (String) params[1];
+
 		return create(l,message);
 	}
 	
 	 @Override
 	protected void onPostExecute(Boolean result) {
-		// TODO Auto-generated method stub
 		String message = "";
-		if(result){message="Ink successfully posted";}else{message="an error occurred";}		 
-		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+		if (result) {
+			message = "Ink successfully posted";
+		} else {
+			message = "an error occurred";
+		}	 
+//		Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 	}
 	
 
 	public boolean create(Location location, String message){
-		
+		Log.d(this.getClass().getName(), "request: " + SERVER);		
 		HttpClient client = new DefaultHttpClient();
 			
 		try {
 			HttpPost request = new HttpPost(SERVER);
 						
+//			Gson gsonBuilder = new GsonBuilder().create();
 			JSONObject obj = new JSONObject();
 			obj.put("text", message);
+			obj.put("radius", 50);
+			obj.put("user_id", 1);
+//			obj.put("created", "2000-01-01T00:00:00");
+//			obj.put("updated", "2000-01-01T00:00:00");			
 			
 			
 			if(location!=null){//TODO: remove me! 
@@ -64,24 +76,27 @@ public class PostInkTask extends AsyncTask<Object, Void, Boolean>{
 			}
 			
 			StringEntity ent = new StringEntity(obj.toString());
-			
+Log.d(this.getClass().getName(), "ent=" + ent.toString())	;		
 			request.setHeader("content-type", "application/json");
 			request.setEntity(ent);
 			
 			HttpResponse response = client.execute(request);
 			
-			//StatusLine sl = response.getStatusLine();
-			if (response.getStatusLine().getStatusCode()==201){
+			int statusCode = response.getStatusLine().getStatusCode();
+			if (statusCode == 201){
 				return true;
 			}
 			
-		} catch (ClientProtocolException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1){
-			e1.printStackTrace();
+Log.d(this.getClass().getName(), "response: " + statusCode);				
+			
+			
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e){
+			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			client.getConnectionManager().shutdown();
 		}	
 		

@@ -9,25 +9,25 @@ import no.invisibleink.model.Ink;
 public class GsonInk {
 
 	private Date created;
-	private double distance;
 	private int id;
 	private double location_lat;
 	private double location_lon;
 	private String resource_uri;
 	private String text;
-	private Date updated;	
+	private Date updated;
+	private double radius;
 	
+	public double getRadius() {
+		return radius;
+	}
+	public void setRadius(double radius) {
+		this.radius = radius;
+	}
 	public Date getCreated() {
 		return created;
 	}
 	public void setCreated(Date created) {
 		this.created = created;
-	}
-	public double getDistance() {
-		return distance;
-	}
-	public void setDistance(double distance) {
-		this.distance = distance;
 	}
 	public int getId() {
 		return id;
@@ -76,16 +76,16 @@ public class GsonInk {
 		Location location = new Location("");
 		location.setLatitude(location_lat);
 		location.setLongitude(location_lon);
-		return new Ink(id, location, distance, "--", text, "--", updated);
+		return new Ink(id, location, radius, "--", text, "--", updated);
 	}
-
+	
 	@Override
 	public String toString() {
-		return "GsonInk [created=" + created + ", distance=" + distance
-				+ ", id=" + id + ", location_lat=" + location_lat
-				+ ", location_lon=" + location_lon + ", resource_uri="
-				+ resource_uri + ", text=" + text + ", updated=" + updated
-				+ "]";
+		return "GsonInk [created=" + created + ", id=" + id + ", location_lat="
+				+ location_lat + ", location_lon=" + location_lon
+				+ ", resource_uri=" + resource_uri + ", text=" + text
+				+ ", updated=" + updated + ", radius=" + radius + "]";
 	}
+	
 	
 }
