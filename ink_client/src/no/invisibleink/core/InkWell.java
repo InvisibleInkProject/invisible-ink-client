@@ -64,9 +64,13 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
 			this.inkList.clear();
 			this.inkList.addAll(inkList);
 	//    	this.inkList.updateVisibility(getLocationManager().getMyLocation());
-			// TODO: add to map
-			this.setChanged();
-			notifyObservers(new UpdateView(inkList, this.currentLocation));
+			// TODO: here shoudn't be null pointer!!
+			try {
+				this.setChanged();
+				notifyObservers(new UpdateView(inkList, this.currentLocation));
+			} catch (NullPointerException e) {
+				Log.e(this.getClass().getName(), "Notify observers failed. Number of observers: " + this.countObservers());	
+			}
 		} else {
 			Log.w(this.getClass().getName(), "Receive null inkList");			
 		}
