@@ -33,13 +33,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -61,6 +61,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     ViewPager mViewPager;
 
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -127,6 +128,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
+    @Override
+    public void onResume() {
+    	super.onResume();
+    }
     
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
@@ -197,12 +202,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static class ListSectionFragment extends Fragment implements Observer {
 
     	private InkWell inkWell;
+    	private TextView selection;
     	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_section_list, container, false);
-    		setUp();
+    		selection = (TextView) rootView.findViewById(R.id.textView1);
+
+            setUp();
     		
     		Location stubLocation = new Location("");
     		stubLocation.setLongitude(60);
@@ -213,18 +221,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         private void setUp() {
        		inkWell = InkWell.getInstance();
-       		inkWell.addObserver(this);
+       		inkWell.deleteObservers(); // TODO: just workaround to fix bug
+       		inkWell.addObserver(this);	// this on a static class
         }        
         
 		@Override
 		public void update(Observable observable, Object data) {
 			if (data instanceof UpdateView) {
-				Log.d(this.getClass().getName(), "update(..)");	
-
 		    	InkList inkList = ((UpdateView) data).getInkList();
 		    	Location location = ((UpdateView) data).getLocation();
 		    	
-		    	TextView selection = (TextView) this.getView().findViewById(R.id.textView1);
 		    	String output = new String();
 		    	output += "Location: " + location.getLatitude() + "," + location.getLongitude() + "\n";
 		    	output += "Received inks: " + inkList.size() + "\n";
@@ -250,7 +256,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             ((TextView) rootView.findViewById(android.R.id.text1)).setText(
                     getString(R.string.dummy_section_text));
             
-            
 //    		Location stubLocation = new Location("");
 //    		stubLocation.setLongitude(60);
 //    		stubLocation.setLatitude(0);
@@ -265,19 +270,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     public static class PostSectionFragment extends Fragment {
 
-    	EditText form_message;
-    	SeekBar form_radius;
+    	private EditText form_message;
+    	private SeekBar form_radius;
+    	private Button form_confirm;
     	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_section_post, container, false);
-            
             form_message = (EditText) rootView.findViewById(R.id.editText1);
             form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
+            form_confirm = (Button) rootView.findViewById(R.id.button1);
             
-            rootView.findViewById(R.id.button1)
-            .setOnClickListener(new View.OnClickListener() {
+            form_confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                 	String message = form_message.getText().toString();
