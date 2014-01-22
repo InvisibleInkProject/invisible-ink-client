@@ -255,12 +255,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             View rootView = inflater.inflate(R.layout.fragment_section_map, container, false);
             ((TextView) rootView.findViewById(android.R.id.text1)).setText(
                     getString(R.string.dummy_section_text));
-            
-//    		Location stubLocation = new Location("");
-//    		stubLocation.setLongitude(60);
-//    		stubLocation.setLatitude(0);
-//          InkWell.getInstance().getServerManager().postInk(stubLocation, "hi", null);
-            
+
             return rootView;
         }
     }
@@ -287,7 +282,19 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 public void onClick(View view) {
                 	String message = form_message.getText().toString();
                 	int radius = form_radius.getProgress();
-                	Toast.makeText(getView().getContext(), "r:" + radius + "m:" + message, Toast.LENGTH_LONG).show();
+                	
+                	if (message.isEmpty()) {
+                    	Toast.makeText(getView().getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
+                	} else {
+	                	
+	                	// TODO: test only            
+	            		Location stubLocation = new Location("");
+	            		stubLocation.setLongitude(60);
+	            		stubLocation.setLatitude(0);
+	            		InkWell.getInstance().getServerManager().postInk(message, radius, stubLocation, getView().getContext());
+	                	
+//	                	Toast.makeText(getView().getContext(), "r:" + radius + "m:" + message, Toast.LENGTH_LONG).show();
+                	}
                 }
             });            
                         

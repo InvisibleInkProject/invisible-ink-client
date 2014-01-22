@@ -3,6 +3,9 @@ package no.invisibleink.core.server_comm;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -68,15 +71,28 @@ public class ServerManager {
 		}
 	}
 	
+
 	/**
-	 * 
-	 * @param location
+	 * TODO: comment
 	 * @param message
-	 * @param context ??? for what
+	 * @param radius
+	 * @param location
+	 * @param context To post response
 	 */
-	public void postInk(Location location, String message, Context context){
-		PostInkTask pmt = new PostInkTask(/*context*/);
-		pmt.execute(location, message);
+	public void postInk(String message, int radius, Location location, Context context){
+		JSONObject obj = new JSONObject();
+		try {
+			obj.put("text", message);
+			obj.put("radius", radius);
+			obj.put("user_id", 1);
+			obj.put("location_lat", location.getLatitude());
+			obj.put("location_lon", location.getLongitude());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		PostInkTask pmt = new PostInkTask(context);
+		pmt.execute(obj);
 	}
 	
 	// TODO: necessary: no one uses this function? (Fabian)
