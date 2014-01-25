@@ -22,6 +22,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+/**
+ * Task to get inks from server
+ * @author Fabian
+ *
+ */
 public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	
 	/**
@@ -30,13 +35,12 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	 * @param URI request URL
 	 * @return List with inks form server or null
 	 */
-
 	@Override
 	protected InkList doInBackground(URI ... uris) {		
 		try {
 			HttpGet request = new HttpGet(uris[0]);			
 			Log.d(this.getClass().getName(), "request: " + request.getURI());
-
+// TODO: shutdown?
 			HttpResponse response = new DefaultHttpClient().execute(request);
 			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			
@@ -68,6 +72,7 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 		return null;
 	}
 	
+	@Override
     protected void onPostExecute(InkList inkList) {
     	if (inkList != null) {
 			Log.d(this.getClass().getName(), "received: " + inkList.size() + " inks");

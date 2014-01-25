@@ -12,7 +12,10 @@ import android.util.Log;
 
 public class ServerManager {
 
-	private final String SERVER = "http://server.invisibleink.no/api/v1/message/";
+	/**
+	 * Server URL for communication
+	 */
+	protected static final String SERVER_URL = "http://server.invisibleink.no/api/v1/message/";
 	
 	/**
 	 * Location, when the last request was send.
@@ -35,7 +38,7 @@ public class ServerManager {
 	 * 
 	 * unit: meters
 	 */
-	public static final float REQUEST_DISTANCE_CHANGE = 30;
+	private static final float REQUEST_DISTANCE_CHANGE = 30;
 	
 	/**
 	 * If the time since the last server request is greater as this
@@ -43,7 +46,7 @@ public class ServerManager {
 	 * 
 	 * unit: seconds
 	 */
-	public static final long REQUEST_TIME_PERIOD = 1000;
+	private static final long REQUEST_TIME_PERIOD = 0;
 	
 	public ServerManager() {
 		lastRequestLocation = new Location("");
@@ -61,9 +64,12 @@ public class ServerManager {
 		float distanceInMeters = location.distanceTo(lastRequestLocation);
 		__debug("distence=" + distanceInMeters + "m to old location");
 		if(distanceInMeters > REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
+			this.lastRequestLocation = location;
+			this.lastRequestTime = System.currentTimeMillis();
+
 			GetInksTask gmt = new GetInksTask();
 			try {
-				URI url = new URI(SERVER + location.getLatitude() + "," + location.getLongitude() + "/");
+				URI url = new URI(SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
 				gmt.execute(url);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
@@ -94,12 +100,6 @@ public class ServerManager {
 		PostInkTask pmt = new PostInkTask(context);
 		pmt.execute(obj);
 	}
-	
-	// TODO: necessary: no one uses this function? (Fabian)
-//	public void readAll(Location location){
-//		GetInksTask gmt = new GetInksTask();
-//		gmt.execute(location);
-//	}
 	
 	/**
 	 * 

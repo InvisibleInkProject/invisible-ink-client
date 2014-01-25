@@ -16,11 +16,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-public class PostInkTask extends AsyncTask<JSONObject, Void, Integer>{
+/**
+ * Tasks to push one ink to the server.
+ */
+public class PostInkTask extends AsyncTask<JSONObject, Void, Integer> {
 
-	//TODO: globalise me ! 
-	private String SERVER = "http://server.invisibleink.no/api/v1/message/";
-	
+	/**
+	 * Context to show result in a toast.
+	 */
 	private Context context;
 	
 	public PostInkTask(Context c){
@@ -28,12 +31,12 @@ public class PostInkTask extends AsyncTask<JSONObject, Void, Integer>{
 	}
 	
 	@Override
-	protected Integer doInBackground(JSONObject... params) { //add Location to params ... 
+	protected Integer doInBackground(JSONObject... params) {
 		JSONObject obj = (JSONObject) params[0];
 		HttpClient client = new DefaultHttpClient();
 		
 		try {
-			HttpPost request = new HttpPost(SERVER);
+			HttpPost request = new HttpPost(ServerManager.SERVER_URL);
 			
 			StringEntity ent = new StringEntity(obj.toString());
 			ent.setContentType("application/json");
@@ -42,19 +45,9 @@ public class PostInkTask extends AsyncTask<JSONObject, Void, Integer>{
 			HttpResponse response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
-			Log.d(this.getClass().getName(), "request: " + SERVER + obj.toString());
+			Log.d(this.getClass().getName(), "request: " + ServerManager.SERVER_URL + obj.toString());
 			
 			return statusCode;
-
-			//BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-			//String line = "";
-			//String responeEntityContent = "";
-			//while((line = br.readLine()) != null){
-			//	responeEntityContent += line;
-			//}
-			//br.close();
-			//Log.d(this.getClass().getName(), responeEntityContent);	
-
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

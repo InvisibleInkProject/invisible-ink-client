@@ -40,12 +40,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.48" />
 
+        <TextView
+            android:id="@+id/seekBarProgressOutput"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.48"
+            android:text="@string/radius_output" />
+
         <Button
             android:id="@+id/button1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.48"
-            android:text="Send" />
+            android:text="@string/send" />
 
     </LinearLayout>
 
