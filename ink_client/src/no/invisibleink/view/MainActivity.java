@@ -268,6 +268,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     	private EditText form_message;
     	private SeekBar form_radius;
     	private Button form_confirm;
+    	private TextView form_radius_output;
     	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -276,6 +277,28 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             form_message = (EditText) rootView.findViewById(R.id.editText1);
             form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
             form_confirm = (Button) rootView.findViewById(R.id.button1);
+            form_radius_output = (TextView) rootView.findViewById(R.id.seekBarProgressOutput);
+            
+            form_radius.setMax(2000);
+            form_radius.setProgress(500);
+            form_radius_output.setText(String.format(rootView.getResources().getString(R.string.radius_output), form_radius.getProgress()));
+            form_radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+				
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+				}
+				
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					
+				}
+				
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+		            form_radius_output.setText(String.format(getResources().getString(R.string.radius_output), progress));					
+				}
+			});
             
             form_confirm.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -287,13 +310,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                     	Toast.makeText(getView().getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
                 	} else {
 	                	
-	                	// TODO: test only            
+	                	// TODO: stub only            
 	            		Location stubLocation = new Location("");
 	            		stubLocation.setLongitude(60);
 	            		stubLocation.setLatitude(0);
 	            		InkWell.getInstance().getServerManager().postInk(message, radius, stubLocation, getView().getContext());
-	                	
-//	                	Toast.makeText(getView().getContext(), "r:" + radius + "m:" + message, Toast.LENGTH_LONG).show();
                 	}
                 }
             });            
