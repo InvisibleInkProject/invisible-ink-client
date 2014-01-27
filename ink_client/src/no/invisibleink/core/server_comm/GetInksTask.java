@@ -78,6 +78,8 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 			Log.d(this.getClass().getName(), "received: " + inkList.size() + " inks");
 	        InkWell.getInstance().setInkList(inkList);
     	} else {
+    		//TODO: When there is a current list it should perhaps retry later.
+    		//      It should retry again when there is no current list
 			Log.d(this.getClass().getName(), "received: FAILED");    		
     	}
     }
