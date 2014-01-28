@@ -1,7 +1,6 @@
 package no.invisibleink.core.server_comm;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 
@@ -9,10 +8,10 @@ import no.invisibleink.core.InkWell;
 import no.invisibleink.model.InkList;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
@@ -24,7 +23,6 @@ import com.google.gson.JsonSyntaxException;
 
 /**
  * Task to get inks from server
- * @author Fabian
  *
  */
 public class GetInksTask extends AsyncTask<URI, Void, InkList>{
@@ -36,14 +34,13 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	 * @return List with inks form server or null
 	 */
 	@Override
-	protected InkList doInBackground(URI ... uris) {		
+	protected InkList doInBackground(URI ... uris) {
+		HttpClient client = new DefaultHttpClient();
 		try {
-			HttpGet request = new HttpGet(uris[0]);			
+			HttpGet request = new HttpGet(uris[0]);	
+			HttpResponse response = client.execute(request);
 			Log.d(this.getClass().getName(), "request: " + request.getURI());
-// TODO: shutdown?
-			HttpResponse response = new DefaultHttpClient().execute(request);
 			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-			
 			String line = "";
 			StringBuilder jsonContent = new StringBuilder();
 			while((line = br.readLine()) != null){
@@ -63,10 +60,10 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 
 		} catch (JsonSyntaxException e) {
 			Log.w(this.getClass().getName(), "JsonSyntaxException, " + e.getMessage());			
-	    } catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
+	    } catch (Exception e) {
+			Log.e(this.getClass().getName(), "Exception, " + e.getMessage());			
+		} finally {
+			client.getConnectionManager().shutdown();
 		}
 		
 		return null;
