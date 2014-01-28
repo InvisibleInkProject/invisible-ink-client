@@ -19,6 +19,9 @@ package no.invisibleink.view;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
 import no.invisibleink.model.Ink;
@@ -33,6 +36,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,7 +49,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
+public class MainActivity extends FragmentActivity implements ActionBar.TabListener, Observer {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -60,6 +64,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * time.
      */
     ViewPager mViewPager;
+    
+    static FragmentManager fragmentManager;
+    static InkWell inkWell;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,7 +75,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+        fragmentManager = getSupportFragmentManager();        
+        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(fragmentManager);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -104,6 +112,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+        
+        inkWell = InkWell.getInstance();
+        inkWell.addObserver(this);
     }
 
     @Override
@@ -185,24 +196,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 				return "Post";				
 			}
 			return null;
-/*			Locale l = Locale.getDefault();
-			switch (position) {
-			case 0:
-				return getString(R.string.title_section1).toUpperCase(l);
-			case 1:
-				return getString(R.string.title_section2).toUpperCase(l);
-			}
-			return null;*/        	
         }
     }
 
     /**
      * A fragment that launches other parts of the demo application.
      */
-    public static class ListSectionFragment extends Fragment implements Observer {
+    public static class ListSectionFragment extends Fragment {
 
-    	private InkWell inkWell;
-    	private TextView selection;
+    	private static TextView selection;
     	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -210,37 +212,24 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             View rootView = inflater.inflate(R.layout.fragment_section_list, container, false);
     		selection = (TextView) rootView.findViewById(R.id.textView1);
 
-            setUp();
-    		
+    		// TODO: stub
     		Location stubLocation = new Location("");
-    		stubLocation.setLongitude(60);
-    		stubLocation.setLatitude(0);
-    		inkWell.onMyLocationChange(stubLocation);
+    		stubLocation.setLongitude(0);
+    		stubLocation.setLatitude(59);
+    		InkWell.getInstance().onMyLocationChange(stubLocation);
             return rootView;
         }
-
-        private void setUp() {
-       		inkWell = InkWell.getInstance();
-       		inkWell.deleteObservers(); // TODO: just workaround to fix bug
-       		inkWell.addObserver(this);	// this on a static class
-        }        
         
-		@Override
-		public void update(Observable observable, Object data) {
-			if (data instanceof UpdateView) {
-		    	InkList inkList = ((UpdateView) data).getInkList();
-		    	Location location = ((UpdateView) data).getLocation();
-		    	
-		    	String output = new String();
-		    	output += "Location: " + location.getLatitude() + "," + location.getLongitude() + "\n";
-		    	output += "Received inks: " + inkList.size() + "\n";
-		    	for(Ink i : inkList) {
-		    		// Shorten message, if it is too long.
-		    		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
-		    		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";	
-		    	}    	
-		    	selection.setText(output);			
-			}
+		public static void update(InkList inkList, Location location) {
+	    	String output = new String();
+	    	output += "Location: " + location.getLatitude() + "," + location.getLongitude() + "\n";
+	    	output += "Received inks: " + inkList.size() + "\n";
+	    	for(Ink i : inkList) {
+	    		// Shorten message, if it is too long.
+	    		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
+	    		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";	
+	    	}    	
+	    	selection.setText(output);			
 		}
     }
 
@@ -249,15 +238,62 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      */
     public static class MapSectionFragment extends Fragment {
 
+        /**
+         * Note that this may be null if the Google Play services APK is not available.
+         */
+        private static GoogleMap mMap;    	
+    	
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_section_map, container, false);
-            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                    getString(R.string.dummy_section_text));
-
+            
+            setUpMapIfNeeded();
+            
             return rootView;
         }
+        
+        /**
+         * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
+         * installed) and the map has not already been instantiated.. This will ensure that we only ever
+         * call {@link #setUpMap()} once when {@link #mMap} is not null.
+         * <p>
+         * If it isn't installed {@link SupportMapFragment} (and
+         * {@link com.google.android.gms.maps.MapView MapView}) will show a prompt for the user to
+         * install/update the Google Play services APK on their device.
+         * <p>
+         * A user can return to this FragmentActivity after following the prompt and correctly
+         * installing/updating/enabling the Google Play services. Since the FragmentActivity may not
+         * have been completely destroyed during this process (it is likely that it would only be
+         * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
+         * method in {@link #onResume()} to guarantee that it will be called.
+         */
+        private static void setUpMapIfNeeded() {
+            // Do a null check to confirm that we have not already instantiated the map.
+            if (mMap == null) {
+                // Try to obtain the map from the SupportMapFragment.
+                mMap = ((SupportMapFragment) MainActivity.fragmentManager.findFragmentById(R.id.map))
+                        .getMap();
+                // Check if we were successful in obtaining the map.
+                if (mMap != null) {
+                	mMap.setMyLocationEnabled(true);
+            		mMap.setIndoorEnabled(true);
+            // TODO:
+//                	mMap.setOnMyLocationChangeListener(InkWell.getInstance());  
+                }
+            }
+        } 
+        
+    	public static void update(InkList inkList) {
+    		Log.d(MapSectionFragment.class.getName(), "update(..)");	
+    		setUpMapIfNeeded();
+    		mMap.clear();
+    		for(Ink i : inkList) {
+    			mMap.addCircle(i.getCircleOptions());
+    			mMap.addMarker(i.getMarkerOptions());
+    		}
+    	}        
+        
     }
     
     /**
@@ -322,5 +358,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             
             return rootView;
         }
-    }    
+    }
+
+	@Override
+	public void update(Observable observable, Object data) {
+		if (data instanceof UpdateView) {
+	    	InkList inkList = ((UpdateView) data).getInkList();
+	    	Location location = ((UpdateView) data).getLocation();
+	    	ListSectionFragment.update(inkList, location);
+	    	MapSectionFragment.update(inkList);
+		}
+	}    
 }
