@@ -5,6 +5,7 @@ import no.invisibleink.core.InkWell;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,7 @@ public class PostSectionFragment extends Fragment {
         form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
         form_confirm = (Button) rootView.findViewById(R.id.button1);
         form_radius_output = (TextView) rootView.findViewById(R.id.seekBarProgressOutput);
-        
+        Log.w("holu", "POST onCreateView");     
         form_radius.setMax(2000);
         form_radius.setProgress(500);
         form_radius_output.setText(String.format(rootView.getResources().getString(R.string.radius_output), form_radius.getProgress()));

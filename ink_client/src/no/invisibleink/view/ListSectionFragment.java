@@ -11,26 +11,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class ListSectionFragment extends Fragment {
 
 	private TextView selection;
+	private Button button;
+	private ProgressBar progressBar;
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_section_list, container, false);
 		this.selection = (TextView) rootView.findViewById(R.id.textView1);
+		this.button = (Button) rootView.findViewById(R.id.secListButton);
+		this.button.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				progressBar.setVisibility(View.VISIBLE);
+				// TODO: stub
+				Location stubLocation = new Location("");
+				stubLocation.setLongitude(0);
+				stubLocation.setLatitude(59);
+				InkWell.getInstance().onMyLocationChange(stubLocation);
+			}
+		});
+		this.progressBar = (ProgressBar) rootView.findViewById(R.id.secListProgressBar);
+		this.progressBar.setVisibility(View.GONE);
 		
-		
-        
-
-		// TODO: stub
-		Location stubLocation = new Location("");
-		stubLocation.setLongitude(0);
-		stubLocation.setLatitude(59);
-		InkWell.getInstance().onMyLocationChange(stubLocation);
         return rootView;
     }
     
@@ -49,7 +60,8 @@ public class ListSectionFragment extends Fragment {
     		// Shorten message, if it is too long.
     		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
     		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";	
-    	}    	
+    	}
+    	this.progressBar.setVisibility(View.GONE);
     	this.selection.setText(output);			
 	}
 }

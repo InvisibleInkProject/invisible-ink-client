@@ -91,7 +91,7 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
      * @param location Current location
      */
     public void update() {
-    	this.inkList.updateVisibility(this.currentLocation);
+//    	this.inkList.updateVisibility(this.currentLocation);
     	this.serverManager.request(this.currentLocation);    	
     }
     
