@@ -1,0 +1,16 @@
+<resources>
+
+    <string name="app_name">Invisible Ink</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="debug_output">Wait for Inks!</string>
+    <string name="dummy_section_text">Section is just a dummy section.</string>
+    
+    <!-- Fragment section post -->
+    <string name="send">Send</string>
+    <string name="radius_output">Radius: %1$dm</string>
+    
+</resources>
