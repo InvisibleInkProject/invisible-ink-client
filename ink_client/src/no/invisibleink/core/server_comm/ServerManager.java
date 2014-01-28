@@ -62,7 +62,7 @@ public class ServerManager {
 	public void request(Location location) {
 		// Check request is necessary
 		float distanceInMeters = location.distanceTo(lastRequestLocation);
-		__debug("distence=" + distanceInMeters + "m to old location");
+//		__debug("distence=" + distanceInMeters + "m to old location");
 		if(distanceInMeters > REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
 			this.lastRequestLocation = location;
 			this.lastRequestTime = System.currentTimeMillis();

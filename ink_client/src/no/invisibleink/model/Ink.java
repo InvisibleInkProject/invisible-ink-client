@@ -2,8 +2,12 @@ package no.invisibleink.model;
 
 import java.util.Date;
 
+import android.graphics.Color;
 import android.location.Location;
+
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
@@ -69,11 +73,12 @@ public class Ink {
 		this.title = title;
 		this.message = message;
 		this.author = author;
-		this.date = date;		
-		this.isVisible = false;
+		this.date = date;	
+		// TODO: default to false
+		this.isVisible = true;
 		
 		// Set map circle
-/*		this.circleOptions = new CircleOptions()
+		this.circleOptions = new CircleOptions()
 			.center(new LatLng(location.getLatitude(), location.getLongitude()))
 			.radius(radius)
 			.strokeColor(Color.GRAY)
@@ -84,8 +89,7 @@ public class Ink {
 			.position(new LatLng(location.getLatitude(), location.getLongitude()))
 			.title(title)
 			.snippet(message)
-			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-*/			
+			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));			
 	}
 
 	/**
@@ -149,7 +153,7 @@ public class Ink {
 	 * @param isVisible True, if it should visible
 	 */
 	public void visible(boolean isVisible) {
-		this.isVisible = isVisible;
+//		this.isVisible = isVisible;
 //		this.markerOptions.visible(isVisible);
 //		this.circleOptions.visible(isVisible);
 	}
