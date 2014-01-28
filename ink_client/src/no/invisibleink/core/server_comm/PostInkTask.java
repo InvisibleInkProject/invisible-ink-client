@@ -1,10 +1,8 @@
 package no.invisibleink.core.server_comm;
 
-import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -36,7 +34,7 @@ public class PostInkTask extends AsyncTask<JSONObject, Void, Integer> {
 		HttpClient client = new DefaultHttpClient();
 		
 		try {
-			HttpPost request = new HttpPost(ServerManager.SERVER_URL);
+			HttpPost request = new HttpPost(Settings.SERVER_URL);
 			
 			StringEntity ent = new StringEntity(obj.toString());
 			ent.setContentType("application/json");
@@ -45,14 +43,12 @@ public class PostInkTask extends AsyncTask<JSONObject, Void, Integer> {
 			HttpResponse response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
-			Log.d(this.getClass().getName(), "request: " + ServerManager.SERVER_URL + obj.toString());
+			Log.d(this.getClass().getName(), "request: " + Settings.SERVER_URL + obj.toString());
 			
 			return statusCode;
 
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-		} catch (IOException e){
-			e.printStackTrace();
+		} catch (Exception e) {
+			Log.e(this.getClass().getName(), "Exception, " + e.getMessage());			
 		} finally {
 			client.getConnectionManager().shutdown();
 		}	
