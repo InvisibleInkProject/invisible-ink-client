@@ -64,8 +64,8 @@ public class PostSectionFragment extends Fragment {
                 	
                 	// TODO: stub only            
             		Location stubLocation = new Location("");
-            		stubLocation.setLongitude(60);
-            		stubLocation.setLatitude(0);
+            		stubLocation.setLongitude(0);
+            		stubLocation.setLatitude(50);
             		InkWell.getInstance().getServerManager().postInk(message, radius, stubLocation, getView().getContext());
             	}
             }

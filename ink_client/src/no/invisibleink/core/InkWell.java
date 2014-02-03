@@ -30,6 +30,11 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
 	private InkWell() {
 		inkList = new InkList();
 		serverManager = new ServerManager();
+    	// TODO: stub only            
+		Location stubLocation = new Location("");
+		stubLocation.setLongitude(0);
+		stubLocation.setLatitude(50);
+		currentLocation = stubLocation;
 	}
 	
 	/**
@@ -92,7 +97,7 @@ public class InkWell extends Observable implements OnMyLocationChangeListener {
      */
     public void update() {
 //    	this.inkList.updateVisibility(this.currentLocation);
-    	this.serverManager.request(this.currentLocation);    	
+    	this.serverManager.requestIfNecessary(this.currentLocation);    	
     }
     
 	@Override
