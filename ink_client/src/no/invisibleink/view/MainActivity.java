@@ -89,12 +89,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-		/*
-		 * Set the number of pages that should be retained to either side of the
-		 * current page in the view hierarchy in an idle state. Pages beyond
-		 * this limit will be recreated from the adapter when needed.
-		 */
-        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setAdapter(mAppSectionsPagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
@@ -105,6 +99,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                 actionBar.setSelectedNavigationItem(position);
             }
         });
+		/*
+		 * Set the number of pages that should be retained to either side of the
+		 * current page in the view hierarchy in an idle state. Pages beyond
+		 * this limit will be recreated from the adapter when needed.
+		 */
+        mViewPager.setOffscreenPageLimit(3);
 
         // For each of the sections in the app, add a tab to the action bar.
         for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {

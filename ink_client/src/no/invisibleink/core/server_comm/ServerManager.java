@@ -27,26 +27,34 @@ public class ServerManager {
 	}
 
 	/**
-	 * Request the server, if it is necessary.
+	 * Request the server
 	 * 
 	 * @param location
 	 *            Current location
 	 */
 	public void request(Location location) {
-		// Check request is necessary
-		float distanceInMeters = location.distanceTo(lastRequestLocation);
-//		__debug("distence=" + distanceInMeters + "m to old location");
-		if(distanceInMeters > Settings.REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
-			this.lastRequestLocation = location;
-			this.lastRequestTime = System.currentTimeMillis();
+		this.lastRequestLocation = location;
+		this.lastRequestTime = System.currentTimeMillis();
 
-			GetInksTask gmt = new GetInksTask();
-			try {
-				URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
-				gmt.execute(url);
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
-			}
+		GetInksTask gmt = new GetInksTask();
+		try {
+			URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
+			gmt.execute(url);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Request the server, if it is necessary.
+	 * 
+	 * @param location
+	 *            Current location
+	 */	
+	public void requestIfNecessary(Location location) {
+		float distanceInMeters = location.distanceTo(this.lastRequestLocation);
+		if(distanceInMeters > Settings.REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
+			this.request(location);
 		}
 	}
 	
@@ -59,6 +67,7 @@ public class ServerManager {
 	 * @param context To post response
 	 */
 	public void postInk(String message, int radius, Location location, Context context){
+		// TODO: improve
 		JSONObject obj = new JSONObject();
 		try {
 			obj.put("text", message);

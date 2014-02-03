@@ -36,7 +36,7 @@ public class ListSectionFragment extends Fragment {
 				Location stubLocation = new Location("");
 				stubLocation.setLongitude(0);
 				stubLocation.setLatitude(59);
-				InkWell.getInstance().onMyLocationChange(stubLocation);
+				InkWell.getInstance().getServerManager().request(stubLocation);
 			}
 		});
 		this.progressBar = (ProgressBar) rootView.findViewById(R.id.secListProgressBar);
