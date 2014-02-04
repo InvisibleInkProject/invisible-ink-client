@@ -2,7 +2,6 @@ package no.invisibleink.view;
 
 import no.invisibleink.view.MainActivity;
 import no.invisibleink.R;
-import no.invisibleink.core.InkWell;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
 import android.location.Location;

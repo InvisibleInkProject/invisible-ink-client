@@ -1,8 +1,6 @@
 package no.invisibleink.view;
 
 import no.invisibleink.R;
-import no.invisibleink.core.InkWell;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -20,7 +18,6 @@ public class PostSectionFragment extends Fragment {
 	private SeekBar form_radius;
 	private Button form_confirm;
 	private TextView form_radius_output;
-
 	
 	// TODO: crap, just a fast workaround
 	private MainActivity mainActivity;

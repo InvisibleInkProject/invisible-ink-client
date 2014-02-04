@@ -19,25 +19,14 @@ package no.invisibleink.view;
 import java.util.Observable;
 import java.util.Observer;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
 import no.invisibleink.core.location.LocationManager;
-import no.invisibleink.core.location.LocationUtils;
 import no.invisibleink.model.InkList;
 import no.invisibleink.model.UpdateView;
 import android.app.ActionBar;
-import android.app.Dialog;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
