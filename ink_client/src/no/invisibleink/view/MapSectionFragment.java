@@ -62,8 +62,6 @@ public class MapSectionFragment extends Fragment {
             if (mMap != null) {
             	mMap.setMyLocationEnabled(true);
         		mMap.setIndoorEnabled(true);
-// TODO: correct here?
-//        		mMap.setOnMyLocationChangeListener(MainActivity.inkWell);  
             }
         }
     } 

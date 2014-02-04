@@ -1,5 +1,6 @@
 package no.invisibleink.view;
 
+import no.invisibleink.view.MainActivity;
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
 import no.invisibleink.model.Ink;
@@ -14,12 +15,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class ListSectionFragment extends Fragment {
 
 	private TextView selection;
 	private Button button;
 	private ProgressBar progressBar;
+	private ToggleButton toogleButtonUpdate;
+	
+	// TODO: crap, just a fast workaround
+	private MainActivity mainActivity;
+	
+	public void setMainActivity(MainActivity mainActivity) {
+		this.mainActivity = mainActivity;
+	}
+	
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,15 +43,23 @@ public class ListSectionFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				progressBar.setVisibility(View.VISIBLE);
-				// TODO: stub
-				Location stubLocation = new Location("");
-				stubLocation.setLongitude(0);
-				stubLocation.setLatitude(59);
-				InkWell.getInstance().getServerManager().request(stubLocation);
+				mainActivity.inkWell.getServerManager().request(mainActivity.locationManager.getLocation());
 			}
 		});
 		this.progressBar = (ProgressBar) rootView.findViewById(R.id.secListProgressBar);
 		this.progressBar.setVisibility(View.GONE);
+		this.toogleButtonUpdate = (ToggleButton) rootView.findViewById(R.id.start_updates); 
+		this.toogleButtonUpdate.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (toogleButtonUpdate.isChecked()) {
+					mainActivity.locationManager.startUpdates();
+				} else {
+					mainActivity.locationManager.stopUpdates();
+				}				
+			}
+		});
 		
         return rootView;
     }
