@@ -8,6 +8,7 @@ import org.json.JSONObject;
 
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 public class ServerManager {
 
@@ -33,15 +34,19 @@ public class ServerManager {
 	 *            Current location
 	 */
 	public void request(Location location) {
-		this.lastRequestLocation = location;
-		this.lastRequestTime = System.currentTimeMillis();
-
-		GetInksTask gmt = new GetInksTask();
-		try {
-			URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
-			gmt.execute(url);
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
+		if (location != null) {
+			this.lastRequestLocation = location;
+			this.lastRequestTime = System.currentTimeMillis();
+	
+			GetInksTask gmt = new GetInksTask();
+			try {
+				URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
+				gmt.execute(url);
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
+			}
+		} else {
+			Log.w(this.getClass().getName(), "requst with null location");
 		}
 	}
 
