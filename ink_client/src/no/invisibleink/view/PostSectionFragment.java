@@ -1,6 +1,7 @@
 package no.invisibleink.view;
 
 import no.invisibleink.R;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -64,7 +65,13 @@ public class PostSectionFragment extends Fragment {
             	if (message.isEmpty()) {
                 	Toast.makeText(getView().getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
             	} else {
-            		mainActivity.inkWell.getServerManager().postInk(message, radius, mainActivity.locationManager.getLocation(), getView().getContext());
+// TODO: crap code, improve it!!
+            		Location location = mainActivity.locationManager.getLocation();
+            		if (location == null) {
+                    	Toast.makeText(getView().getContext(), "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
+            		} else {
+            			mainActivity.inkWell.getServerManager().postInk(message, radius, location, getView().getContext());
+            		}
             	}
             }
         });             
