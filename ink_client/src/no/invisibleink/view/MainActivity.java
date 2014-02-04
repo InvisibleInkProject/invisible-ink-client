@@ -19,12 +19,25 @@ package no.invisibleink.view;
 import java.util.Observable;
 import java.util.Observer;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesClient;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+
 import no.invisibleink.R;
 import no.invisibleink.core.InkWell;
+import no.invisibleink.core.location.LocationManager;
+import no.invisibleink.core.location.LocationUtils;
 import no.invisibleink.model.InkList;
 import no.invisibleink.model.UpdateView;
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,8 +50,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-public class MainActivity extends FragmentActivity implements ActionBar.TabListener, Observer {
+public class MainActivity extends FragmentActivity implements
+		ActionBar.TabListener, Observer, LocationListener {
 
+    
+    static FragmentManager fragmentManager;
+    static InkWell inkWell;
+    
+    private ListSectionFragment listSectionFragment;
+    private MapSectionFragment mapSectionFragment;
+    private PostSectionFragment postSectionFragment;
+    
+    /* -------------------------------- Swipe view with taps ---------------- */
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
      * three primary sections of the app. We use a {@link android.support.v4.app.FragmentPagerAdapter}
@@ -52,25 +75,32 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
      * time.
      */
     ViewPager mViewPager;
-    
-    static FragmentManager fragmentManager;
-    static InkWell inkWell;
-    
-    private ListSectionFragment listSectionFragment;
-    private MapSectionFragment mapSectionFragment;
-    private PostSectionFragment postSectionFragment;
+    /* -------------------------------- End Swipe view with taps ---------------- */
 
+    /* -------------------------------- Location ---------------- */
+    LocationManager locationManager;
+    /* -------------------------------- End Location ---------------- */
+
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
 
+        /* -------------------------------- Location ---------------- */
+        locationManager = new LocationManager(this);
+        locationManager.onCreate();
+
+        /* -------------------------------- Swipe view with taps ---------------- */
         fragmentManager = getSupportFragmentManager();
         
         listSectionFragment = new ListSectionFragment();
+        listSectionFragment.setMainActivity(this);
         mapSectionFragment = new MapSectionFragment();
         mapSectionFragment.setFragmentManager(fragmentManager);
         postSectionFragment = new PostSectionFragment();
+        postSectionFragment.setMainActivity(this);
         
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -117,6 +147,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
                             .setTabListener(this));
         }
         
+        /* -------------------------------- More ---------------- */
         inkWell = InkWell.getInstance();
         inkWell.addObserver(this);
     }
@@ -143,9 +174,39 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         }
     }
 
+    /*
+     * Called when the Activity is no longer visible at all.
+     * Stop updates and disconnect.
+     */
+    @Override
+    public void onStop() {
+    	locationManager.onStop();
+        super.onStop();
+    }    
+    /*
+     * Called when the Activity is going into the background.
+     * Parts of the UI may be visible, but the Activity is inactive.
+     */
+    @Override
+    public void onPause() {
+    	locationManager.onPause();
+        super.onPause();
+    }   
+    /*
+     * Called when the Activity is restarted, even before it becomes visible.
+     */
+    @Override
+    public void onStart() {
+        super.onStart();
+        locationManager.onStart();
+    }
+    /*
+     * Called when the system detects that this Activity is now visible.
+     */   
     @Override
     public void onResume() {
     	super.onResume();
+    	locationManager.onResume();
     }
     
     @Override
@@ -207,9 +268,23 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 	public void update(Observable observable, Object data) {
 		if (data instanceof UpdateView) {
 	    	InkList inkList = ((UpdateView) data).getInkList();
-	    	Location location = ((UpdateView) data).getLocation();
-	    	listSectionFragment.update(inkList, location);
+	    	listSectionFragment.update(inkList, locationManager.getLocation());
 	    	mapSectionFragment.update(inkList);
 		}
-	}    
+	}
+	
+	@Override
+	public void onLocationChanged(Location location) {
+		inkWell.getServerManager().requestIfNecessary(location);
+        // Report to the UI that the location was updated
+// TODO:		
+//        mConnectionStatus.setText(R.string.location_updated);
+
+        // In the UI, set the latitude and longitude to the value received
+// TODO:		
+//        mLatLng.setText(LocationUtils.getLatLng(this, location));		
+	}
+	
+
+    
 }

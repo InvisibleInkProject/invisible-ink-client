@@ -21,6 +21,6 @@ public abstract class Settings {
 	 * 
 	 * unit: seconds
 	 */
-	protected static final long REQUEST_TIME_PERIOD = 20;	
+	protected static final long REQUEST_TIME_PERIOD = 20;
 	
 }

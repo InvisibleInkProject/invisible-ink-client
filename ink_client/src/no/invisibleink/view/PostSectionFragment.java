@@ -5,7 +5,6 @@ import no.invisibleink.core.InkWell;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,14 @@ public class PostSectionFragment extends Fragment {
 	private SeekBar form_radius;
 	private Button form_confirm;
 	private TextView form_radius_output;
+
+	
+	// TODO: crap, just a fast workaround
+	private MainActivity mainActivity;
+	
+	public void setMainActivity(MainActivity mainActivity) {
+		this.mainActivity = mainActivity;
+	}	
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,8 +36,7 @@ public class PostSectionFragment extends Fragment {
         form_message = (EditText) rootView.findViewById(R.id.editText1);
         form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
         form_confirm = (Button) rootView.findViewById(R.id.button1);
-        form_radius_output = (TextView) rootView.findViewById(R.id.seekBarProgressOutput);
-        Log.w("holu", "POST onCreateView");     
+        form_radius_output = (TextView) rootView.findViewById(R.id.seekBarProgressOutput);   
         form_radius.setMax(2000);
         form_radius.setProgress(500);
         form_radius_output.setText(String.format(rootView.getResources().getString(R.string.radius_output), form_radius.getProgress()));
@@ -61,12 +67,7 @@ public class PostSectionFragment extends Fragment {
             	if (message.isEmpty()) {
                 	Toast.makeText(getView().getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
             	} else {
-                	
-                	// TODO: stub only            
-            		Location stubLocation = new Location("");
-            		stubLocation.setLongitude(0);
-            		stubLocation.setLatitude(50);
-            		InkWell.getInstance().getServerManager().postInk(message, radius, stubLocation, getView().getContext());
+            		mainActivity.inkWell.getServerManager().postInk(message, radius, mainActivity.locationManager.getLocation(), getView().getContext());
             	}
             }
         });             

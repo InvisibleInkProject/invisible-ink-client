@@ -14,13 +14,20 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="Request" />
+        
+        <ToggleButton
+	        android:id="@+id/start_updates"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/secListButton" />
 
         <ProgressBar
             android:id="@+id/secListProgressBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/secListButton" />
+            android:layout_toLeftOf="@+id/start_updates" />
 
         <TextView
             android:id="@+id/textView1"
@@ -30,6 +37,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/secListButton"
             android:text="@string/debug_output" />
+
 
     </RelativeLayout>
 
