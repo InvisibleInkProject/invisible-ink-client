@@ -1,7 +1,8 @@
 package no.invisibleink.view;
 
 import no.invisibleink.R;
-import android.location.Location;
+import no.invisibleink.listener.OnPostSectionFragmentListener;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -15,17 +16,26 @@ import android.widget.Toast;
 
 public class PostSectionFragment extends Fragment {
 
+	private OnPostSectionFragmentListener mCallback;
+
 	private EditText form_message;
 	private SeekBar form_radius;
 	private Button form_confirm;
 	private TextView form_radius_output;
-	
-	// TODO: crap, just a fast workaround
-	private MainActivity mainActivity;
-	
-	public void setMainActivity(MainActivity mainActivity) {
-		this.mainActivity = mainActivity;
-	}	
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnPostSectionFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,13 +75,7 @@ public class PostSectionFragment extends Fragment {
             	if (message.isEmpty()) {
                 	Toast.makeText(getView().getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
             	} else {
-// TODO: crap code, improve it!!
-            		Location location = mainActivity.locationManager.getLocation();
-            		if (location == null) {
-                    	Toast.makeText(getView().getContext(), "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
-            		} else {
-            			mainActivity.inkWell.getServerManager().postInk(message, radius, location, getView().getContext());
-            		}
+           			mCallback.onPostInkForm(message, radius, getView().getContext());
             	}
             }
         });             

@@ -16,17 +16,16 @@
 
 package no.invisibleink.view;
 
-import java.util.Observable;
-import java.util.Observer;
-
 import com.google.android.gms.location.LocationListener;
 import no.invisibleink.R;
-import no.invisibleink.core.InkWell;
 import no.invisibleink.core.location.LocationManager;
+import no.invisibleink.core.server_comm.ServerManager;
+import no.invisibleink.listener.OnListSectionFragmentListener;
+import no.invisibleink.listener.OnPostSectionFragmentListener;
 import no.invisibleink.model.InkList;
-import no.invisibleink.model.UpdateView;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,17 +33,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener, Observer, LocationListener {
+		ActionBar.TabListener, LocationListener, OnPostSectionFragmentListener, OnListSectionFragmentListener {
 
     
     static FragmentManager fragmentManager;
-    static InkWell inkWell;
     
     private ListSectionFragment listSectionFragment;
     private MapSectionFragment mapSectionFragment;
@@ -66,18 +65,23 @@ public class MainActivity extends FragmentActivity implements
     ViewPager mViewPager;
     /* -------------------------------- End Swipe view with taps ---------------- */
 
-    /* -------------------------------- Location ---------------- */
-    LocationManager locationManager;
-    /* -------------------------------- End Location ---------------- */
-
+    /* -------------------------------- Stuff ---------------- */
+    /** Location manager */
+    private LocationManager locationManager;
+    /** Server manager */
+    private ServerManager serverManager;
+	/** List with all local inks */
+	private InkList inkList;
     
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
-
-        /* -------------------------------- Location ---------------- */
+        /* -------------------------------- Init ---------------- */
+        serverManager = new ServerManager();
+        inkList = new InkList();
         locationManager = new LocationManager(this);
         locationManager.onCreate();
 
@@ -85,11 +89,9 @@ public class MainActivity extends FragmentActivity implements
         fragmentManager = getSupportFragmentManager();
         
         listSectionFragment = new ListSectionFragment();
-        listSectionFragment.setMainActivity(this);
         mapSectionFragment = new MapSectionFragment();
         mapSectionFragment.setFragmentManager(fragmentManager);
         postSectionFragment = new PostSectionFragment();
-        postSectionFragment.setMainActivity(this);
         
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -135,10 +137,6 @@ public class MainActivity extends FragmentActivity implements
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
-        
-        /* -------------------------------- More ---------------- */
-        inkWell = InkWell.getInstance();
-        inkWell.addObserver(this);
     }
 
     @Override
@@ -171,7 +169,7 @@ public class MainActivity extends FragmentActivity implements
     public void onStop() {
     	locationManager.onStop();
         super.onStop();
-    }    
+    }
     /*
      * Called when the Activity is going into the background.
      * Parts of the UI may be visible, but the Activity is inactive.
@@ -222,6 +220,10 @@ public class MainActivity extends FragmentActivity implements
             super(fm);
         }
 
+        /*
+         * (non-Javadoc)
+         * @see android.support.v4.app.FragmentPagerAdapter#getItem(int)
+         */
         @Override
         public Fragment getItem(int i) {
             switch (i) {
@@ -234,11 +236,19 @@ public class MainActivity extends FragmentActivity implements
             }
         }
 
+        /*
+         * (non-Javadoc)
+         * @see android.support.v4.view.PagerAdapter#getCount()
+         */
         @Override
         public int getCount() {
             return 3;
         }
 
+        /*
+         * (non-Javadoc)
+         * @see android.support.v4.view.PagerAdapter#getPageTitle(int)
+         */
         @Override
         public CharSequence getPageTitle(int position) {
 			switch (position) {
@@ -252,28 +262,81 @@ public class MainActivity extends FragmentActivity implements
 			return null;
         }
     }
-
-	@Override
-	public void update(Observable observable, Object data) {
-		if (data instanceof UpdateView) {
-	    	InkList inkList = ((UpdateView) data).getInkList();
-	    	listSectionFragment.update(inkList, locationManager.getLocation());
-	    	mapSectionFragment.update(inkList);
+	
+	public void onReceivedInkList(InkList inkList) {
+		if (inkList != null) {
+			this.inkList.clear();
+			this.inkList.addAll(inkList);
+			
+			Location location = locationManager.getLocation();
+			if (location != null) {	
+		    	listSectionFragment.update(inkList, location);
+		    	mapSectionFragment.update(inkList);
+			} else  {
+				Log.w(this.getClass().getName(), "onReceivedInkList: no location");				
+			}	
+		} else {
+			Log.w(this.getClass().getName(), "onReceivedInkList: Receive null inkList");			
 		}
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see com.google.android.gms.location.LocationListener#onLocationChanged(android.location.Location)
+	 */
 	@Override
 	public void onLocationChanged(Location location) {
-		inkWell.getServerManager().requestIfNecessary(location);
+		serverManager.requestIfNecessary(this, location);
         // Report to the UI that the location was updated
 // TODO:		
 //        mConnectionStatus.setText(R.string.location_updated);
 
-        // In the UI, set the latitude and longitude to the value received
-// TODO:		
+        // In the UI, set the latitude and longitude to the value received	
 //        mLatLng.setText(LocationUtils.getLatLng(this, location));		
 	}
-	
 
+	/*
+	 * (non-Javadoc)
+	 * @see no.invisibleink.listener.OnPostSectionFragmentListener#onPostInkForm(java.lang.String, int, android.content.Context)
+	 */
+	@Override
+	public void onPostInkForm(String message, int radius,
+			Context context) {
+		Location location = locationManager.getLocation();
+		if (location == null) {
+        	Toast.makeText(context, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
+		} else {
+			serverManager.postInk(message, radius, location, context);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see no.invisibleink.listener.OnListSectionFragmentListener#onRequestInks()
+	 */
+	@Override
+	public void onRequestInks(Context context) {
+		Location location = locationManager.getLocation();
+		if (location != null) {		
+			serverManager.request(context, location);
+		} else {
+			Log.w(this.getClass().getName(), "onRequestInks: no location");
+		}
+		
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see no.invisibleink.listener.OnListSectionFragmentListener#doLocationUpdates(boolean)
+	 */
+	@Override
+	public void doLocationUpdates(boolean yes) {
+		if (yes) {
+			locationManager.startUpdates();
+		} else {
+			locationManager.stopUpdates();
+		}
+		
+	}
     
 }

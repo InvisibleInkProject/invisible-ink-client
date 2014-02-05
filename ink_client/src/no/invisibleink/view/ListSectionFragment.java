@@ -1,9 +1,10 @@
 package no.invisibleink.view;
 
-import no.invisibleink.view.MainActivity;
 import no.invisibleink.R;
+import no.invisibleink.listener.OnListSectionFragmentListener;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
+import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,45 +19,49 @@ import android.widget.ToggleButton;
 
 public class ListSectionFragment extends Fragment {
 
+	private OnListSectionFragmentListener mCallback;
+	
 	private TextView selection;
-	private Button button;
-	private ProgressBar progressBar;
-	private ToggleButton toogleButtonUpdate;
+	private Button button_request;
+	private ProgressBar progressBar_request;
+	private ToggleButton toogleButton_requestUpdate;
 	
-	// TODO: crap, just a fast workaround
-	private MainActivity mainActivity;
-	
-	public void setMainActivity(MainActivity mainActivity) {
-		this.mainActivity = mainActivity;
-	}
-	
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnListSectionFragmentListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
+    }	
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_section_list, container, false);
 		this.selection = (TextView) rootView.findViewById(R.id.textView1);
-		this.button = (Button) rootView.findViewById(R.id.secListButton);
-		this.button.setOnClickListener(new View.OnClickListener() {
+		this.button_request = (Button) rootView.findViewById(R.id.secListButton);
+		this.button_request.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				progressBar.setVisibility(View.VISIBLE);
-				mainActivity.inkWell.getServerManager().request(mainActivity.locationManager.getLocation());
+				progressBar_request.setVisibility(View.VISIBLE);
+				mCallback.onRequestInks(getView().getContext());
 			}
 		});
-		this.progressBar = (ProgressBar) rootView.findViewById(R.id.secListProgressBar);
-		this.progressBar.setVisibility(View.GONE);
-		this.toogleButtonUpdate = (ToggleButton) rootView.findViewById(R.id.start_updates); 
-		this.toogleButtonUpdate.setOnClickListener(new View.OnClickListener() {
+		this.progressBar_request = (ProgressBar) rootView.findViewById(R.id.secListProgressBar);
+		this.progressBar_request.setVisibility(View.GONE);
+		this.toogleButton_requestUpdate = (ToggleButton) rootView.findViewById(R.id.start_updates); 
+		this.toogleButton_requestUpdate.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				if (toogleButtonUpdate.isChecked()) {
-					mainActivity.locationManager.startUpdates();
-				} else {
-					mainActivity.locationManager.stopUpdates();
-				}				
+				mCallback.doLocationUpdates(toogleButton_requestUpdate.isChecked());
 			}
 		});
 		
@@ -79,7 +84,7 @@ public class ListSectionFragment extends Fragment {
     		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
     		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";	
     	}
-    	this.progressBar.setVisibility(View.GONE);
+    	this.progressBar_request.setVisibility(View.GONE);
     	this.selection.setText(output);			
 	}
 }
