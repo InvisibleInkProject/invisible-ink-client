@@ -73,9 +73,9 @@ public class PostSectionFragment extends Fragment {
             	int radius = form_radius.getProgress();
             	
             	if (message.isEmpty()) {
-                	Toast.makeText(getView().getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
+                	Toast.makeText(view.getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
             	} else {
-           			mCallback.onPostInkForm(message, radius, getView().getContext());
+           			mCallback.onPostInkForm(message, radius);
             	}
             }
         });             

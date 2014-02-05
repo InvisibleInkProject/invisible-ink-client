@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ public class ListSectionFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				progressBar_request.setVisibility(View.VISIBLE);
-				mCallback.onRequestInks(getView().getContext());
+				mCallback.onRequestInks();
 			}
 		});
 		this.progressBar_request = (ProgressBar) rootView.findViewById(R.id.secListProgressBar);
@@ -75,7 +74,6 @@ public class ListSectionFragment extends Fragment {
      * @param location
      */
 	public void update(InkList inkList, Location location) {
-		Log.d(MapSectionFragment.class.getName(), "update list");		
     	String output = new String();
     	output += "Location: " + location.getLatitude() + "," + location.getLongitude() + "\n";
     	output += "Received inks: " + inkList.size() + "\n";

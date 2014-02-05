@@ -6,7 +6,6 @@ import no.invisibleink.model.InkList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +26,6 @@ public class MapSectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_section_map, container, false);
-        
         setUpMapIfNeeded();
         
         return rootView;
@@ -72,7 +70,6 @@ public class MapSectionFragment extends Fragment {
      * @param inkList
      */
 	public void update(InkList inkList) {
-		Log.d(MapSectionFragment.class.getName(), "update map");	
 		setUpMapIfNeeded();
 		mMap.clear();
 		for(Ink i : inkList) {

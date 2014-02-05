@@ -16,8 +16,8 @@
 
 package no.invisibleink.core.location;
 
-import android.content.Context;
-import android.location.Location;
+//import android.content.Context;
+//import android.location.Location;
 
 /**
  * Defines app-wide constants and utilities

@@ -25,7 +25,6 @@ import no.invisibleink.listener.OnPostSectionFragmentListener;
 import no.invisibleink.model.InkList;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -300,13 +299,12 @@ public class MainActivity extends FragmentActivity implements
 	 * @see no.invisibleink.listener.OnPostSectionFragmentListener#onPostInkForm(java.lang.String, int, android.content.Context)
 	 */
 	@Override
-	public void onPostInkForm(String message, int radius,
-			Context context) {
+	public void onPostInkForm(String message, int radius) {
 		Location location = locationManager.getLocation();
 		if (location == null) {
-        	Toast.makeText(context, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
+        	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
 		} else {
-			serverManager.postInk(message, radius, location, context);
+			serverManager.postInk(message, radius, location, this);
 		}
 	}
 
@@ -315,10 +313,10 @@ public class MainActivity extends FragmentActivity implements
 	 * @see no.invisibleink.listener.OnListSectionFragmentListener#onRequestInks()
 	 */
 	@Override
-	public void onRequestInks(Context context) {
+	public void onRequestInks() {
 		Location location = locationManager.getLocation();
 		if (location != null) {		
-			serverManager.request(context, location);
+			serverManager.request(this, location);
 		} else {
 			Log.w(this.getClass().getName(), "onRequestInks: no location");
 		}
