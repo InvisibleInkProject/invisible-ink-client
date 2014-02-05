@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 
-import no.invisibleink.core.InkWell;
 import no.invisibleink.model.InkList;
+import no.invisibleink.view.MainActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,6 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -26,6 +27,13 @@ import com.google.gson.JsonSyntaxException;
  *
  */
 public class GetInksTask extends AsyncTask<URI, Void, InkList>{
+	
+	private Context mContext;
+	
+	public GetInksTask(Context context) {
+		super();
+		this.mContext = context;
+	}
 	
 	/**
 	 * Check for necessity in ServerManager; only call this if needed!
@@ -73,7 +81,11 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
     protected void onPostExecute(InkList inkList) {
     	if (inkList != null) {
 			Log.d(this.getClass().getName(), "received: " + inkList.size() + " inks");
-	        InkWell.getInstance().setInkList(inkList);
+			try {
+				((MainActivity) mContext).onReceivedInkList(inkList);
+			} catch (Exception e) {
+				Log.e(this.getClass().getName(), "onPostExecute " + e.getMessage());
+			}
     	} else {
     		//TODO: When there is a current list it should perhaps retry later.
     		//      It should retry again when there is no current list

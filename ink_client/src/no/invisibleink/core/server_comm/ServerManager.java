@@ -33,12 +33,12 @@ public class ServerManager {
 	 * @param location
 	 *            Current location
 	 */
-	public void request(Location location) {
+	public void request(Context context, Location location) {
 		if (location != null) {
 			this.lastRequestLocation = location;
 			this.lastRequestTime = System.currentTimeMillis();
 	
-			GetInksTask gmt = new GetInksTask();
+			GetInksTask gmt = new GetInksTask(context);
 			try {
 				URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
 				gmt.execute(url);
@@ -56,10 +56,10 @@ public class ServerManager {
 	 * @param location
 	 *            Current location
 	 */	
-	public void requestIfNecessary(Location location) {
+	public void requestIfNecessary(Context context, Location location) {
 		float distanceInMeters = location.distanceTo(this.lastRequestLocation);
 		if(distanceInMeters > Settings.REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
-			this.request(location);
+			this.request(context, location);
 		}
 	}
 	
