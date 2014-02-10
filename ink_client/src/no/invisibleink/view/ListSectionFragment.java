@@ -74,13 +74,19 @@ public class ListSectionFragment extends Fragment {
      * @param location
      */
 	public void update(InkList inkList, Location location) {
+		inkList.updateVisibility(location);
     	String output = new String();
     	output += "Location: " + location.getLatitude() + "," + location.getLongitude() + "\n";
     	output += "Received inks: " + inkList.size() + "\n";
     	for(Ink i : inkList) {
     		// Shorten message, if it is too long.
-    		String messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
-    		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";	
+    		String messagePreview = "";
+    		if(i.getIsVisible()){
+    			messagePreview = i.getMessage().substring(0, i.getMessage().length() > 15 ? 15 : i.getMessage().length());
+    		}else{
+    			messagePreview = "out of reach";
+    		}
+    		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";
     	}
     	this.progressBar_request.setVisibility(View.GONE);
     	this.selection.setText(output);			

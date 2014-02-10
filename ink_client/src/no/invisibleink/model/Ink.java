@@ -48,6 +48,8 @@ public class Ink {
 	/** Visibility of the ink (depends on user location) */
 	private Boolean isVisible;
 	
+
+
 	/**
 	 * Create an ink object.
 	 * 
@@ -153,9 +155,23 @@ public class Ink {
 	 * @param isVisible True, if it should visible
 	 */
 	public void visible(boolean isVisible) {
+		this.isVisible = isVisible;
+		if(isVisible){
+			this.markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+			this.markerOptions.snippet(message);
+			this.circleOptions.strokeColor(Color.CYAN);
+		}else{
+			this.markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)).snippet("");
+			this.circleOptions.strokeColor(Color.RED);
+		}
+		
 //		this.isVisible = isVisible;
 //		this.markerOptions.visible(isVisible);
 //		this.circleOptions.visible(isVisible);
+	}
+	
+	public Boolean getIsVisible() {
+		return isVisible;
 	}
 	 
 }
