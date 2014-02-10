@@ -23,4 +23,12 @@ public abstract class Settings {
 	 */
 	protected static final long REQUEST_TIME_PERIOD = 20;
 	
+	
+	/**
+	 * The server returns all inks, which are in this radius.
+	 * 
+	 * unit: meters
+	 */
+	protected static final float REQUEST_INKS_RADIUS_IN_METERS = 2000;
+	
 }
