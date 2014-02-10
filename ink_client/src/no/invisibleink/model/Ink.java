@@ -47,7 +47,6 @@ public class Ink {
 	
 	/** Visibility of the ink (depends on user location) */
 	private Boolean isVisible;
-	
 
 
 	/**
@@ -75,9 +74,7 @@ public class Ink {
 		this.title = title;
 		this.message = message;
 		this.author = author;
-		this.date = date;	
-		// TODO: default to false
-		this.isVisible = true;
+		this.date = date;
 		
 		// Set map circle
 		this.circleOptions = new CircleOptions()
@@ -91,7 +88,9 @@ public class Ink {
 			.position(new LatLng(location.getLatitude(), location.getLongitude()))
 			.title(title)
 			.snippet(message)
-			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));			
+			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+		
+		visible(false);
 	}
 
 	/**
