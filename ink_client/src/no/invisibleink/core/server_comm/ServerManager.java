@@ -40,10 +40,10 @@ public class ServerManager {
 	
 			GetInksTask gmt = new GetInksTask(context);
 			try {
-				URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "/");
+				URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "," + Settings.REQUEST_INKS_RADIUS_IN_METERS + "/");
 				gmt.execute(url);
 			} catch (URISyntaxException e) {
-				e.printStackTrace();
+				Log.w(this.getClass().getName(), "URISyntaxException: " + e.getMessage());
 			}
 		} else {
 			Log.w(this.getClass().getName(), "requst with null location");
