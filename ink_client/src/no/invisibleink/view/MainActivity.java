@@ -16,6 +16,8 @@
 
 package no.invisibleink.view;
 
+import java.util.Date;
+
 import com.google.android.gms.location.LocationListener;
 import no.invisibleink.R;
 import no.invisibleink.core.location.LocationManager;
@@ -297,12 +299,12 @@ public class MainActivity extends FragmentActivity implements
 	 * @see no.invisibleink.listener.OnPostSectionFragmentListener#onPostInkForm(java.lang.String, int, android.content.Context)
 	 */
 	@Override
-	public void onPostInkForm(String message, int radius) {
+	public void onPostInkForm(String message, int radius, Date expires) {
 		Location location = locationManager.getLocation();
 		if (location == null) {
         	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
 		} else {
-			serverManager.postInk(message, radius, location, this);
+			serverManager.postInk(message, radius, expires, location, this);
 		}
 	}
 
