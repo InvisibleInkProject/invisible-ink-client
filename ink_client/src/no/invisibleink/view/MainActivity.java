@@ -20,8 +20,6 @@ import com.google.android.gms.location.LocationListener;
 import no.invisibleink.R;
 import no.invisibleink.core.location.LocationManager;
 import no.invisibleink.core.server_comm.ServerManager;
-import no.invisibleink.listener.OnListSectionFragmentListener;
-import no.invisibleink.listener.OnPostSectionFragmentListener;
 import no.invisibleink.model.InkList;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -39,7 +37,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener, LocationListener, OnPostSectionFragmentListener, OnListSectionFragmentListener {
+		ActionBar.TabListener, LocationListener, PostSectionFragment.OnPostSectionFragmentListener, ListSectionFragment.OnListSectionFragmentListener {
 
     
     static FragmentManager fragmentManager;

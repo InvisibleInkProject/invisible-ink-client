@@ -6,6 +6,9 @@ import java.net.URISyntaxException;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.android.gms.internal.gj;
+import com.google.gson.Gson;
+
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
@@ -73,7 +76,16 @@ public class ServerManager {
 	 */
 	public void postInk(String message, int radius, Location location, Context context){
 		// TODO: improve
-		JSONObject obj = new JSONObject();
+		GsonInk ink = new GsonInk();
+		ink.setText(message);
+		ink.setRadius(radius);
+		ink.setLocation_lat(location.getLatitude());
+		ink.setLocation_lon(location.getLongitude());
+		ink.setUser_id(1);
+		
+		String stringEntity = new Gson().toJson(ink);
+		
+/*		JSONObject obj = new JSONObject();
 		try {
 			obj.put("text", message);
 			obj.put("radius", radius);
@@ -82,10 +94,10 @@ public class ServerManager {
 			obj.put("location_lon", location.getLongitude());
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}
+		}*/
 		
-		PostInkTask pmt = new PostInkTask(context);
-		pmt.execute(obj);
+		HttpPostTask pmt = new HttpPostTask(context);
+		pmt.execute(stringEntity);
 	}
 	
 	/**

@@ -1,7 +1,6 @@
 package no.invisibleink.view;
 
 import no.invisibleink.R;
-import no.invisibleink.listener.OnListSectionFragmentListener;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
 import android.app.Activity;
@@ -24,6 +23,17 @@ public class ListSectionFragment extends Fragment {
 	private Button button_request;
 	private ProgressBar progressBar_request;
 	private ToggleButton toogleButton_requestUpdate;
+	
+	public interface OnListSectionFragmentListener {
+
+		/**
+		 * Request inks from server
+		 */
+	    public void onRequestInks();
+	    
+	    
+	    public void doLocationUpdates(boolean yes);
+	}	
 	
     @Override
     public void onAttach(Activity activity) {

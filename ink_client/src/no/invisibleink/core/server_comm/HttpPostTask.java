@@ -7,8 +7,6 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -17,33 +15,34 @@ import android.widget.Toast;
 /**
  * Tasks to push one ink to the server.
  */
-public class PostInkTask extends AsyncTask<JSONObject, Void, Integer> {
+public class HttpPostTask extends AsyncTask<String, Void, Integer> {
 
 	/**
 	 * Context to show result in a toast.
 	 */
 	private Context context;
 	
-	public PostInkTask(Context c){
+	public HttpPostTask(Context c){
 		context = c;
 	}
 	
 	@Override
-	protected Integer doInBackground(JSONObject... params) {
-		JSONObject obj = (JSONObject) params[0];
+	protected Integer doInBackground(String ... params) {
 		HttpClient client = new DefaultHttpClient();
 		
 		try {
+			String stringEntity = (String) params[0];
+
 			HttpPost request = new HttpPost(Settings.SERVER_URL);
 			
-			StringEntity ent = new StringEntity(obj.toString());
+			StringEntity ent = new StringEntity(stringEntity);
 			ent.setContentType("application/json");
 			request.setEntity(ent);
 			
 			HttpResponse response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
-			Log.d(this.getClass().getName(), "request: " + Settings.SERVER_URL + obj.toString());
+			Log.d(this.getClass().getName(), "request: " + Settings.SERVER_URL + stringEntity);
 			
 			return statusCode;
 

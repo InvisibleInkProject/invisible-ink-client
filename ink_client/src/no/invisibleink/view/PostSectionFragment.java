@@ -1,7 +1,6 @@
 package no.invisibleink.view;
 
 import no.invisibleink.R;
-import no.invisibleink.listener.OnPostSectionFragmentListener;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -23,6 +22,18 @@ public class PostSectionFragment extends Fragment {
 	private Button form_confirm;
 	private TextView form_radius_output;
 
+	public interface OnPostSectionFragmentListener {
+
+		/**
+		 * 
+		 * @param message
+		 *            Message
+		 * @param radius
+		 *            Visibility radius in meters
+		 */
+	    public void onPostInkForm(String message, int radius);
+	}	
+	
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

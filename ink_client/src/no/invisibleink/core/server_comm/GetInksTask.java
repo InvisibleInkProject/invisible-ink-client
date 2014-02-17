@@ -12,6 +12,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -68,8 +69,10 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 
 		} catch (JsonSyntaxException e) {
 			Log.w(this.getClass().getName(), "JsonSyntaxException, " + e.getMessage());			
+	    } catch (JSONException e) {
+			Log.w(this.getClass().getName(), "JSONException, " + e.getMessage());				    	
 	    } catch (Exception e) {
-			Log.e(this.getClass().getName(), "Exception, " + e.getMessage());			
+			Log.e(this.getClass().getName(), "Exception, " + e.getClass().getName() + e.getMessage());			
 		} finally {
 			client.getConnectionManager().shutdown();
 		}
