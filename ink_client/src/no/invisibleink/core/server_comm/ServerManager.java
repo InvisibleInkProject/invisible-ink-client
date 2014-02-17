@@ -4,10 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import com.google.android.gms.internal.gj;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 

@@ -64,7 +64,8 @@ public class MapSectionFragment extends Fragment {
             if (mMap != null) {
             	mMap.setMyLocationEnabled(true);
         		mMap.setIndoorEnabled(true);
-        		
+//        		mMap.setTrafficEnabled(true);
+//        		mMap.setBuildingsEnabled(true);
         		
         		// I'll leave this in here for the moment, in case we go back to the idea of linking the zoom level of the map to the list :) 
 //        		mMap.setOnCameraChangeListener(new OnCameraChangeListener(){
