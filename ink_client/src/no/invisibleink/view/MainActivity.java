@@ -16,12 +16,14 @@
 
 package no.invisibleink.view;
 
+
+import java.util.Date;
+
+
 import com.google.android.gms.location.LocationListener;
 import no.invisibleink.R;
 import no.invisibleink.core.location.LocationManager;
 import no.invisibleink.core.server_comm.ServerManager;
-import no.invisibleink.listener.OnListSectionFragmentListener;
-import no.invisibleink.listener.OnPostSectionFragmentListener;
 import no.invisibleink.model.InkList;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -39,7 +41,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener, LocationListener, OnPostSectionFragmentListener, OnListSectionFragmentListener {
+
+		ActionBar.TabListener, LocationListener, PostSectionFragment.OnPostSectionFragmentListener, ListSectionFragment.OnListSectionFragmentListener {
+
 
     
     static FragmentManager fragmentManager;
@@ -299,12 +303,14 @@ public class MainActivity extends FragmentActivity implements
 	 * @see no.invisibleink.listener.OnPostSectionFragmentListener#onPostInkForm(java.lang.String, int, android.content.Context)
 	 */
 	@Override
-	public void onPostInkForm(String message, int radius) {
+	public void onPostInkForm(String message, int radius, Date expires) {
 		Location location = locationManager.getLocation();
 		if (location == null) {
         	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
 		} else {
-			serverManager.postInk(message, radius, location, this);
+
+			serverManager.postInk(message, radius, expires, location, this);
+
 		}
 	}
 

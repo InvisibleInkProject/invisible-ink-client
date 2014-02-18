@@ -29,10 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.48"
             android:ems="10"
-            android:inputType="textMultiLine" >
-
-            <requestFocus />
-        </EditText>
+            android:inputType="textMultiLine" />
 
         <SeekBar
             android:id="@+id/seekBar1"
@@ -47,6 +44,23 @@
             android:layout_weight="0.48"
             android:text="@string/radius_output" />
 
+        <CheckBox
+            android:id="@+id/checkBox1"
+            android:layout_width="144dp"
+            android:layout_height="wrap_content"
+            android:text="Set expire date" />
+
+        <TimePicker
+            android:id="@+id/timePicker1"
+            android:layout_width="wrap_content"
+            android:layout_height="93dp"
+            android:layout_weight="0.13" />
+
+        <DatePicker
+            android:id="@+id/datePicker1"
+            android:layout_width="262dp"
+            android:layout_height="116dp" />
+        
         <Button
             android:id="@+id/button1"
             android:layout_width="match_parent"

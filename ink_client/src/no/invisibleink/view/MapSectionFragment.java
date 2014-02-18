@@ -3,19 +3,17 @@ package no.invisibleink.view;
 import no.invisibleink.R;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
+
 
 
 public class MapSectionFragment extends Fragment {
@@ -64,7 +62,10 @@ public class MapSectionFragment extends Fragment {
             if (mMap != null) {
             	mMap.setMyLocationEnabled(true);
         		mMap.setIndoorEnabled(true);
-        		
+
+//        		mMap.setTrafficEnabled(true);
+//        		mMap.setBuildingsEnabled(true);
+
         		
         		// I'll leave this in here for the moment, in case we go back to the idea of linking the zoom level of the map to the list :) 
 //        		mMap.setOnCameraChangeListener(new OnCameraChangeListener(){

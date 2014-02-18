@@ -2,13 +2,14 @@ package no.invisibleink.core.server_comm;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.util.Date;
 
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ServerManager {
 
@@ -71,21 +72,20 @@ public class ServerManager {
 	 * @param location
 	 * @param context To post response
 	 */
-	public void postInk(String message, int radius, Location location, Context context){
-		// TODO: improve
-		JSONObject obj = new JSONObject();
-		try {
-			obj.put("text", message);
-			obj.put("radius", radius);
-			obj.put("user_id", 1);
-			obj.put("location_lat", location.getLatitude());
-			obj.put("location_lon", location.getLongitude());
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+	public void postInk(String message, int radius, Date expires, Location location, Context context){
+		GsonInk ink = new GsonInk();
+		ink.setText(message);
+		ink.setRadius(radius);
+		ink.setLocation_lat(location.getLatitude());
+		ink.setLocation_lon(location.getLongitude());
+		ink.setUser_id(1);
+		ink.setExpires(expires);
 		
-		PostInkTask pmt = new PostInkTask(context);
-		pmt.execute(obj);
+		Gson gsonBuilder = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+		String stringEntity = gsonBuilder.toJson(ink);
+		
+		HttpPostTask pmt = new HttpPostTask(context);
+		pmt.execute(stringEntity);
 	}
 	
 	/**

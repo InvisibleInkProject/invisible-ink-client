@@ -16,6 +16,23 @@ public class GsonInk {
 	private String text;
 	private Date updated;
 	private double radius;
+
+	private Date expires;
+	private int user_id;
+	
+	public int getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(int user_id) {
+		this.user_id = user_id;
+	}
+	public Date getExpires() {
+		return expires;
+	}
+	public void setExpires(Date expires) {
+		this.expires = expires;
+	}	
+
 	
 	public double getRadius() {
 		return radius;

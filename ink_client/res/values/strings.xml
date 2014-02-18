@@ -15,6 +15,7 @@
     <string name="radius_output">Radius: %1$dm</string>
     <string name="login">Login</string>
     <string name="name">Username</string>
+    <string name="pw">Password</string>
     <string name="register_here">New to Invivisible Ink? Register here >>></string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="login_here">I\'m already registered, send me back to the login, please!</string>
