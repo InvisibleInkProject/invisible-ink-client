@@ -1,4 +1,4 @@
-package no.invisibleink.view;
+package no.invisibleink.view.section;
 
 import no.invisibleink.R;
 import no.invisibleink.model.Ink;
@@ -33,7 +33,7 @@ public class MapSectionFragment extends Fragment {
         return rootView;
     }
     
-    protected void setFragmentManager(FragmentManager fragmentManager) {
+    public void setFragmentManager(FragmentManager fragmentManager) {
     	this.fragmentManager = fragmentManager;
     }
     

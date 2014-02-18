@@ -1,4 +1,4 @@
-package no.invisibleink.view;
+package no.invisibleink.view.section;
 
 
 import java.util.Calendar;
