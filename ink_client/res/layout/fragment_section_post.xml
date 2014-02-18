@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.48"
             android:text="@string/send" />
+
     </LinearLayout>
 
 </FrameLayout>

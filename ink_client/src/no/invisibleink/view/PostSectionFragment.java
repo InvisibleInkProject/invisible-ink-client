@@ -1,9 +1,11 @@
 package no.invisibleink.view;
 
+
 import java.util.Calendar;
 import java.util.Date;
 
 import no.invisibleink.R;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -18,6 +21,7 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+
 import android.widget.Toast;
 
 public class PostSectionFragment extends Fragment {
@@ -28,6 +32,7 @@ public class PostSectionFragment extends Fragment {
 	private SeekBar form_radius;
 	private Button form_confirm;
 	private TextView form_radius_output;
+
 	private CheckBox activate_expire;
 	private TimePicker form_expire_time;
 	private DatePicker form_expire_date;
@@ -47,6 +52,7 @@ public class PostSectionFragment extends Fragment {
 	    public void onPostInkForm(String message, int radius, Date expires);
 	}	
 	
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -69,6 +75,7 @@ public class PostSectionFragment extends Fragment {
         form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
         form_confirm = (Button) rootView.findViewById(R.id.button1);
         form_radius_output = (TextView) rootView.findViewById(R.id.seekBarProgressOutput);   
+
         activate_expire = (CheckBox) rootView.findViewById(R.id.checkBox1);
         form_expire_time = (TimePicker) rootView.findViewById(R.id.timePicker1);
         form_expire_date = (DatePicker) rootView.findViewById(R.id.datePicker1);
@@ -97,6 +104,7 @@ public class PostSectionFragment extends Fragment {
         form_expire_date.setCalendarViewShown(false);
         
         // ----------------- form_radius
+
         form_radius.setMax(2000);
         form_radius.setProgress(500);
         form_radius_output.setText(String.format(rootView.getResources().getString(R.string.radius_output), form_radius.getProgress()));
@@ -118,12 +126,15 @@ public class PostSectionFragment extends Fragment {
 			}
 		});
         
+
         // ----------------- form_confirm
+
         form_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
             	String message = form_message.getText().toString();
             	int radius = form_radius.getProgress();
+
             	Date expire = null;
             	if (activate_expire.isChecked()) {
 	            	Calendar cal = Calendar.getInstance();
@@ -134,11 +145,14 @@ public class PostSectionFragment extends Fragment {
 	            	cal.set(Calendar.MINUTE, form_expire_time.getCurrentMinute());
 	            	expire = cal.getTime();
             	}
+
             	
             	if (message.isEmpty()) {
                 	Toast.makeText(view.getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
             	} else {
+
            			mCallback.onPostInkForm(message, radius, expire);
+
             	}
             }
         });             

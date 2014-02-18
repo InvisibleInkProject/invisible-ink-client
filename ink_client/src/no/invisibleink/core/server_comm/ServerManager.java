@@ -4,12 +4,12 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class ServerManager {
 

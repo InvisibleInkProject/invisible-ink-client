@@ -35,6 +35,7 @@ public class ListSectionFragment extends Fragment {
 	    public void doLocationUpdates(boolean yes);
 	}	
 	
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

@@ -16,7 +16,9 @@
 
 package no.invisibleink.view;
 
+
 import java.util.Date;
+
 
 import com.google.android.gms.location.LocationListener;
 import no.invisibleink.R;
@@ -39,7 +41,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
+
 		ActionBar.TabListener, LocationListener, PostSectionFragment.OnPostSectionFragmentListener, ListSectionFragment.OnListSectionFragmentListener {
+
 
     
     static FragmentManager fragmentManager;
@@ -304,7 +308,9 @@ public class MainActivity extends FragmentActivity implements
 		if (location == null) {
         	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
 		} else {
+
 			serverManager.postInk(message, radius, expires, location, this);
+
 		}
 	}
 
