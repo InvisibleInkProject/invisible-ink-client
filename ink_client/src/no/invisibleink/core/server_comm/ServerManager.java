@@ -41,7 +41,7 @@ public class ServerManager {
 	
 			GetInksTask gmt = new GetInksTask(context);
 			try {
-				URI url = new URI(Settings.SERVER_URL + location.getLatitude() + "," + location.getLongitude() + "," + Settings.REQUEST_INKS_RADIUS_IN_METERS + "/");
+				URI url = new URI(Settings.API_URL + "message/"+ location.getLatitude() + "," + location.getLongitude() + "," + Settings.REQUEST_INKS_RADIUS_IN_METERS + "/");
 				gmt.execute(url);
 			} catch (URISyntaxException e) {
 				Log.w(this.getClass().getName(), "URISyntaxException: " + e.getMessage());
@@ -85,7 +85,7 @@ public class ServerManager {
 		String stringEntity = gsonBuilder.toJson(ink);
 		
 		HttpPostTask pmt = new HttpPostTask(context);
-		pmt.execute(stringEntity);
+		pmt.execute(Settings.API_URL + "message/", stringEntity);
 	}
 	
 	/**

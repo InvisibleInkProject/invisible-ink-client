@@ -85,7 +85,6 @@ public class ListSectionFragment extends Fragment {
      * @param location
      */
 	public void update(InkList inkList, Location location) {
-		inkList.updateVisibility(location);
     	String output = new String();
     	output += "Location: " + location.getLatitude() + "," + location.getLongitude() + "\n";
     	output += "Received inks: " + inkList.size() + "\n";

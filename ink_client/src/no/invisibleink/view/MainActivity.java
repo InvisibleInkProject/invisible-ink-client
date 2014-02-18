@@ -24,6 +24,8 @@ import com.google.android.gms.location.LocationListener;
 import no.invisibleink.R;
 import no.invisibleink.core.location.LocationManager;
 import no.invisibleink.core.server_comm.ServerManager;
+import no.invisibleink.helper.DatabaseHelper;
+import no.invisibleink.helper.NoLocationException;
 import no.invisibleink.model.InkList;
 import no.invisibleink.view.section.ListSectionFragment;
 import no.invisibleink.view.section.MapSectionFragment;
@@ -47,7 +49,7 @@ public class MainActivity extends FragmentActivity implements
 
 		ActionBar.TabListener, LocationListener, PostSectionFragment.OnPostSectionFragmentListener, ListSectionFragment.OnListSectionFragmentListener {
 
-
+	private static final String LOG = "MainActivity";
     
     static FragmentManager fragmentManager;
     
@@ -79,6 +81,7 @@ public class MainActivity extends FragmentActivity implements
 	/** List with all local inks */
 	private InkList inkList;
     
+	private DatabaseHelper db;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,20 @@ public class MainActivity extends FragmentActivity implements
         inkList = new InkList();
         locationManager = new LocationManager(this);
         locationManager.onCreate();
+        db = new DatabaseHelper(getApplicationContext());
+        
+        //db.onCreate(db);
 
+/*        Location loc = new Location("");
+        loc.setLatitude(20);
+        loc.setLongitude(233);
+        Ink tmp = new Ink(3, loc, 100, "", "hello", "hi", null);
+        db.insertInk(tmp);
+        Ink tmp2 = new Ink(2, loc, 100, "", "hello", "hi", null);
+        db.insertInk(tmp2);
+        Log.d("Tag Count", "Tag Count: " + db.getInkList().size());
+ */       
+        
         /* -------------------------------- Swipe view with taps ---------------- */
         fragmentManager = getSupportFragmentManager();
         
@@ -142,6 +158,8 @@ public class MainActivity extends FragmentActivity implements
                     actionBar.newTab()
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
+
+        	Log.w(LOG, "oncreate finished");            
         }
     }
 
@@ -191,7 +209,14 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onStart() {
         super.onStart();
+    	Log.w(LOG, "onstart");
+
         locationManager.onStart();
+/*        InkList tmpInkList = db.getInkList();
+        if (!tmpInkList.isEmpty()) {
+        	Log.d(LOG, "recover " + tmpInkList.size() + " inks form db");
+        	onReceivedInkList(tmpInkList);
+        }*/
     }
     /*
      * Called when the system detects that this Activity is now visible.
@@ -271,18 +296,23 @@ public class MainActivity extends FragmentActivity implements
 	
 	public void onReceivedInkList(InkList inkList) {
 		if (inkList != null) {
+			Log.d(LOG, "received: " + inkList.size() + " inks");
+
 			this.inkList.clear();
 			this.inkList.addAll(inkList);
 			
-			Location location = locationManager.getLocation();
-			if (location != null) {	
+			Location location;
+			try {
+				location = locationManager.getLocation();
+				Log.w(LOG, location.toString());
+				inkList.updateVisibility(location);
 		    	listSectionFragment.update(inkList, location);
-		    	mapSectionFragment.update(inkList);
-			} else  {
-				Log.w(this.getClass().getName(), "onReceivedInkList: no location");				
-			}	
+		    	mapSectionFragment.update(inkList);		
+			} catch (NoLocationException e) {
+				Log.w(LOG, "onReceivedInkList: no location");				
+			}
 		} else {
-			Log.w(this.getClass().getName(), "onReceivedInkList: Receive null inkList");			
+			Log.w(LOG, "onReceivedInkList: Receive null inkList");			
 		}
 	}
 	
@@ -293,12 +323,6 @@ public class MainActivity extends FragmentActivity implements
 	@Override
 	public void onLocationChanged(Location location) {
 		serverManager.requestIfNecessary(this, location);
-        // Report to the UI that the location was updated
-// TODO:		
-//        mConnectionStatus.setText(R.string.location_updated);
-
-        // In the UI, set the latitude and longitude to the value received	
-//        mLatLng.setText(LocationUtils.getLatLng(this, location));		
 	}
 
 	/*
@@ -307,13 +331,11 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onPostInkForm(String message, int radius, Date expires) {
-		Location location = locationManager.getLocation();
-		if (location == null) {
-        	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
-		} else {
-
+		try {
+			Location location = locationManager.getLocation();
 			serverManager.postInk(message, radius, expires, location, this);
-
+		} catch (NoLocationException e) {
+        	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
 		}
 	}
 
@@ -323,13 +345,12 @@ public class MainActivity extends FragmentActivity implements
 	 */
 	@Override
 	public void onRequestInks() {
-		Location location = locationManager.getLocation();
-		if (location != null) {		
+		try {
+			Location location = locationManager.getLocation();
 			serverManager.request(this, location);
-		} else {
-			Log.w(this.getClass().getName(), "onRequestInks: no location");
-		}
-		
+		} catch (NoLocationException e) {
+			Log.w(LOG, "onRequestInks: " + e.getMessage());
+		}		
 	}
 
 	/*

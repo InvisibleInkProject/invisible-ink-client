@@ -31,9 +31,10 @@ public class HttpPostTask extends AsyncTask<String, Void, Integer> {
 		HttpClient client = new DefaultHttpClient();
 		
 		try {
-			String stringEntity = (String) params[0];
+			String uri = (String) params[0];
+			String stringEntity = (String) params[1];
 
-			HttpPost request = new HttpPost(Settings.SERVER_URL);
+			HttpPost request = new HttpPost(uri);
 			
 			StringEntity ent = new StringEntity(stringEntity);
 			ent.setContentType("application/json");
@@ -42,7 +43,7 @@ public class HttpPostTask extends AsyncTask<String, Void, Integer> {
 			HttpResponse response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
-			Log.d(this.getClass().getName(), "request: " + Settings.SERVER_URL + stringEntity);
+			Log.d(this.getClass().getName(), "request: " + Settings.API_URL + stringEntity);
 			
 			return statusCode;
 

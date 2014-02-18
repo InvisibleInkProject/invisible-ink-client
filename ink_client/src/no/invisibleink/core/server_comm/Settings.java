@@ -5,7 +5,7 @@ public abstract class Settings {
 	/**
 	 * Server URL for communication
 	 */
-	protected static final String SERVER_URL = "http://server.invisibleink.no/api/v1/message/";
+	protected static final String API_URL = "http://server.invisibleink.no/api/v1/";
 	
 	/**
 	 * If the distance between the current location and the last

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import android.graphics.Color;
 import android.location.Location;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
@@ -76,21 +77,27 @@ public class Ink {
 		this.author = author;
 		this.date = date;
 		
-		// Set map circle
-		this.circleOptions = new CircleOptions()
-			.center(new LatLng(location.getLatitude(), location.getLongitude()))
-			.radius(radius)
-			.strokeColor(Color.GRAY)
-			.strokeWidth(2)
-			.fillColor(0x30000000); 
-		// Set map marker
-		this.markerOptions = new MarkerOptions()
-			.position(new LatLng(location.getLatitude(), location.getLongitude()))
-			.title(title)
-			.snippet(message)
-			.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
-		
-		visible(false);
+		try {
+			
+			// Set map circle
+			this.circleOptions = new CircleOptions()
+				.center(new LatLng(location.getLatitude(), location.getLongitude()))
+				.radius(radius)
+				.strokeColor(Color.GRAY)
+				.strokeWidth(2)
+				.fillColor(0x30000000); 
+			// Set map marker
+			this.markerOptions = new MarkerOptions()
+				.position(new LatLng(location.getLatitude(), location.getLongitude()))
+				.title(title)
+				.snippet(message)
+				.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+			
+			visible(false);
+
+		} catch (NullPointerException e) {
+			Log.e(this.getClass().getName(), e.getCause() + " " + e.getMessage());
+		}
 	}
 
 	/**

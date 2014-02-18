@@ -16,3 +16,8 @@ Our application
 ** Add under "Library" the "google-play-services_lib" from your workspace
 * Still in the project properties select "Java Build Path" form the left menu
 ** Choose the tab "Order and Export" and make sure, that everthing is selected
+
+
+LogCat
+
+tag:^(?!.*(dalvikvm|libEGL|GooglePlayServicesUtil|EGL_genymotion|OpenGLRenderer)).*$

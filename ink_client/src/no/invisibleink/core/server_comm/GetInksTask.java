@@ -3,7 +3,10 @@ package no.invisibleink.core.server_comm;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.UnknownHostException;
 
+import no.invisibleink.helper.DatabaseHelper;
+import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
 import no.invisibleink.view.MainActivity;
 
@@ -29,7 +32,9 @@ import com.google.gson.JsonSyntaxException;
  */
 public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	
-	private Context mContext;
+	private static final String LOG = "GetInksTask";	
+	
+	private Context mContext;	
 	
 	public GetInksTask(Context context) {
 		super();
@@ -48,7 +53,7 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 		try {
 			HttpGet request = new HttpGet(uris[0]);	
 			HttpResponse response = client.execute(request);
-			Log.d(this.getClass().getName(), "request: " + request.getURI());
+			Log.d(LOG, "request: " + request.getURI());
 			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String line = "";
 			StringBuilder jsonContent = new StringBuilder();
@@ -61,18 +66,25 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 			JSONObject jo = new JSONObject(jsonContent.toString());
 			JSONArray ar = jo.getJSONArray("objects");
 			Gson gsonBuilder = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
+			
+			DatabaseHelper db = new DatabaseHelper(mContext);
+			db.clearTableInk();
+
 			for(int i=0;i<ar.length();i++){
-				GsonInk ink = gsonBuilder.fromJson(ar.get(i).toString(), GsonInk.class);
-				inkList.add(ink.toInk());
+				Ink ink = gsonBuilder.fromJson(ar.get(i).toString(), GsonInk.class).toInk();
+				inkList.add(ink);
+				db.insertInk(ink);
 			}
 			return inkList;
 
+		} catch (UnknownHostException e) {			
+			Log.i(LOG, "UnknownHostException, no internet connection");			
 		} catch (JsonSyntaxException e) {
-			Log.w(this.getClass().getName(), "JsonSyntaxException, " + e.getMessage());			
+			Log.w(LOG, "JsonSyntaxException, " + e.getMessage());			
 	    } catch (JSONException e) {
-			Log.w(this.getClass().getName(), "JSONException, " + e.getMessage());				    	
+			Log.w(LOG, "JSONException, " + e.getMessage());				    	
 	    } catch (Exception e) {
-			Log.e(this.getClass().getName(), "Exception, " + e.getClass().getName() + e.getMessage());			
+			Log.e(LOG, "Exception, " + e.getClass().getName() + e.getMessage());			
 		} finally {
 			client.getConnectionManager().shutdown();
 		}
@@ -82,17 +94,6 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	
 	@Override
     protected void onPostExecute(InkList inkList) {
-    	if (inkList != null) {
-			Log.d(this.getClass().getName(), "received: " + inkList.size() + " inks");
-			try {
-				((MainActivity) mContext).onReceivedInkList(inkList);
-			} catch (Exception e) {
-				Log.e(this.getClass().getName(), "onPostExecute " + e.getMessage());
-			}
-    	} else {
-    		//TODO: When there is a current list it should perhaps retry later.
-    		//      It should retry again when there is no current list
-			Log.d(this.getClass().getName(), "received: FAILED");    		
-    	}
+		((MainActivity) mContext).onReceivedInkList(inkList);
     }
 }

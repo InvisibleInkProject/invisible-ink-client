@@ -20,14 +20,14 @@ public class InkList extends ArrayList<Ink> {
 	 * @param location Current user location
 	 */
     public void updateVisibility(Location location) {
-    	for (Ink i : this) {
+/*    	for (Ink i : this) {
     		// Check if distance to center of the ink is smaller then its visibility radius
     		if (i.getLocation().distanceTo(location) <= i.getRadius() ) {
     			i.visible(true);
     		} else {
     			i.visible(false);
     		}
-    	}
+    	}*/
     }
     
 }

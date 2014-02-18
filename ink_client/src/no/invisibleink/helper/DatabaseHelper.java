@@ -6,6 +6,7 @@ import no.invisibleink.model.InkList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_CREATED_AT = "created_at";
  
     // INKS Table - column names
+	private static final String KEY_EXPIRES = "expires";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_TEXT = "text";
     private static final String KEY_LOCATION_LAT = "location_lat";
@@ -41,15 +43,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_INKS = "CREATE TABLE "
             + TABLE_INKS + "("
     		+ KEY_ID + " INTEGER PRIMARY KEY,"
+    		+ KEY_EXPIRES + " DATE,"
+    		+ KEY_USER_ID + " INTEGER,"
     		+ KEY_TEXT + " TEXT,"
+    		+ KEY_LOCATION_LAT + " DOUBLE,"
+    		+ KEY_LOCATION_LON + " DOUBLE,"
             + KEY_RADIUS + " DOUBLE)";
   
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
  
+/*    @Override
+    public void onOpen(SQLiteDatabase db) {
+        int iversion = db.getVersion();
+        if (iversion == 1) {
+            onUpgrade(db, 1, 2);
+        }
+    }    
+  */  
     @Override
     public void onCreate(SQLiteDatabase db) {
+    	Log.w(this.getClass().getName(), "create db");
         // creating required tables
         db.execSQL(CREATE_TABLE_INKS);
     }
@@ -62,6 +77,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // create new tables
         onCreate(db);
     }
+    
+    // closing database
+    public void closeDB() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        if (db != null && db.isOpen())
+            db.close();
+    }    
     
 	/**
 	 * Inserts an Ink the database.
@@ -81,9 +103,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_LOCATION_LON, ink.getLocation().getLongitude());
         
         // insert row, returns: the row ID of the newly inserted row, or -1 if an error occurred 
-        long row_id = db.insert(TABLE_INKS, null, values);
-        
-        return row_id > 0;
+        try {
+            long row_id = db.insert(TABLE_INKS, null, values);
+            return row_id > 0;
+        } catch (Exception e) {
+        	Log.e(this.getClass().getName(), "SQLiteConstraintException, can't insert ink");
+        }
+
+        return false;
+
     }
     
 
@@ -96,7 +124,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         InkList inkList = new InkList();
         String selectQuery = "SELECT  * FROM " + TABLE_INKS;
      
-        Log.e(LOG, selectQuery);
+//      Log.e(LOG, selectQuery);
      
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
@@ -117,6 +145,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
      
         return inkList;
+    }
+    
+
+    public void clearTableInk() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_INKS, KEY_ID + " >= ?", new String[] { String.valueOf(0) });
     }
     
     /*

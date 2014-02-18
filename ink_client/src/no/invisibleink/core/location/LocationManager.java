@@ -1,5 +1,6 @@
 package no.invisibleink.core.location;
 
+import no.invisibleink.helper.NoLocationException;
 import no.invisibleink.view.MainActivity;
 import android.app.Dialog;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -18,6 +20,8 @@ public class LocationManager implements
 GooglePlayServicesClient.ConnectionCallbacks,
 GooglePlayServicesClient.OnConnectionFailedListener {
 
+	private static final String LOG = "LocationManager";
+	
     // A request to connect to Location Services
     private LocationRequest mLocationRequest;
 
@@ -235,7 +239,17 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 
         if (servicesConnected()) {
             stopPeriodicUpdates();
+            
+            try {
+            	Log.i("", "save location");
+            	mEditor.putLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToRawLongBits(getLocation().getLatitude()));
+            	mEditor.putLong(LocationUtils.KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(getLocation().getLongitude()));
+            	mEditor.commit();
+			} catch (NoLocationException e) {
+				Log.w(this.getClass().getName(), "Can't store location");
+			}
         }
+        
     }
     
     /**
@@ -255,36 +269,31 @@ GooglePlayServicesClient.OnConnectionFailedListener {
     }
     
     /**
+     * Calls getLastLocation() to get the current location
      * 
      * @return last location or null
+     * @throws Exception 
      */
-    public Location getLocation() {
-    	if (servicesConnected()) {
+    public Location getLocation() throws NoLocationException {
+    	Log.i(LOG, "getLocation()");
+    	if (servicesConnected() && mLocationClient.isConnected()) {
+        	Log.i(LOG, "real");
     		return mLocationClient.getLastLocation();
+    	} else {
+/*    		Double lastLocationLat = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
+    		Double lastLocationLon = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
+Log.i("--------", lastLocationLat + "_");
+Log.i("--------", lastLocationLon + "_");
+
+    		if (lastLocationLat != Double.NaN && lastLocationLon != Double.NaN) {
+    			Location lastLoc = new Location("");
+	    		lastLoc.setLatitude(lastLocationLat);
+	    		lastLoc.setLongitude(lastLocationLon);
+	    		return lastLoc;
+    		}*/
+    		
+    		throw new NoLocationException();
     	}
-    	return null;
     }
-
-    /**
-     * Invoked by the "Get Location" button.
-     *
-     * Calls getLastLocation() to get the current location
-     *
-     * @param v The view object associated with this method, in this case a Button.
-     */
-//    public void getLocation(View v) {
-
-        // If Google Play Services is available
-//        if (servicesConnected()) {
-
-            // Get the current location
-//            Location currentLocation = mLocationClient.getLastLocation();
-
-            // Display the current location in the UI
-// TODO:            
-//            mLatLng.setText(LocationUtils.getLatLng(this, currentLocation));
-//        }
-//    }	
-	
 	
 }
