@@ -73,7 +73,7 @@ public class PostSectionFragment extends Fragment {
         form_expire_time = (TimePicker) rootView.findViewById(R.id.timePicker1);
         form_expire_date = (DatePicker) rootView.findViewById(R.id.datePicker1);
     
-        // ----------------- form_expire_time       
+        // ----------------- activate_expire       
         activate_expire.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			
 			@Override
