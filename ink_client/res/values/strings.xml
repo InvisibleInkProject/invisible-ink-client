@@ -1,16 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
     <string name="app_name">Invisible Ink</string>
+    <string name="app_login">Login Invisible Ink</string>
     <string name="action_settings">Settings</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-
     <string name="debug_output">Wait for Inks!</string>
     <string name="dummy_section_text">Section is just a dummy section.</string>
-    
+
     <!-- Fragment section post -->
     <string name="send">Send</string>
     <string name="radius_output">Radius: %1$dm</string>
-    
+    <string name="login">Login</string>
+    <string name="name">Username</string>
+    <string name="register_here">New to Invivisible Ink? Register here >>></string>
+    <string name="title_activity_register">RegisterActivity</string>
+    <string name="login_here">I\'m already registered, send me back to the login, please!</string>
+    <string name="register">Register</string>
+    <string name="email">E-mail address</string>
+    <string name="full_name">Full name</string>
+
 </resources>
