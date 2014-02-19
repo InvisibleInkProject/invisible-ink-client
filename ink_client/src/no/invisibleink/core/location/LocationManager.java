@@ -83,6 +83,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
         // If the client is connected
         if (mLocationClient.isConnected()) {
             stopPeriodicUpdates();
+            saveCurrentLocation();
         }
 
         // After disconnect() is called, the client is considered "dead".
@@ -239,15 +240,6 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 
         if (servicesConnected()) {
             stopPeriodicUpdates();
-            
-            try {
-            	Log.i("", "save location");
-            	mEditor.putLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToRawLongBits(getLocation().getLatitude()));
-            	mEditor.putLong(LocationUtils.KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(getLocation().getLongitude()));
-            	mEditor.commit();
-			} catch (NoLocationException e) {
-				Log.w(this.getClass().getName(), "Can't store location");
-			}
         }
         
     }
@@ -275,25 +267,36 @@ GooglePlayServicesClient.OnConnectionFailedListener {
      * @throws Exception 
      */
     public Location getLocation() throws NoLocationException {
-    	Log.i(LOG, "getLocation()");
     	if (servicesConnected() && mLocationClient.isConnected()) {
-        	Log.i(LOG, "real");
     		return mLocationClient.getLastLocation();
     	} else {
-/*    		Double lastLocationLat = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
-    		Double lastLocationLon = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
-Log.i("--------", lastLocationLat + "_");
-Log.i("--------", lastLocationLon + "_");
-
-    		if (lastLocationLat != Double.NaN && lastLocationLon != Double.NaN) {
-    			Location lastLoc = new Location("");
-	    		lastLoc.setLatitude(lastLocationLat);
-	    		lastLoc.setLongitude(lastLocationLon);
-	    		return lastLoc;
-    		}*/
-    		
     		throw new NoLocationException();
     	}
     }
+    
+	
+	private void saveCurrentLocation() {
+        try {
+        	mEditor.putLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToRawLongBits(getLocation().getLatitude()));
+        	mEditor.putLong(LocationUtils.KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(getLocation().getLongitude()));
+        	mEditor.commit();
+        	Log.d(LOG, "Save location in SharedPreferences");
+		} catch (NoLocationException e) {
+			Log.w(LOG, "Coudn't save location in SharedPreferences");
+		}		
+	}
+	
+	public Location getSavedLocation() throws NoLocationException {
+		Double lastLocationLat = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
+		Double lastLocationLon = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
+		if (lastLocationLat != Double.NaN && lastLocationLon != Double.NaN) {
+			Location lastLoc = new Location("");
+    		lastLoc.setLatitude(lastLocationLat);
+    		lastLoc.setLongitude(lastLocationLon);
+    		return lastLoc;
+		} else {
+			throw new NoLocationException();
+		}
+	}
 	
 }

@@ -18,6 +18,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
  *
  */
 public class Ink {
+	
+	private static final String LOG = "INK";
 
 	/** ID of the ink */
 	private int id;
@@ -96,8 +98,17 @@ public class Ink {
 			visible(false);
 
 		} catch (NullPointerException e) {
-			Log.e(this.getClass().getName(), e.getCause() + " " + e.getMessage());
+			Log.e(LOG, e.getCause() + " " + e.getMessage());
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Ink [id=" + id + ", location=(" + location.getLatitude() + location.getLongitude() + "), radius="
+				+ radius + ", message="
+				+ message + ", author=" + author + ", circleOptions="
+				+ circleOptions + ", markerOptions=" + markerOptions
+				+ ", isVisible=" + isVisible + "]";
 	}
 
 	/**

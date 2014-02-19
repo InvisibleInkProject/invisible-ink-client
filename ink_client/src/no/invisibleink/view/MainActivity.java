@@ -20,7 +20,10 @@ package no.invisibleink.view;
 import java.util.Date;
 
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.MapsInitializer;
+
 import no.invisibleink.R;
 import no.invisibleink.core.location.LocationManager;
 import no.invisibleink.core.server_comm.ServerManager;
@@ -95,18 +98,6 @@ public class MainActivity extends FragmentActivity implements
         locationManager.onCreate();
         db = new DatabaseHelper(getApplicationContext());
         
-        //db.onCreate(db);
-
-/*        Location loc = new Location("");
-        loc.setLatitude(20);
-        loc.setLongitude(233);
-        Ink tmp = new Ink(3, loc, 100, "", "hello", "hi", null);
-        db.insertInk(tmp);
-        Ink tmp2 = new Ink(2, loc, 100, "", "hello", "hi", null);
-        db.insertInk(tmp2);
-        Log.d("Tag Count", "Tag Count: " + db.getInkList().size());
- */       
-        
         /* -------------------------------- Swipe view with taps ---------------- */
         fragmentManager = getSupportFragmentManager();
         
@@ -159,7 +150,16 @@ public class MainActivity extends FragmentActivity implements
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
 
-        	Log.w(LOG, "oncreate finished");            
+            
+            
+            
+            
+            try {
+				MapsInitializer.initialize(getApplicationContext());
+			} catch (GooglePlayServicesNotAvailableException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
     }
 
@@ -209,14 +209,7 @@ public class MainActivity extends FragmentActivity implements
     @Override
     public void onStart() {
         super.onStart();
-    	Log.w(LOG, "onstart");
-
         locationManager.onStart();
-/*        InkList tmpInkList = db.getInkList();
-        if (!tmpInkList.isEmpty()) {
-        	Log.d(LOG, "recover " + tmpInkList.size() + " inks form db");
-        	onReceivedInkList(tmpInkList);
-        }*/
     }
     /*
      * Called when the system detects that this Activity is now visible.
@@ -294,7 +287,7 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 	
-	public void onReceivedInkList(InkList inkList) {
+	public void onReceivedInkList(InkList inkList, Location oldLocation) {
 		if (inkList != null) {
 			Log.d(LOG, "received: " + inkList.size() + " inks");
 
@@ -303,7 +296,11 @@ public class MainActivity extends FragmentActivity implements
 			
 			Location location;
 			try {
-				location = locationManager.getLocation();
+				if (oldLocation == null) {
+					location = locationManager.getLocation();
+				} else {
+					location = oldLocation;
+				}
 				Log.w(LOG, location.toString());
 				inkList.updateVisibility(location);
 		    	listSectionFragment.update(inkList, location);
@@ -312,7 +309,23 @@ public class MainActivity extends FragmentActivity implements
 				Log.w(LOG, "onReceivedInkList: no location");				
 			}
 		} else {
-			Log.w(LOG, "onReceivedInkList: Receive null inkList");			
+			Log.d(LOG, "onReceivedInkList: Receive null inkList");
+			
+			// TODO: comment
+	        InkList tmpInkList = db.getInkList();
+	        //for(Ink i : tmpInkList) {
+	        //	Log.i(LOG, i.toString());
+	        //}
+	        if (!tmpInkList.isEmpty()) {
+	        	Log.i(LOG, "recover " + tmpInkList.size() + " inks form db");
+	        	try {
+					onReceivedInkList(tmpInkList, locationManager.getSavedLocation());
+				} catch (NoLocationException e) {
+		        	Log.d(LOG, "recover " + e.getMessage());
+				}
+	        }
+
+	        
 		}
 	}
 	

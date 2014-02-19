@@ -52,8 +52,8 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 		HttpClient client = new DefaultHttpClient();
 		try {
 			HttpGet request = new HttpGet(uris[0]);	
-			HttpResponse response = client.execute(request);
 			Log.d(LOG, "request: " + request.getURI());
+			HttpResponse response = client.execute(request);
 			BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 			String line = "";
 			StringBuilder jsonContent = new StringBuilder();
@@ -94,6 +94,6 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	
 	@Override
     protected void onPostExecute(InkList inkList) {
-		((MainActivity) mContext).onReceivedInkList(inkList);
+		((MainActivity) mContext).onReceivedInkList(inkList, null);
     }
 }

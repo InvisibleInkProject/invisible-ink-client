@@ -35,20 +35,21 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name="no.invisibleink.view.LoginActivity"
-            android:label="@string/app_login"
-            android:taskAffinity="no.invisibleink.view.LoginActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
+            android:name="no.invisibleink.view.MainActivity"
+            android:label="@string/app_name"
+            android:taskAffinity="no.invisibleink.view.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
-            android:name="no.invisibleink.view.MainActivity"
-            android:label="@string/app_name"
-            android:taskAffinity="no.invisibleink.view.MainActivity" >
+            android:name="no.invisibleink.view.LoginActivity"
+            android:label="@string/app_login"
+            android:taskAffinity="no.invisibleink.view.LoginActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

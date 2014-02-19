@@ -17,6 +17,8 @@ import android.widget.Toast;
  */
 public class HttpPostTask extends AsyncTask<String, Void, Integer> {
 
+	private static final String LOG = "HttpPostTask";
+	
 	/**
 	 * Context to show result in a toast.
 	 */
@@ -43,12 +45,12 @@ public class HttpPostTask extends AsyncTask<String, Void, Integer> {
 			HttpResponse response = client.execute(request);
 			
 			int statusCode = response.getStatusLine().getStatusCode();
-			Log.d(this.getClass().getName(), "request: " + Settings.API_URL + stringEntity);
+			Log.d(LOG, "request: " + Settings.API_URL + stringEntity);
 			
 			return statusCode;
 
 		} catch (Exception e) {
-			Log.e(this.getClass().getName(), "Exception, " + e.getMessage());			
+			Log.e(LOG, "Exception, " + e.getMessage());			
 		} finally {
 			client.getConnectionManager().shutdown();
 		}	
@@ -59,10 +61,10 @@ public class HttpPostTask extends AsyncTask<String, Void, Integer> {
 	 @Override
 	protected void onPostExecute(Integer statusCode) {
 		if (statusCode == HttpURLConnection.HTTP_CREATED){
-			Log.d(this.getClass().getName(), "response: " + statusCode);
+			Log.d(LOG, "response: " + statusCode);
 			Toast.makeText(context, "Sucessfull (" + statusCode + ")", Toast.LENGTH_LONG).show();
 		} else {
-			Log.e(this.getClass().getName(), "response: " + statusCode);
+			Log.e(LOG, "response: " + statusCode);
 			Toast.makeText(context, "Fail (" + statusCode + ")", Toast.LENGTH_LONG).show();
 		}	 
 	}

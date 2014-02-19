@@ -12,6 +12,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class ServerManager {
+	
+	private static final String LOG = "ServerManager";
 
 	/**
 	 * Location, when the last request was send.
@@ -44,10 +46,10 @@ public class ServerManager {
 				URI url = new URI(Settings.API_URL + "message/"+ location.getLatitude() + "," + location.getLongitude() + "," + Settings.REQUEST_INKS_RADIUS_IN_METERS + "/");
 				gmt.execute(url);
 			} catch (URISyntaxException e) {
-				Log.w(this.getClass().getName(), "URISyntaxException: " + e.getMessage());
+				Log.w(LOG, "URISyntaxException: " + e.getMessage());
 			}
 		} else {
-			Log.w(this.getClass().getName(), "requst with null location");
+			Log.w(LOG, "requst with null location");
 		}
 	}
 

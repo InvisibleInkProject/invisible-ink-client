@@ -17,6 +17,9 @@ import android.widget.ToggleButton;
 
 public class ListSectionFragment extends Fragment {
 
+	@SuppressWarnings("unused")
+	private static final String LOG = "ListSectionFragment";
+	
 	private OnListSectionFragmentListener mCallback;
 	
 	private TextView selection;
@@ -40,8 +43,6 @@ public class ListSectionFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
         try {
             mCallback = (OnListSectionFragmentListener) activity;
         } catch (ClassCastException e) {
@@ -74,7 +75,6 @@ public class ListSectionFragment extends Fragment {
 				mCallback.doLocationUpdates(toogleButton_requestUpdate.isChecked());
 			}
 		});
-		
         return rootView;
     }
     
@@ -99,7 +99,7 @@ public class ListSectionFragment extends Fragment {
     		output += i.getID() + ", " + location.distanceTo(i.getLocation()) + "m, r" + i.getRadius() + "m, " + messagePreview + "\n";
     	}
     	this.progressBar_request.setVisibility(View.GONE);
-    	this.selection.setText(output);			
+    	this.selection.setText(output);
 	}
 }
 

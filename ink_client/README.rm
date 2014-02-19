@@ -18,6 +18,9 @@ Our application
 ** Choose the tab "Order and Export" and make sure, that everthing is selected
 
 
-LogCat
+### LogCat
 
+LogCat filter
+```
 tag:^(?!.*(dalvikvm|libEGL|GooglePlayServicesUtil|EGL_genymotion|OpenGLRenderer)).*$
+```

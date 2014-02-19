@@ -1,12 +1,12 @@
 package no.invisibleink.helper;
 
 import java.util.Date;
+
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
@@ -15,7 +15,8 @@ import android.util.Log;
 public class DatabaseHelper extends SQLiteOpenHelper {
 	 
     // Logcat tag
-    private static final String LOG = "DatabaseHelper";
+    @SuppressWarnings("unused")
+	private static final String LOG = "DatabaseHelper";
  
     // Database Version
     private static final int DATABASE_VERSION = 1;
@@ -28,7 +29,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
  
     // Common column names
     private static final String KEY_ID = "id";
-    private static final String KEY_CREATED_AT = "created_at";
  
     // INKS Table - column names
 	private static final String KEY_EXPIRES = "expires";
@@ -124,16 +124,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         InkList inkList = new InkList();
         String selectQuery = "SELECT  * FROM " + TABLE_INKS;
      
-//      Log.e(LOG, selectQuery);
-     
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
      
         // looping through all rows and adding to list
+        Location location = new Location("");
         if (c.moveToFirst()) {
             do {
             	int id = c.getInt((c.getColumnIndex(KEY_ID)));
-            	Location location = null;
+            	location.setLatitude(c.getDouble(c.getColumnIndex(KEY_LOCATION_LAT)));
+            	location.setLongitude(c.getDouble(c.getColumnIndex(KEY_LOCATION_LON)));
             	double radius = c.getDouble(c.getColumnIndex(KEY_RADIUS));
             	String title = "";
             	String message = c.getString(c.getColumnIndex(KEY_TEXT));
@@ -153,9 +153,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(TABLE_INKS, KEY_ID + " >= ?", new String[] { String.valueOf(0) });
     }
     
-    /*
-     * Deleting a todo
-     */
     /**
      * Delete specific Iink.
      * 
