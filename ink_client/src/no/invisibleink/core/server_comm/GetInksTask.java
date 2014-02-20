@@ -5,10 +5,10 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.UnknownHostException;
 
+import no.invisibleink.MainActivity;
 import no.invisibleink.helper.DatabaseHelper;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
-import no.invisibleink.view.MainActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

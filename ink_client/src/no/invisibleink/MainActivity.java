@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package no.invisibleink.view;
+package no.invisibleink;
 
 
 import java.util.Date;

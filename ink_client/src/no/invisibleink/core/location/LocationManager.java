@@ -1,7 +1,7 @@
 package no.invisibleink.core.location;
 
+import no.invisibleink.MainActivity;
 import no.invisibleink.helper.NoLocationException;
-import no.invisibleink.view.MainActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.IntentSender;
@@ -263,15 +263,17 @@ GooglePlayServicesClient.OnConnectionFailedListener {
     /**
      * Calls getLastLocation() to get the current location
      * 
-     * @return last location or null
-     * @throws Exception 
+     * @return last location
+     * @throws NoLocationException 
      */
     public Location getLocation() throws NoLocationException {
     	if (servicesConnected() && mLocationClient.isConnected()) {
-    		return mLocationClient.getLastLocation();
-    	} else {
-    		throw new NoLocationException();
+    		Location lastLocation = mLocationClient.getLastLocation();
+    		if (lastLocation != null) {
+    			return lastLocation;
+    		}
     	}
+   		throw new NoLocationException();
     }
     
 	

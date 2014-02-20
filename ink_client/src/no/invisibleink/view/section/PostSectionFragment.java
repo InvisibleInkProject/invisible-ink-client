@@ -9,6 +9,7 @@ import no.invisibleink.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import android.widget.Toast;
 
 public class PostSectionFragment extends Fragment {
 
+	private static final String LOG = "PostSectionFragmet";
+	
 	private OnPostSectionFragmentListener mCallback;
 
 	private EditText form_message;
@@ -36,6 +39,11 @@ public class PostSectionFragment extends Fragment {
 	private CheckBox activate_expire;
 	private TimePicker form_expire_time;
 	private DatePicker form_expire_date;
+	
+	/**
+	 * Get and set date/time.
+	 */
+	private Calendar cal;
 
 	public interface OnPostSectionFragmentListener {
 
@@ -71,6 +79,14 @@ public class PostSectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_section_post, container, false);
+        
+        cal = Calendar.getInstance();
+        setupFormPostInk(rootView);
+                
+        return rootView;
+    }
+    
+    private void setupFormPostInk(View rootView) {
         form_message = (EditText) rootView.findViewById(R.id.editText1);
         form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
         form_confirm = (Button) rootView.findViewById(R.id.button1);
@@ -86,6 +102,18 @@ public class PostSectionFragment extends Fragment {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				if (isChecked) {
+					cal.setTimeInMillis(System.currentTimeMillis() + 60000); // 60000ms offset
+			        // ----------------- set date picker
+					try {
+						form_expire_date.setMinDate(System.currentTimeMillis() - 1000);
+					} catch (IllegalArgumentException e) {
+						Log.w(LOG, "Min date is in the future");
+					}
+			        form_expire_date.updateDate(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
+			        // ----------------- set time picker 
+			        form_expire_time.setCurrentHour(Calendar.HOUR_OF_DAY);
+			        form_expire_time.setCurrentMinute(cal.get(Calendar.MINUTE));
+			        // ----------------- make both visible
 			        form_expire_time.setVisibility(View.VISIBLE);
 			        form_expire_date.setVisibility(View.VISIBLE);
 				} else {
@@ -132,31 +160,40 @@ public class PostSectionFragment extends Fragment {
         form_confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            	boolean error = false;
+            	
             	String message = form_message.getText().toString();
             	int radius = form_radius.getProgress();
 
             	Date expire = null;
             	if (activate_expire.isChecked()) {
-	            	Calendar cal = Calendar.getInstance();
-	            	cal.set(Calendar.YEAR, form_expire_date.getYear());
-	            	cal.set(Calendar.MONTH, form_expire_date.getMonth());
-	            	cal.set(Calendar.DATE, form_expire_date.getDayOfMonth());
-	            	cal.set(Calendar.HOUR_OF_DAY, form_expire_time.getCurrentHour());
-	            	cal.set(Calendar.MINUTE, form_expire_time.getCurrentMinute());
-	            	expire = cal.getTime();
+	            	Calendar expire_date = Calendar.getInstance();
+	            	expire_date.set(Calendar.YEAR, form_expire_date.getYear());
+	            	expire_date.set(Calendar.MONTH, form_expire_date.getMonth());
+	            	expire_date.set(Calendar.DATE, form_expire_date.getDayOfMonth());
+	            	expire_date.set(Calendar.HOUR_OF_DAY, form_expire_time.getCurrentHour());
+	            	expire_date.set(Calendar.MINUTE, form_expire_time.getCurrentMinute());
+	            	expire = expire_date.getTime();
+	            	
+	            	cal.setTimeInMillis(System.currentTimeMillis());
+	            	if (expire_date.before(cal) ) {
+	            		error = true;
+	                	Toast.makeText(view.getContext(), "Expire date lies in the past", Toast.LENGTH_SHORT).show();		            		
+	            	}
             	}
 
             	
             	if (message.isEmpty()) {
+            		error = true;
                 	Toast.makeText(view.getContext(), "Message field is empty", Toast.LENGTH_SHORT).show();	
-            	} else {
-
+            	}
+            	
+            	if (!error) {
            			mCallback.onPostInkForm(message, radius, expire);
-
             	}
             }
         });             
-        
-        return rootView;
+    	
     }
+    
 }
