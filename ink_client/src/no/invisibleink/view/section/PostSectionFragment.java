@@ -78,6 +78,7 @@ public class PostSectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+    	setRetainInstance(true);
         View rootView = inflater.inflate(R.layout.fragment_section_post, container, false);
         
         cal = Calendar.getInstance();

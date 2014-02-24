@@ -54,6 +54,7 @@ public class ListSectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+    	setRetainInstance(true);
         View rootView = inflater.inflate(R.layout.fragment_section_list, container, false);
 		this.selection = (TextView) rootView.findViewById(R.id.textView1);
 		this.button_request = (Button) rootView.findViewById(R.id.secListButton);

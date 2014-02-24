@@ -103,7 +103,6 @@ public class MainActivity extends FragmentActivity implements
         
         listSectionFragment = new ListSectionFragment();
         mapSectionFragment = new MapSectionFragment();
-        mapSectionFragment.setFragmentManager(fragmentManager);
         postSectionFragment = new PostSectionFragment();
         
         // Create the adapter that will return a fragment for each of the three primary sections

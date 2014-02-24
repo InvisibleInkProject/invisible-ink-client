@@ -94,6 +94,10 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 	
 	@Override
     protected void onPostExecute(InkList inkList) {
-		((MainActivity) mContext).onReceivedInkList(inkList, null);
+		if (mContext instanceof MainActivity) {
+			((MainActivity) mContext).onReceivedInkList(inkList, null);
+		} else {
+			Log.w(LOG, "onPostExecute - nothing to do");
+		}
     }
 }

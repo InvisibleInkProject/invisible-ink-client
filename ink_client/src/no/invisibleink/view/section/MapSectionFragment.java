@@ -1,10 +1,12 @@
 package no.invisibleink.view.section;
 
+import no.invisibleink.MainActivity;
 import no.invisibleink.R;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
 import android.view.LayoutInflater;
@@ -22,19 +24,17 @@ public class MapSectionFragment extends Fragment {
      * Note that this may be null if the Google Play services APK is not available.
      */
     private GoogleMap mMap;
-    private FragmentManager fragmentManager;
+    
+    private View rootView;
 	
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_section_map, container, false);
+    	setRetainInstance(true);
+        this.rootView = inflater.inflate(R.layout.fragment_section_map, container, false);    
         setUpMapIfNeeded();
         
         return rootView;
-    }
-    
-    public void setFragmentManager(FragmentManager fragmentManager) {
-    	this.fragmentManager = fragmentManager;
     }
     
     /**
@@ -53,10 +53,11 @@ public class MapSectionFragment extends Fragment {
      * method in {@link #onResume()} to guarantee that it will be called.
      */
     private void setUpMapIfNeeded() {
+    	FragmentManager fragmentManager = ((FragmentActivity) rootView.getContext()).getSupportFragmentManager();
         // Do a null check to confirm that we have not already instantiated the map.
-        if ( this.fragmentManager != null && this.mMap == null) {
+        if ( fragmentManager != null && this.mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) this.fragmentManager.findFragmentById(R.id.map))
+            mMap = ((SupportMapFragment) fragmentManager.findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
