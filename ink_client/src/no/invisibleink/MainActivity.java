@@ -148,19 +148,19 @@ public class MainActivity extends FragmentActivity implements
             actionBar.addTab(
                     actionBar.newTab()
                             .setText(mAppSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-
-            
-            
-            
-            
-            try {
-				MapsInitializer.initialize(getApplicationContext());
-			} catch (GooglePlayServicesNotAvailableException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+                            .setTabListener(this));            
         }
+        
+        
+        
+        
+        try {
+			MapsInitializer.initialize(getApplicationContext());
+		} catch (GooglePlayServicesNotAvailableException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     }
 
     @Override
@@ -219,7 +219,9 @@ public class MainActivity extends FragmentActivity implements
     	super.onResume();
     	locationManager.onResume();
     }
+        
     
+    /* -------------------------------- Swipe view with taps ---------------- */
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
