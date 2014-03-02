@@ -1,6 +1,5 @@
 package no.invisibleink.view.section;
 
-import no.invisibleink.MainActivity;
 import no.invisibleink.R;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
@@ -15,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
-
 
 
 public class MapViewFragment extends Fragment {
