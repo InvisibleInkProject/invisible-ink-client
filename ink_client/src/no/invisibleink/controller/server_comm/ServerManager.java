@@ -1,8 +1,11 @@
-package no.invisibleink.core.server_comm;
+package no.invisibleink.controller.server_comm;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+
+import no.invisibleink.controller.Settings;
+import no.invisibleink.model.GsonInk;
 
 import android.content.Context;
 import android.location.Location;

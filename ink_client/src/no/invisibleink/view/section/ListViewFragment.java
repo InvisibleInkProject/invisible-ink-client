@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-public class ListSectionFragment extends Fragment {
+public class ListViewFragment extends Fragment {
 
 	@SuppressWarnings("unused")
 	private static final String LOG = "ListSectionFragment";

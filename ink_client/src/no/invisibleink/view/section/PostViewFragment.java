@@ -25,7 +25,7 @@ import android.widget.TimePicker;
 
 import android.widget.Toast;
 
-public class PostSectionFragment extends Fragment {
+public class PostViewFragment extends Fragment {
 
 	private static final String LOG = "PostSectionFragmet";
 	

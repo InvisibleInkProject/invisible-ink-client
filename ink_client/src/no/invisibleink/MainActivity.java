@@ -25,14 +25,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
 
 import no.invisibleink.R;
-import no.invisibleink.core.location.LocationManager;
-import no.invisibleink.core.server_comm.ServerManager;
-import no.invisibleink.helper.DatabaseHelper;
-import no.invisibleink.helper.NoLocationException;
+import no.invisibleink.controller.location.LocationManager;
+import no.invisibleink.controller.location.NoLocationException;
+import no.invisibleink.controller.server_comm.ServerManager;
+import no.invisibleink.model.DatabaseHelper;
 import no.invisibleink.model.InkList;
-import no.invisibleink.view.section.ListSectionFragment;
-import no.invisibleink.view.section.MapSectionFragment;
-import no.invisibleink.view.section.PostSectionFragment;
+import no.invisibleink.view.section.ListViewFragment;
+import no.invisibleink.view.section.MapViewFragment;
+import no.invisibleink.view.section.PostViewFragment;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.location.Location;
@@ -50,15 +50,15 @@ import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
 
-		ActionBar.TabListener, LocationListener, PostSectionFragment.OnPostSectionFragmentListener, ListSectionFragment.OnListSectionFragmentListener {
+		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener {
 
 	private static final String LOG = "MainActivity";
     
     static FragmentManager fragmentManager;
     
-    private ListSectionFragment listSectionFragment;
-    private MapSectionFragment mapSectionFragment;
-    private PostSectionFragment postSectionFragment;
+    private ListViewFragment listSectionFragment;
+    private MapViewFragment mapSectionFragment;
+    private PostViewFragment postSectionFragment;
     
     /* -------------------------------- Swipe view with taps ---------------- */
     /**
@@ -101,9 +101,9 @@ public class MainActivity extends FragmentActivity implements
         /* -------------------------------- Swipe view with taps ---------------- */
         fragmentManager = getSupportFragmentManager();
         
-        listSectionFragment = new ListSectionFragment();
-        mapSectionFragment = new MapSectionFragment();
-        postSectionFragment = new PostSectionFragment();
+        listSectionFragment = new ListViewFragment();
+        mapSectionFragment = new MapViewFragment();
+        postSectionFragment = new PostViewFragment();
         
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.

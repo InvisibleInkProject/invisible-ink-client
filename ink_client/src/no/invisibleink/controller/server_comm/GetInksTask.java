@@ -1,4 +1,4 @@
-package no.invisibleink.core.server_comm;
+package no.invisibleink.controller.server_comm;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,7 +6,8 @@ import java.net.URI;
 import java.net.UnknownHostException;
 
 import no.invisibleink.MainActivity;
-import no.invisibleink.helper.DatabaseHelper;
+import no.invisibleink.model.DatabaseHelper;
+import no.invisibleink.model.GsonInk;
 import no.invisibleink.model.Ink;
 import no.invisibleink.model.InkList;
 

@@ -18,7 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 
 
 
-public class MapSectionFragment extends Fragment {
+public class MapViewFragment extends Fragment {
 
     /**
      * Note that this may be null if the Google Play services APK is not available.

@@ -1,7 +1,6 @@
-package no.invisibleink.core.location;
+package no.invisibleink.controller.location;
 
 import no.invisibleink.MainActivity;
-import no.invisibleink.helper.NoLocationException;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.IntentSender;

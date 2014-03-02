@@ -1,9 +1,7 @@
-package no.invisibleink.helper;
+package no.invisibleink.model;
 
 import java.util.Date;
 
-import no.invisibleink.model.Ink;
-import no.invisibleink.model.InkList;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

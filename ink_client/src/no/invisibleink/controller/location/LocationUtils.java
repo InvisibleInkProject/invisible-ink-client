@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package no.invisibleink.core.location;
+package no.invisibleink.controller.location;
 
 //import android.content.Context;
 //import android.location.Location;

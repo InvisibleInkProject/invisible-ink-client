@@ -1,10 +1,9 @@
-package no.invisibleink.core.server_comm;
+package no.invisibleink.model;
 
 import java.util.Date;
 
 import android.location.Location;
 
-import no.invisibleink.model.Ink;
 
 public class GsonInk {
 
