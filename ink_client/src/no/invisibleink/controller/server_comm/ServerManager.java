@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.Date;
 
 import no.invisibleink.controller.Settings;
+import no.invisibleink.controller.api.InvisibleInkClientUsage;
 import no.invisibleink.model.GsonInk;
 
 import android.content.Context;
