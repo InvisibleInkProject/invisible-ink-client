@@ -1,8 +1,8 @@
-package no.invisibleink.controller.server_comm;
+package no.invisibleink.app.controller.server_comm;
 
 import java.net.HttpURLConnection;
 
-import no.invisibleink.controller.Settings;
+import no.invisibleink.app.controller.Settings;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

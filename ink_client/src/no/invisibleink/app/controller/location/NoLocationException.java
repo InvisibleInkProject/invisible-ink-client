@@ -1,4 +1,4 @@
-package no.invisibleink.controller.location;
+package no.invisibleink.app.controller.location;
 
 public class NoLocationException extends Exception {
 

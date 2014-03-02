@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package no.invisibleink;
+package no.invisibleink.app;
 
 
 import java.util.Date;
@@ -25,14 +25,14 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
 
 import no.invisibleink.R;
-import no.invisibleink.controller.location.LocationManager;
-import no.invisibleink.controller.location.NoLocationException;
-import no.invisibleink.controller.server_comm.ServerManager;
-import no.invisibleink.model.DatabaseHelper;
-import no.invisibleink.model.InkList;
-import no.invisibleink.view.section.ListViewFragment;
-import no.invisibleink.view.section.MapViewFragment;
-import no.invisibleink.view.section.PostViewFragment;
+import no.invisibleink.app.controller.location.LocationManager;
+import no.invisibleink.app.controller.location.NoLocationException;
+import no.invisibleink.app.controller.server_comm.ServerManager;
+import no.invisibleink.app.model.DatabaseHelper;
+import no.invisibleink.app.model.InkList;
+import no.invisibleink.app.view.section.ListViewFragment;
+import no.invisibleink.app.view.section.MapViewFragment;
+import no.invisibleink.app.view.section.PostViewFragment;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.location.Location;

@@ -1,8 +1,8 @@
-package no.invisibleink.view.section;
+package no.invisibleink.app.view.section;
 
 import no.invisibleink.R;
-import no.invisibleink.model.Ink;
-import no.invisibleink.model.InkList;
+import no.invisibleink.app.model.Ink;
+import no.invisibleink.app.model.InkList;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;

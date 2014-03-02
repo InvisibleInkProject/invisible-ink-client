@@ -1,4 +1,4 @@
-package no.invisibleink.model;
+package no.invisibleink.app.model;
 
 import java.util.Date;
 

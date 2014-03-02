@@ -1,6 +1,6 @@
-package no.invisibleink.controller.location;
+package no.invisibleink.app.controller.location;
 
-import no.invisibleink.MainActivity;
+import no.invisibleink.app.MainActivity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.IntentSender;

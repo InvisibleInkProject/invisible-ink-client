@@ -1,6 +1,15 @@
+# InvisibleInk - Android app
 
+### Used software
 
-=== How to run this application in Eclipse ===
+Used Java libraries:
+* [Android Asynchronous Http Client](http://loopj.com/android-async-http/) (v.1.4.4)
+    * JavaDoc: http://loopj.com/android-async-http/doc/
+    * Source: libs/android-async-http/library/src/main/java/
+    
+## Notes
+
+### How to run this application in Eclipse
 
 Preparation
 * Open the "Android SDK Manager"
@@ -17,14 +26,6 @@ Our application
 * Still in the project properties select "Java Build Path" form the left menu
 ** Choose the tab "Order and Export" and make sure, that everthing is selected
 
-### Used software
-
-Used Java libraries:
-* [Android Asynchronous Http Client](http://loopj.com/android-async-http/) (v.1.4.4)
-    * JavaDoc: http://loopj.com/android-async-http/doc/
-    * Source: libs/android-async-http/library/src/main/java/
-    
-## Notes
 
 ### LogCat tip
 

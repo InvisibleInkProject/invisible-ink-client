@@ -1,4 +1,4 @@
-package no.invisibleink.controller;
+package no.invisibleink.app.controller;
 
 public abstract class Settings {
 
