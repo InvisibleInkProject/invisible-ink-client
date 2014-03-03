@@ -1,6 +1,6 @@
 package no.invisibleink.app.view.section;
 
-import no.invisibleink.R;
+import no.invisibleink.app.R;
 import no.invisibleink.app.model.Ink;
 import no.invisibleink.app.model.InkList;
 import android.app.Activity;

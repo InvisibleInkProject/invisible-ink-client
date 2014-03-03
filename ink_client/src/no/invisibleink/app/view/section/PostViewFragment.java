@@ -4,7 +4,7 @@ package no.invisibleink.app.view.section;
 import java.util.Calendar;
 import java.util.Date;
 
-import no.invisibleink.R;
+import no.invisibleink.app.R;
 
 import android.app.Activity;
 import android.os.Bundle;

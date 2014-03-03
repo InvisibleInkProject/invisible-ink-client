@@ -4,7 +4,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
 
-import no.invisibleink.api.InvisibleInkClientUsage;
 import no.invisibleink.app.controller.Settings;
 import no.invisibleink.app.model.GsonInk;
 

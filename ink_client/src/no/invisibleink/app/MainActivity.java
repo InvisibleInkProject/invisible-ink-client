@@ -24,7 +24,8 @@ import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
 
-import no.invisibleink.R;
+import no.invisibleink.app.R;
+import no.invisibleink.api.ParseInksTask;
 import no.invisibleink.app.controller.location.LocationManager;
 import no.invisibleink.app.controller.location.NoLocationException;
 import no.invisibleink.app.controller.server_comm.ServerManager;
@@ -49,7 +50,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener {
+		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener, ParseInksTask.OnParseInksCompleted {
 
 	private static final String LOG = "MainActivity";
     
@@ -377,6 +378,14 @@ public class MainActivity extends FragmentActivity implements
 		} else {
 			locationManager.stopUpdates();
 		}
+		
+	}
+
+	/*
+	 */
+	@Override
+	public void onReceiveInks(InkList inkList) {
+		// TODO Auto-generated method stub
 		
 	}
     

@@ -1,7 +1,7 @@
 package no.invisibleink.app.view.user;
 
 import no.invisibleink.app.MainActivity;
-import no.invisibleink.R;
+import no.invisibleink.app.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
