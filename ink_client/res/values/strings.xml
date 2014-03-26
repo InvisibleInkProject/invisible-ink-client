@@ -22,5 +22,23 @@
     <string name="register">Register</string>
     <string name="email">E-mail address</string>
     <string name="full_name">Full name</string>
+    <string name="required">* Required Information</string>
+    
+    <string name="email_req">E-Mail address *</string>
+    <string name="name_req">Username *</string>
+    <string name="pw_req">Password *</string>
+    <string name="gender">Gender</string>
+    <string name="nationality">Nationality</string>
+    <string name="date">Birthdate *</string>
+    <string name="date_placeholder">MM/DD/YYYY</string>
+    
+    <string-array name="gender_array">
+    	<item></item> 
+        <item>Female</item>
+        <item>Male</item>
+        <item>Other</item>
+        <item>Gender is a social construct</item>
+        <item>I like funny things</item>
+    </string-array>
 
 </resources>

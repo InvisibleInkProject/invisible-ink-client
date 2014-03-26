@@ -1,56 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="match_parent"
-  android:layout_height="match_parent"
-  android:id="@+id/registration_form"
- >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/registration_form"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
-  		<!-- Registration Form -->
-		<LinearLayout
-		  android:orientation="vertical"
-		  android:layout_width="match_parent"
-		  android:layout_height="wrap_content"
-		  android:padding="10dip">
-		  <EditText android:id="@+id/reg_fullname"
-		  		android:layout_width="fill_parent"
-		  		android:layout_height="wrap_content"
-		  		android:layout_marginTop="5dip"
-		  		android:singleLine="true"
-		  		android:inputType="textPersonName"
-		  		android:hint="@string/full_name"
-		  		android:layout_marginBottom="20dip"/>  
-		  <EditText android:id="@+id/reg_email"
-		      	android:inputType="textEmailAddress"
-		  		android:layout_width="fill_parent"
-		  		android:layout_height="wrap_content"
-		  		android:layout_marginTop="5dip"
-		  		android:singleLine="true"
-		  		android:hint="@string/prompt_email"
-		  		android:layout_marginBottom="20dip"/>
-		  <EditText android:id="@+id/reg_password"
-		        android:layout_width="fill_parent"
-		  		android:layout_height="wrap_content"
-		  		android:inputType="textPassword"
-		  		android:singleLine="true"
-		  		android:hint="@string/prompt_password"
-		  		android:layout_marginTop="5dip"/>
-		  <!-- Register Button -->
-		  <Button android:id="@+id/btnRegister"
-		  		android:layout_width="fill_parent"
-		  		android:layout_height="wrap_content"
-		  		android:layout_marginTop="10dip"
-		  		android:text="@string/register"/>
-		  <!-- Link to Login Screen -->
-		  <TextView android:id="@+id/link_to_login"
-		  		android:layout_width="fill_parent"
-		  		android:layout_height="wrap_content"
-		  		android:layout_marginTop="40dip"
-		  		android:layout_marginBottom="40dip"
-		  		android:text="@string/login_here"
-		  		android:gravity="center"
-		  		android:textColor="#025f7c"/>
+    <!-- Registration Form -->
 
-		</LinearLayout>
-  		
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dip" >
+
+        <EditText
+            android:id="@+id/reg_fullname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:layout_marginTop="5dip"
+            android:hint="@string/name_req"
+            android:inputType="textPersonName"
+            android:singleLine="true"
+            />
+
+        <EditText
+            android:id="@+id/reg_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dip"
+            android:layout_marginTop="5dip"
+            android:hint="@string/email_req"
+            android:inputType="textEmailAddress"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/reg_password"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:hint="@string/pw_req"
+            android:inputType="textPassword"
+            android:singleLine="true" />
+        <!-- Register Button -->
+
+       <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/date" />
+
+            <EditText
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/date_placeholder"
+                android:inputType="date" 
+                android:focusable="false"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/gender_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/gender" />
+
+            <Spinner
+                android:id="@+id/gender"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/gender_array" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/nation_text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:text="@string/nationality" />
+
+            <Spinner
+                android:id="@+id/nationality"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/gender_array" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:text="@string/register" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dip"
+            android:layout_marginTop="40dip"
+            android:gravity="center"
+            android:text="@string/required" />
+        <!-- Link to Login Screen -->
+
+        <TextView
+            android:id="@+id/link_to_login"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dip"
+            android:layout_marginTop="40dip"
+            android:gravity="center"
+            android:text="@string/login_here"
+            android:textColor="#025f7c" />
+       
+    </LinearLayout>
+
 </ScrollView>

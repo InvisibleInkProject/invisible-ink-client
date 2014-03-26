@@ -1,26 +1,50 @@
 package no.invisibleink.app.view.user;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+
 import no.invisibleink.app.MainActivity;
 import no.invisibleink.app.R;
-import android.app.Activity;
+import no.invisibleink.app.view.section.DatePickerFragment;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 
-public class RegisterActivity extends Activity {
-	
-	// Values for email and password at the time of the registration attempt.
+public class RegisterActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener {
+		
+	// input field contents at the time of the registration attempt.
 	private String mEmail;
 	private String mPassword;
 	private String mFullName;
+	//private String mGender;
+	//private String mNation;
+	private String mDate;
 	
 	// UI references.
 	private EditText mEmailView;
 	private EditText mNameView;
 	private EditText mPasswordView;
+	private EditText mDateView;
+	//private Spinner mGenderView;
+	private Spinner mNationView;
+	
+	//date related stuff:
+	private int mDay;
+	private int mMonth;
+	private int mYear;
+		
 	//private View mRegistrationFormView;
 
 	@Override
@@ -31,39 +55,63 @@ public class RegisterActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.reg_email);
 		mPasswordView = (EditText) findViewById(R.id.reg_password);
 		mNameView = (EditText) findViewById(R.id.reg_fullname);
+		mDateView = (EditText) findViewById(R.id.date);
+		//mGenderView = (Spinner) findViewById(R.id.gender);
+		mNationView = (Spinner) findViewById(R.id.nationality);
+		
+		//populate nationality spinner:
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,createNationalityCollection());
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		mNationView.setAdapter(adapter);
+		//set the selection to the user's locale later on (currently: smth's wrong in finding the correct position ... )
+//		int pos = adapter.getPosition(Locale.getDefault().getDisplayCountry());
+//		mNationView.setSelection(pos);
 		//mRegistrationFormView = findViewById(R.id.registration_form);
 		
 		
 		findViewById(R.id.btnRegister).setOnClickListener(
 				new View.OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						attemptRegistration();					
+						attemptRegistration();
 					}
-				}
-			);
-		
+				});
+
 		findViewById(R.id.link_to_login).setOnClickListener(
 				new View.OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
-						finish();					
+						finish();
 					}
-				}
-			);
+				});
 		
-		
+		mDateView.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				DialogFragment dialog = new DatePickerFragment();
+				dialog.show(getFragmentManager(), "date picker");
+
+			}
+		});
+				
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.register, menu);
-		return true;
+	private List<String> createNationalityCollection() {
+		Set <String> nationalities = new HashSet<String>();
+		Locale[] locales = Locale.getAvailableLocales();
+		for(Locale l:locales){
+			if(!l.getDisplayCountry().isEmpty()) nationalities.add(l.getDisplayCountry());
+		}
+		List<String> nations = new ArrayList<String>(nationalities);
+		Collections.sort(nations);
+		
+		return nations;
 	}
-	
+
+
 	public void attemptRegistration(){
 		//TODO: check for Task, see LoginActivity attemptLogin()
 		
@@ -71,11 +119,13 @@ public class RegisterActivity extends Activity {
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
 		mNameView.setError(null);
+		mDateView.setError(null);
 		
 		// Store values at the time of the registration attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 		mFullName = mNameView.getText().toString();
+		mDate = mDateView.getText().toString();
 		
 		boolean cancel = false;
 		View focusView = null;
@@ -109,6 +159,12 @@ public class RegisterActivity extends Activity {
 			cancel = true;
 		} 
 		
+		if(TextUtils.isEmpty(mDate)){
+			mDateView.setError(getString(R.string.error_field_required));
+			focusView = mDateView;
+			cancel = true;
+		}
+		
 		if (cancel) {
 			// There was an error; don't attempt login and focus the first
 			// form field with an error.
@@ -124,6 +180,25 @@ public class RegisterActivity extends Activity {
 			Intent intent = new Intent(this, MainActivity.class);
 			startActivity(intent);
 		}
+	}
+	
+	private void updateDisplay(){
+		mDateView.setText(
+	            new StringBuilder()
+	                    // Month is 0 based so add 1
+	                    .append(mMonth + 1).append("-")
+	                    .append(mDay).append("-")
+	                    .append(mYear).append(" "));
+	}
+	
+
+	@Override
+	public void onDateSet(DatePicker view, int year, int monthOfYear,
+			int dayOfMonth) {
+		mYear = year;
+		mMonth = monthOfYear;
+		mDay = dayOfMonth;
+		updateDisplay();
 		
 	}
 }
