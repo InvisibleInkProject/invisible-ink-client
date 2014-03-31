@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="mlBackgroundGray">#f1f1f2</color>
+	<color name="mlBackgroundBlue">#becbf8</color>
+	<color name="mlEditTextStroke">#d0d2d3</color>
+	
+	<color name="mlTextLink">#2bc7b5</color>
+	<color name="mlTextHint">#999999</color>
+</resources>

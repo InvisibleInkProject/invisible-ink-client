@@ -2,7 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/registration_form"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    style="@style/mlView" >
 
     <!-- Registration Form -->
 
@@ -13,6 +14,7 @@
         android:padding="10dip" >
 
         <EditText
+            style="@style/mlEditText"
             android:id="@+id/reg_fullname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -24,6 +26,7 @@
             />
 
         <EditText
+            style="@style/mlEditText"
             android:id="@+id/reg_email"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -34,6 +37,7 @@
             android:singleLine="true" />
 
         <EditText
+            style="@style/mlEditText"
             android:id="@+id/reg_password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -105,6 +109,7 @@
         </LinearLayout>
 
         <Button
+            style="@style/mlButton"
             android:id="@+id/btnRegister"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -121,14 +126,14 @@
         <!-- Link to Login Screen -->
 
         <TextView
+            style="@style/mlTextLink"
             android:id="@+id/link_to_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="40dip"
             android:layout_marginTop="40dip"
             android:gravity="center"
-            android:text="@string/login_here"
-            android:textColor="#025f7c" />
+            android:text="@string/login_here" />
        
     </LinearLayout>
 
