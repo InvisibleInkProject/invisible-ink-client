@@ -1,5 +1,8 @@
 package no.invisibleink.app.controller.server_comm;
 
+import org.apache.http.client.HttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import no.invisibleink.app.R;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.view.user.LoginActivity;
@@ -10,7 +13,7 @@ import android.os.AsyncTask;
  * Represents an asynchronous login task used to authenticate
  * the user.
  */
-public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+public class UserLoginTask extends AsyncTask<String, Void, Boolean> {
 	
 	private LoginActivity activity;
 	
@@ -21,7 +24,10 @@ public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 	}
 	
 	@Override
-	protected Boolean doInBackground(Void... params){
+	protected Boolean doInBackground(String... params){
+		HttpClient client = new DefaultHttpClient();
+		String uri = (String) params[0];
+		
 		// TODO: attempt authentication against a network service.
 		activity.showProgress(true);
 		//perform request while progress bar is showing
