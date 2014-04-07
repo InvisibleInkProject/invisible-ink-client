@@ -6,7 +6,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import no.invisibleink.app.R;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.view.user.LoginActivity;
-import android.content.Context;
 import android.os.AsyncTask;
 
 /**
