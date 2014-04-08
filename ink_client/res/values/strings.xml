@@ -31,6 +31,7 @@
     <string name="nationality">Nationality</string>
     <string name="date">Birthdate *</string>
     <string name="date_placeholder">MM/DD/YYYY</string>
+    <string name="newDevice_login">I am logging in from a new device! </string>
     
     <string-array name="gender_array">
     	<item></item> 

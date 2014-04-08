@@ -19,12 +19,7 @@ package no.invisibleink.app;
 
 import java.util.Date;
 
-
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.maps.MapsInitializer;
-
-import no.invisibleink.app.R;
+import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.controller.location.LocationManager;
 import no.invisibleink.app.controller.location.NoLocationException;
 import no.invisibleink.app.controller.server_comm.ServerManager;
@@ -47,6 +42,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.maps.MapsInitializer;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener {
@@ -152,12 +150,12 @@ public class MainActivity extends FragmentActivity implements
         
         
         
-        try {
+//        try {
 			MapsInitializer.initialize(getApplicationContext());
-		} catch (GooglePlayServicesNotAvailableException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		} catch (GooglePlayServicesNotAvailableException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
     }
 
@@ -178,6 +176,11 @@ public class MainActivity extends FragmentActivity implements
             case R.id.menu_about:
             	 Toast.makeText(getApplicationContext(), "About is selected", Toast.LENGTH_SHORT).show();
                 return true;
+            case R.id.menu_logout:
+           	 	SessionManager mg = new SessionManager(getApplicationContext());	
+           	 	mg.logout();
+           	 	finish();
+               return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

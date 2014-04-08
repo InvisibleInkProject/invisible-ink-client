@@ -1,6 +1,5 @@
 package no.invisibleink.app.view.section;
 
-
 import java.util.Calendar;
 
 import android.app.DatePickerDialog;
@@ -9,8 +8,10 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 
-
-
+/**
+ * Fragment that displays a date picker dialog
+ *
+ */
 public class DatePickerFragment extends DialogFragment {
 
 	@Override
@@ -23,5 +24,4 @@ public class DatePickerFragment extends DialogFragment {
 
 		return new DatePickerDialog(getActivity(), (OnDateSetListener) getActivity(), year, month, day);
 	}
-
 }

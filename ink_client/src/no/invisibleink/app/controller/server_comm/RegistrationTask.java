@@ -6,9 +6,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 import no.invisibleink.app.controller.SessionManager;
-import no.invisibleink.app.controller.Settings;
-import no.invisibleink.app.model.InkList;
-import no.invisibleink.app.view.user.RegisterActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -20,27 +17,34 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
+/**
+ * Represents an asynchronous login task used to register the user
+ * parameters should contain the following strings in this order: uri, username, password, email, birthday, gender, nationality
+ */
 public class RegistrationTask extends AsyncTask<String, Void, Boolean> {
 	
-	private RegisterActivity activity;
+	private SessionManager mg;
+	
+	public RegistrationTask(SessionManager sm){
+		super();
+		this.mg = sm;
+	}
 
 	@Override
 	protected Boolean doInBackground(String... params) {
 		HttpClient client = new DefaultHttpClient();
-		String uri = "http://server.invisibleink.no/api/v1/register/"; //(String) params[0];
-		String jsonString = buildJson(params[1], params[2], params[3], params[4], params[5], params[6]);
-		HttpPost request = new HttpPost(uri);
+		HttpPost request = new HttpPost(params[0]); //params[0] = uri
 		
 		try {
-			StringEntity ent = new StringEntity(jsonString);
+			StringEntity ent = new StringEntity(buildJson(params[1], params[2], params[3], params[4], params[5], params[6]));
 			ent.setContentType("application/json");
 			request.setEntity(ent);
 			
-			HttpResponse response = client.execute(request);//.getStatusLine().getStatusCode();
+			HttpResponse response = client.execute(request);
 			int statusCode = response.getStatusLine().getStatusCode();
-			if(statusCode == 201){
+			
+			if(statusCode == 201){ //success
 				BufferedReader br = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 				String line = "";
 				StringBuilder jsonContent = new StringBuilder();
@@ -51,45 +55,38 @@ public class RegistrationTask extends AsyncTask<String, Void, Boolean> {
 			
 				JSONObject jo = new JSONObject(jsonContent.toString());
 				
-				SessionManager mg = new SessionManager(activity);
+				//store id and secret in shared preferences: 
 				mg.register(jo.getString("client_id"), jo.getString("client_secret"));
 				return true;
-								
 			
 			}else if(statusCode == 400 || statusCode == 500){
 				return false;
+				//TODO: handle failure codes here and in the UI! 
 			}
 			
 		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
 		
-		//Log.d(LOG, "request: " + Settings.API_URL + stringEntity);
-		
-			
-		
-		// TODO: attempt authentication against a network service.
-		//activity.showProgress(true);
-		//perform request while progress bar is showing
-		
-		//check response -> success = return true, else false (reminder for registration: switch(error) e.g. username/email already in use, ... 
-		//throw exception instead of setting error info in onPostExecute ? (therefore remove LoginActivity)
-		//SessionID ?! 
-		//sessionID = "123456";
-		return true;
+		return false;
 	}
-
+	
+	/**
+	 * turns the given Strings into a json formatted string that can be send to the server 
+	 * @param username username
+	 * @param password password
+	 * @param email email address
+	 * @param birthday birthday
+	 * @param gender gender
+	 * @param nationality nationality
+	 * @return json-String
+	 */
 	private String buildJson(String username, String password, String email, String birthday, String gender, String nationality){
 		String json = "{";
 		json += "\"username\":\"" + username + "\",";

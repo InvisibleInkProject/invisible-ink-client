@@ -6,9 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 import no.invisibleink.app.MainActivity;
 import no.invisibleink.app.R;
+import no.invisibleink.app.controller.SessionManager;
+import no.invisibleink.app.controller.Settings;
+import no.invisibleink.app.controller.server_comm.RegistrationTask;
+import no.invisibleink.app.controller.server_comm.UserLoginTask;
 import no.invisibleink.app.view.section.DatePickerFragment;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
@@ -22,30 +27,34 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+/**
+ * Activity which displays a registration screen to the user
+ *
+ */
 public class RegisterActivity extends FragmentActivity implements DatePickerDialog.OnDateSetListener {
 		
 	// input field contents at the time of the registration attempt.
 	private String mEmail;
 	private String mPassword;
-	private String mFullName;
-	//private String mGender;
-	//private String mNation;
+	private String mUsername;
+	private String mGender;
+	private String mNation;
 	private String mDate;
 	
 	// UI references.
 	private EditText mEmailView;
-	private EditText mNameView;
+	private EditText mUsernameView;
 	private EditText mPasswordView;
 	private EditText mDateView;
-	//private Spinner mGenderView;
+	private Spinner mGenderView;
 	private Spinner mNationView;
 	
 	//date related stuff:
 	private int mDay;
 	private int mMonth;
 	private int mYear;
-		
-	//private View mRegistrationFormView;
+
+	//TODO: add progress spinner while running registration asynchronous task !
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,9 +63,9 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		
 		mEmailView = (EditText) findViewById(R.id.reg_email);
 		mPasswordView = (EditText) findViewById(R.id.reg_password);
-		mNameView = (EditText) findViewById(R.id.reg_fullname);
+		mUsernameView = (EditText) findViewById(R.id.reg_fullname);
 		mDateView = (EditText) findViewById(R.id.date);
-		//mGenderView = (Spinner) findViewById(R.id.gender);
+		mGenderView = (Spinner) findViewById(R.id.gender);
 		mNationView = (Spinner) findViewById(R.id.nationality);
 		
 		//populate nationality spinner:
@@ -67,7 +76,6 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 //		int pos = adapter.getPosition(Locale.getDefault().getDisplayCountry());
 //		mNationView.setSelection(pos);
 		//mRegistrationFormView = findViewById(R.id.registration_form);
-		
 		
 		findViewById(R.id.btnRegister).setOnClickListener(
 				new View.OnClickListener() {
@@ -83,10 +91,10 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 
 					@Override
 					public void onClick(View v) {
-						finish();
+						toLogin(); //return to login screen
 					}
 				});
-		
+	
 		mDateView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -99,11 +107,17 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 				
 	}
 
+	/**
+	 * creates a list of nationalities based on the locale bundle
+	 * @return list of nationalities 
+	 */
 	private List<String> createNationalityCollection() {
+		//TODO: think of something else here ... -> database handling ... (e.g. return ISO3 code)
 		Set <String> nationalities = new HashSet<String>();
 		Locale[] locales = Locale.getAvailableLocales();
 		for(Locale l:locales){
 			if(!l.getDisplayCountry().isEmpty()) nationalities.add(l.getDisplayCountry());
+			
 		}
 		List<String> nations = new ArrayList<String>(nationalities);
 		Collections.sort(nations);
@@ -111,21 +125,34 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		return nations;
 	}
 
-
+	/**
+	 * starts the login activity
+	 */
+	private void toLogin() {
+		Intent intent = new Intent(this, LoginActivity.class);
+		startActivity(intent);
+		finish();
+	}	
+	
+	/**
+	 * attempt to register a new user with the given information from the form
+	 * directly performs the login action if the registration was successful
+	 * TODO: add progress spinner
+	 */
 	public void attemptRegistration(){
-		//TODO: check for Task, see LoginActivity attemptLogin()
-		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
-		mNameView.setError(null);
+		mUsernameView.setError(null);
 		mDateView.setError(null);
 		
 		// Store values at the time of the registration attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
-		mFullName = mNameView.getText().toString();
+		mUsername = mUsernameView.getText().toString();
 		mDate = mDateView.getText().toString();
+		mGender = mGenderView.getSelectedItem().toString();
+		mNation = mNationView.getSelectedItem().toString();
 		
 		boolean cancel = false;
 		View focusView = null;
@@ -153,12 +180,13 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		}
 		
 		// Check for a valid name.
-		if (TextUtils.isEmpty(mFullName)) {
-			mNameView.setError(getString(R.string.error_field_required));
-			focusView = mNameView;
+		if (TextUtils.isEmpty(mUsername)) {
+			mUsernameView.setError(getString(R.string.error_field_required));
+			focusView = mUsernameView;
 			cancel = true;
 		} 
 		
+		//TODO: check for valid age (min age, ...)
 		if(TextUtils.isEmpty(mDate)){
 			mDateView.setError(getString(R.string.error_field_required));
 			focusView = mDateView;
@@ -166,39 +194,59 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		}
 		
 		if (cancel) {
-			// There was an error; don't attempt login and focus the first
+			// There was an error; don't attempt registration and focus the first
 			// form field with an error.
 			focusView.requestFocus();
 		} else {
-			// Show a progress spinner, and kick off a background task to
-			// perform the user registration attempt.
-//			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-//			showProgress(true);
-			//TODO: authentication
-//			mAuthTask = new UserLoginTask();
-//			mAuthTask.execute((Void) null);
-			Intent intent = new Intent(this, MainActivity.class);
-			startActivity(intent);
+
+			SessionManager mg = new SessionManager(getApplicationContext());
+			
+			RegistrationTask register = new RegistrationTask(mg);
+			register.execute(Settings.API_URL + "register/", mUsername, mPassword, mEmail, mDate,mGender, mNation);
+			try {
+				if(register.get()){
+					//automatically log in
+					UserLoginTask login = new UserLoginTask(mg);
+					login.execute(Settings.OAUTH_URL, mUsername, mPassword);
+					
+					if(login.get()){
+						// then start main activity 
+						Intent intent = new Intent(this, MainActivity.class);
+						startActivity(intent);
+						finish();
+					}else{
+						//TODO: error output
+					}
+					
+				}else{
+					//TODO: error output 
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+			
 		}
 	}
 	
-	private void updateDisplay(){
+	//display the selected date from the dialog
+	private void updateDateDisplay(){
 		mDateView.setText(
 	            new StringBuilder()
 	                    // Month is 0 based so add 1
+	            		.append(mYear).append("-")
 	                    .append(mMonth + 1).append("-")
-	                    .append(mDay).append("-")
-	                    .append(mYear).append(" "));
+	                    .append(mDay).append("")
+				);
 	}
 	
 
 	@Override
-	public void onDateSet(DatePicker view, int year, int monthOfYear,
-			int dayOfMonth) {
+	public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 		mYear = year;
 		mMonth = monthOfYear;
 		mDay = dayOfMonth;
-		updateDisplay();
-		
+		updateDateDisplay();
 	}
 }

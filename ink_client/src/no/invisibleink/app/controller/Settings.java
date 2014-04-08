@@ -8,6 +8,11 @@ public abstract class Settings {
 	public static final String API_URL = "http://server.invisibleink.no/api/v1/";
 	
 	/**
+	 * Server URL for oAuth communication
+	 */
+	public static final String OAUTH_URL = "http://server.invisibleink.no/oauth2/access_token/";
+		
+	/**
 	 * If the distance between the current location and the last
 	 * location is greater as this value, the server will be requested.
 	 * 

@@ -39,11 +39,6 @@
             android:taskAffinity="no.invisibleink.app.MainActivity"
             android:screenOrientation="portrait"
 			android:configChanges="keyboardHidden|orientation|screenSize" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="no.invisibleink.app.view.user.LoginActivity"
