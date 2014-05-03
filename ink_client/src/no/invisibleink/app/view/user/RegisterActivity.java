@@ -2,9 +2,12 @@ package no.invisibleink.app.view.user;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
@@ -53,6 +56,7 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 	private int mDay;
 	private int mMonth;
 	private int mYear;
+	private Map <String, String> nat;
 
 	//TODO: add progress spinner while running registration asynchronous task !
 
@@ -72,6 +76,7 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,createNationalityCollection());
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mNationView.setAdapter(adapter);
+		mNationView.setSelection(adapter.getPosition(Locale.getDefault().getDisplayCountry()));
 		//set the selection to the user's locale later on (currently: smth's wrong in finding the correct position ... )
 //		int pos = adapter.getPosition(Locale.getDefault().getDisplayCountry());
 //		mNationView.setSelection(pos);
@@ -112,14 +117,18 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 	 * @return list of nationalities 
 	 */
 	private List<String> createNationalityCollection() {
-		//TODO: think of something else here ... -> database handling ... (e.g. return ISO3 code)
-		Set <String> nationalities = new HashSet<String>();
+		 nat = new HashMap<String, String>();
 		Locale[] locales = Locale.getAvailableLocales();
 		for(Locale l:locales){
-			if(!l.getDisplayCountry().isEmpty()) nationalities.add(l.getDisplayCountry());
+			try{
+				if(!l.getDisplayCountry().isEmpty()) nat.put(l.getDisplayCountry(), l.getISO3Country());
+			}catch (MissingResourceException e){
+				//simply don't add this country to the list ... for now, at least 
+			}
 			
+			nat.put("--", ""); //offer no-country selection
 		}
-		List<String> nations = new ArrayList<String>(nationalities);
+		List<String> nations = new ArrayList<String>(nat.keySet());
 		Collections.sort(nations);
 		
 		return nations;
@@ -152,7 +161,7 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		mUsername = mUsernameView.getText().toString();
 		mDate = mDateView.getText().toString();
 		mGender = mGenderView.getSelectedItem().toString();
-		mNation = mNationView.getSelectedItem().toString();
+		mNation = nat.get(mNationView.getSelectedItem().toString());	
 		
 		boolean cancel = false;
 		View focusView = null;
