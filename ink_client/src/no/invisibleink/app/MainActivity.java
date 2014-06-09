@@ -43,6 +43,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
 
@@ -150,12 +151,11 @@ public class MainActivity extends FragmentActivity implements
         
         
         
-//        try {
+        try {
 			MapsInitializer.initialize(getApplicationContext());
-//		} catch (GooglePlayServicesNotAvailableException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
+		} catch (GooglePlayServicesNotAvailableException e) {
+			e.printStackTrace();
+		}
 
     }
 
