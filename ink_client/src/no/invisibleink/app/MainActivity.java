@@ -17,8 +17,16 @@
 package no.invisibleink.app;
 
 
+import java.util.Calendar;
 import java.util.Date;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import no.invisibleink.api.InkClient;
+import no.invisibleink.api.InkClientUsage;
+import no.invisibleink.api.model.Ink;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.controller.location.LocationManager;
 import no.invisibleink.app.controller.location.NoLocationException;
@@ -46,11 +54,13 @@ import android.widget.Toast;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener {
 
-	private static final String LOG = "MainActivity";
+	private static final String TAG = "MainActivity";
     
     static FragmentManager fragmentManager;
     
@@ -156,7 +166,47 @@ public class MainActivity extends FragmentActivity implements
 		} catch (GooglePlayServicesNotAvailableException e) {
 			e.printStackTrace();
 		}
+        
+        
+        
+        
+/*        
+       	Location loc = new Location("");
+       	loc.setLatitude(59.94);
+       	loc.setLongitude(10.72);
+       	
+       	
+       	InkClientUsage.getInk(loc, new Ink.GetHandler() {
+			
+			@Override
+			public void onSucess(JSONArray inks) {
+				JSONObject o;
+				try {
+					o = inks.getJSONObject(0);
+					Log.w(TAG, o.getString(Ink.TEXT));
+				} catch (JSONException e) {
+					Log.w(TAG, e.getMessage());
+				}
+			}
+			
+			@Override
+			public void onFailure(int statusCode) {
+				// TODO Auto-generated method stub
+			}
+		});
+       	InkClientUsage.postInk("Hey neightbor", 500, Calendar.getInstance().getTime(), loc, new Ink.PostHandler() {
 
+			@Override
+			public void onSucess() {
+				Log.i(TAG, "post ink sucess");
+			}
+
+			@Override
+			public void onFailure(int statusCode) {
+				Log.i(TAG, "post ink failed: " + statusCode);
+			}     		
+		});
+*/
     }
 
     @Override
@@ -166,6 +216,28 @@ public class MainActivity extends FragmentActivity implements
         return true;
     }
     
+/*	public void getInk() throws JSONException {
+//		rp.put("no_meta", "true");
+		RequestParams rq = new RequestParams("no_meta", true);
+		InkClient.get("message/59.94,10.72,2000.0/", rq, new JsonHttpResponseHandler() {
+			
+			@Override
+			public void onSuccess(JSONArray inks) {
+				try {
+					Toast.makeText(getApplicationContext(), ((JSONObject) inks.get(0)).getString("text"), Toast.LENGTH_LONG).show();
+				} catch (JSONException e) {
+					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+				}
+			}
+
+			@Override
+			public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+				Toast.makeText(getApplicationContext(), statusCode, Toast.LENGTH_LONG).show();				
+			}
+			
+		});
+	}
+*/    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -292,7 +364,7 @@ public class MainActivity extends FragmentActivity implements
 	
 	public void onReceivedInkList(InkList inkList, Location oldLocation) {
 		if (inkList != null) {
-			Log.d(LOG, "received: " + inkList.size() + " inks");
+			Log.d(TAG, "received: " + inkList.size() + " inks");
 
 			this.inkList.clear();
 			this.inkList.addAll(inkList);
@@ -304,15 +376,15 @@ public class MainActivity extends FragmentActivity implements
 				} else {
 					location = oldLocation;
 				}
-				Log.w(LOG, location.toString());
+				Log.w(TAG, location.toString());
 				inkList.updateVisibility(location);
 		    	listSectionFragment.update(inkList, location);
 		    	mapSectionFragment.update(inkList);		
 			} catch (NoLocationException e) {
-				Log.w(LOG, "onReceivedInkList: no location");				
+				Log.w(TAG, "onReceivedInkList: no location");				
 			}
 		} else {
-			Log.d(LOG, "onReceivedInkList: Receive null inkList");
+			Log.d(TAG, "onReceivedInkList: Receive null inkList");
 			
 			// TODO: comment
 	        InkList tmpInkList = db.getInkList();
@@ -320,11 +392,11 @@ public class MainActivity extends FragmentActivity implements
 	        //	Log.i(LOG, i.toString());
 	        //}
 	        if (!tmpInkList.isEmpty()) {
-	        	Log.i(LOG, "recover " + tmpInkList.size() + " inks form db");
+	        	Log.i(TAG, "recover " + tmpInkList.size() + " inks form db");
 	        	try {
 					onReceivedInkList(tmpInkList, locationManager.getSavedLocation());
 				} catch (NoLocationException e) {
-		        	Log.d(LOG, "recover " + e.getMessage());
+		        	Log.d(TAG, "recover " + e.getMessage());
 				}
 	        }
 
@@ -365,7 +437,7 @@ public class MainActivity extends FragmentActivity implements
 			Location location = locationManager.getLocation();
 			serverManager.request(this, location);
 		} catch (NoLocationException e) {
-			Log.w(LOG, "onRequestInks: " + e.getMessage());
+			Log.w(TAG, "onRequestInks: " + e.getMessage());
 		}		
 	}
 
