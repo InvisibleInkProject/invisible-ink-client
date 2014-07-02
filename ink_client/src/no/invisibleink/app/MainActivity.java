@@ -17,14 +17,11 @@
 package no.invisibleink.app;
 
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import no.invisibleink.api.InkClient;
 import no.invisibleink.api.InkClientUsage;
 import no.invisibleink.api.model.Ink;
 import no.invisibleink.app.controller.SessionManager;
@@ -36,8 +33,14 @@ import no.invisibleink.app.model.InkList;
 import no.invisibleink.app.view.section.ListViewFragment;
 import no.invisibleink.app.view.section.MapViewFragment;
 import no.invisibleink.app.view.section.PostViewFragment;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -54,8 +57,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 public class MainActivity extends FragmentActivity implements
 		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener {
@@ -93,6 +94,8 @@ public class MainActivity extends FragmentActivity implements
 	private InkList inkList;
     
 	private DatabaseHelper db;
+	
+	final Context context = this;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -164,28 +167,52 @@ public class MainActivity extends FragmentActivity implements
         try {
 			MapsInitializer.initialize(getApplicationContext());
 		} catch (GooglePlayServicesNotAvailableException e) {
-			e.printStackTrace();
+			Log.e(TAG, "Google play services is not available.");
 		}
         
         
         
         
-/*        
+       
        	Location loc = new Location("");
        	loc.setLatitude(59.94);
        	loc.setLongitude(10.72);
        	
+       	InkClientUsage inkClientUsage = new InkClientUsage("77db8444e1dc145575f0b168dc2aad715fc1e0c0");
        	
-       	InkClientUsage.getInk(loc, new Ink.GetHandler() {
+       	inkClientUsage.getInk(loc, new Ink.GetHandler() {
 			
 			@Override
 			public void onSucess(JSONArray inks) {
 				JSONObject o;
+				
+				if (inks.length() < 0) {
+					Log.i(TAG, "Empty inks");
+					return;
+				}
+				
 				try {
 					o = inks.getJSONObject(0);
 					Log.w(TAG, o.getString(Ink.TEXT));
+					
+					
+					String filename = "myfile";
+					String string = "Hello world!";
+					
+					File file = new File(context.getFilesDir(), filename);
+					FileOutputStream outputStream = openFileOutput(filename, MODE_PRIVATE);
+					outputStream.write(string.getBytes());
+					outputStream.close();
+					
+					Log.w(TAG, "" + file.getAbsoluteFile());
+					Log.w(TAG, "" + file.getAbsolutePath());
+					
+//					fileList()
+					
 				} catch (JSONException e) {
 					Log.w(TAG, e.getMessage());
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 			
@@ -194,7 +221,8 @@ public class MainActivity extends FragmentActivity implements
 				// TODO Auto-generated method stub
 			}
 		});
-       	InkClientUsage.postInk("Hey neightbor", 500, Calendar.getInstance().getTime(), loc, new Ink.PostHandler() {
+
+		inkClientUsage.postInk("Hey neightbor", 500, Calendar.getInstance().getTime(), loc, new Ink.PostHandler() {
 
 			@Override
 			public void onSucess() {
@@ -206,7 +234,7 @@ public class MainActivity extends FragmentActivity implements
 				Log.i(TAG, "post ink failed: " + statusCode);
 			}     		
 		});
-*/
+
     }
 
     @Override

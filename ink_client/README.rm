@@ -30,7 +30,7 @@ Our application
 ### LogCat tip
 
 LogCat filter
-´´´
+Â´Â´Â´
 tag:^(?!.*(dalvikvm|libEGL|GooglePlayServicesUtil|EGL_genymotion|OpenGLRenderer)).*$
-´´´
+Â´Â´Â´
 

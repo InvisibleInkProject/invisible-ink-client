@@ -18,5 +18,6 @@ public class Login {
 	
 	public interface PostHandler {
 		public void onSuccess(String accessToken, String refreshToken);
+		public void onFailure(int statusCode);
 	}
 }
