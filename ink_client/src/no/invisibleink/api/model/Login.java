@@ -2,7 +2,7 @@ package no.invisibleink.api.model;
 
 public class Login {
 
-	public static final String ENDPOINT = "access_token";
+	public static final String ENDPOINT = "access_token/";
 	
 	public static final String GRANT_TYPE = "grant_type";
 	public static final String GRANT_TYPE_PASSWORD = "password";

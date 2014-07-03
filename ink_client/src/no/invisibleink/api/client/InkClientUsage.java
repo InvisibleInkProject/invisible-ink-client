@@ -1,4 +1,4 @@
-package no.invisibleink.api;
+package no.invisibleink.api.client;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -142,8 +142,8 @@ public class InkClientUsage {
 					//SessionManager.login(ACCESS_TOKEN, REFRESH_TOKEN);
 
 				} catch (JSONException e) {
+					Log.w(TAG, "userLogin:" + e.getMessage());
 					postHandler.onFailure(-1);
-					e.printStackTrace();
 				}				
 			}
 

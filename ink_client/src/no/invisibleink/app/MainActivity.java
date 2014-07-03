@@ -22,7 +22,7 @@ import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.Date;
 
-import no.invisibleink.api.InkClientUsage;
+import no.invisibleink.api.client.InkClientUsage;
 import no.invisibleink.api.model.Ink;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.controller.location.LocationManager;

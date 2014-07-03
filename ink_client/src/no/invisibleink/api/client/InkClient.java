@@ -1,4 +1,4 @@
-package no.invisibleink.api;
+package no.invisibleink.api.client;
 
 import java.io.UnsupportedEncodingException;
 

@@ -1,4 +1,4 @@
-package no.invisibleink.api;
+package no.invisibleink.api.client;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
