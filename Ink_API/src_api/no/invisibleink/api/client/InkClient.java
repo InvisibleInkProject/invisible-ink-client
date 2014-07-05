@@ -7,12 +7,15 @@ import org.apache.http.entity.StringEntity;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 public class InkClient {
+	
+	public static final String TAG = InkClient.class.getName();
 	
 	private static final String BASE_URL = "http://server.invisibleink.no/api/v1/";
 	
@@ -21,7 +24,6 @@ public class InkClient {
 	
 	public static final String HTTP_HEADER_AUTHORIZATION = "Authorization";
 	public static final String HTTP_CONTENT_TYPE_JSON = "application/json";
-
 	
 	private AsyncHttpClient client;
 	
@@ -39,6 +41,7 @@ public class InkClient {
 	}
 	
 	public void postJson(Context context, String url, JSONObject entity, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
+		Log.d(TAG, "POST " + url + ":" + entity);
 		this.post(context, url, new StringEntity(entity.toString()), HTTP_CONTENT_TYPE_JSON, responseHandler);
 	}
 

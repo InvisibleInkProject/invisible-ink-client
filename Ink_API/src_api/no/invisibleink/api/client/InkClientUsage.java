@@ -112,6 +112,12 @@ public class InkClientUsage {
 					
 				}
 				
+				@Override
+				public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+					//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + errorResponse.toString());
+					postHandler.onFailure(statusCode);
+				}
+				
 				// TODO: on fail (400 or 500)?
 				//TODO: handle failure codes here and in the UI! 			
 				
@@ -148,7 +154,12 @@ public class InkClientUsage {
 			}
 
 			// TODO: on fail (400 or 500)?
-			
+			@Override
+			public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+				//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + errorResponse.toString());
+				postHandler.onFailure(statusCode);
+			}
+
 		});
 	}
 }

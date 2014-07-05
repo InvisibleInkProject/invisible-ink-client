@@ -17,14 +17,8 @@
 package no.invisibleink.app;
 
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Calendar;
 import java.util.Date;
 
-import no.invisibleink.api.client.InkClientUsage;
-import no.invisibleink.api.model.Ink;
-import no.invisibleink.api.model.Registration;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.controller.location.LocationManager;
 import no.invisibleink.app.controller.location.NoLocationException;
@@ -34,10 +28,6 @@ import no.invisibleink.app.model.InkList;
 import no.invisibleink.app.view.section.ListViewFragment;
 import no.invisibleink.app.view.section.MapViewFragment;
 import no.invisibleink.app.view.section.PostViewFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
@@ -170,91 +160,6 @@ public class MainActivity extends FragmentActivity implements
 		} catch (GooglePlayServicesNotAvailableException e) {
 			Log.e(TAG, "Google play services is not available.");
 		}
-        
-        
-        
-        
-        
-       
-       	Location loc = new Location("");
-       	loc.setLatitude(59.94);
-       	loc.setLongitude(10.72);
-       	
-       	InkClientUsage inkClientUsage = new InkClientUsage("77db8444e1dc145575f0b168dc2aad715fc1e0c0");
-       	
-       	
-       	inkClientUsage.registration("myUser", "myPassword", "myMail@myDomain.com", "2007-11-2", "Female", "VNM", new Registration.PostHandler() {
-			
-			@Override
-			public void onSuccess(String client_id, String client_secret) {
-				Log.i(TAG, "registration");
-				Log.i(TAG, client_id + ", " + client_secret);
-			}
-			
-			@Override
-			public void onFailure(int statusCode) {
-				Log.i(TAG, "registration");
-				Log.i(TAG, statusCode + "");
-			}
-		});
-       	
-       	
-       	
-       	inkClientUsage.getInk(loc, new Ink.GetHandler() {
-			
-			@Override
-			public void onSucess(JSONArray inks) {
-				JSONObject o;
-				
-				if (inks.length() < 0) {
-					Log.i(TAG, "Empty inks");
-					return;
-				}
-				
-				try {
-					o = inks.getJSONObject(0);
-					Log.w(TAG, o.getString(Ink.TEXT));
-					
-					
-					String filename = "myfile";
-					String string = "Hello world!";
-					
-					File file = new File(context.getFilesDir(), filename);
-					FileOutputStream outputStream = openFileOutput(filename, MODE_PRIVATE);
-					outputStream.write(string.getBytes());
-					outputStream.close();
-					
-					Log.w(TAG, "" + file.getAbsoluteFile());
-					Log.w(TAG, "" + file.getAbsolutePath());
-					
-//					fileList()
-					
-				} catch (JSONException e) {
-					Log.w(TAG, e.getMessage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-			@Override
-			public void onFailure(int statusCode) {
-				// TODO Auto-generated method stub
-			}
-		});
-
-		inkClientUsage.postInk("Hey neightbor", 500, Calendar.getInstance().getTime(), loc, new Ink.PostHandler() {
-
-			@Override
-			public void onSucess() {
-				Log.i(TAG, "post ink sucess");
-			}
-
-			@Override
-			public void onFailure(int statusCode) {
-				Log.i(TAG, "post ink failed: " + statusCode);
-			}     		
-		});
-
     }
 
     @Override

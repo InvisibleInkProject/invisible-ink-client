@@ -4,7 +4,7 @@
 ## Eclipse
 ############
 
-#.project
+.project
 .settings/
 .classpath
 bin/
