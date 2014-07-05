@@ -16,13 +16,16 @@ import android.util.Log;
 public class MainActivity extends Activity {
 	
 	public static final String TAG = "Test";
-	
-	InkClientUsage inkClientUsage = new InkClientUsage("77db8444e1dc145575f0b168dc2aad715fc1e0c0"); 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		/*
+		 * Before test
+		 */
+		InkClientUsage.setAuthorizationToken("77db8444e1dc145575f0b168dc2aad715fc1e0c0");
 		
 		/*
 		 * Test
@@ -34,8 +37,8 @@ public class MainActivity extends Activity {
 		//testLoginRefresh();
 	}
 	
-	private void testGetInk() {      	
-       	inkClientUsage.getInk(UserStub.getLocation(), new Ink.GetHandler() {
+	private void testGetInk() {
+		InkClientUsage.getInk(UserStub.getLocation(), new Ink.GetHandler() {
 			
 			@Override
 			public void onSucess(JSONArray inks) {
@@ -85,7 +88,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testPostInk() {
-		inkClientUsage.postInk(InkStub.message, InkStub.radius, InkStub.expires, UserStub.getLocation(), new Ink.PostHandler() {
+		InkClientUsage.postInk(InkStub.message, InkStub.radius, InkStub.expires, UserStub.getLocation(), new Ink.PostHandler() {
 
 			@Override
 			public void onSucess() {
@@ -105,7 +108,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void testRegistration() {
-       	inkClientUsage.registration(UserStub.username, UserStub.password, UserStub.email, UserStub.birthday, UserStub.gender, UserStub.nationality, new Registration.PostHandler() {
+		InkClientUsage.registration(UserStub.username, UserStub.password, UserStub.email, UserStub.birthday, UserStub.gender, UserStub.nationality, new Registration.PostHandler() {
 			
 			@Override
 			public void onSuccess(String client_id, String client_secret) {
@@ -126,12 +129,12 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testLogin() {
-		inkClientUsage.login(UserStub.username, UserStub.password, UserStub.client_id, UserStub.client_secret, new Login.PostHandler() {
+		InkClientUsage.login(UserStub.username, UserStub.password, UserStub.client_id, UserStub.client_secret, new Login.PostHandler() {
 			
 			@Override
-			public void onSuccess(String accessToken, String refreshToken) {
-				Log.i(TAG, "login success: accessToken, refreshToken");
-				Log.i(TAG, accessToken + ", " + refreshToken);
+			public void onSuccess(String accessToken, String refreshToken, String expires_in) {
+				Log.i(TAG, "login success: accessToken, refreshToken, expires_in");
+				Log.i(TAG, accessToken + ", " + refreshToken + ", " + expires_in);
 			}
 			
 			@Override
@@ -147,11 +150,11 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testLoginRefresh() {
-		inkClientUsage.loginRefresh(UserStub.client_id, UserStub.client_secret, UserStub.refresh_token, new Login.PostHandler() {
+		InkClientUsage.loginRefresh(UserStub.client_id, UserStub.client_secret, UserStub.refresh_token, new Login.PostHandler() {
 			@Override
-			public void onSuccess(String accessToken, String refreshToken) {
-				Log.i(TAG, "loginRefresh success: accessToken, refreshToken");
-				Log.i(TAG, accessToken + ", " + refreshToken);
+			public void onSuccess(String accessToken, String refreshToken, String expires_in) {
+				Log.i(TAG, "loginRefresh success: accessToken, refreshToken, expires_in");
+				Log.i(TAG, accessToken + ", " + refreshToken + ", " + expires_in);
 			}
 			
 			@Override

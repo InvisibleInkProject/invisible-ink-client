@@ -25,27 +25,26 @@ public class InkClient {
 	public static final String HTTP_HEADER_AUTHORIZATION = "Authorization";
 	public static final String HTTP_CONTENT_TYPE_JSON = "application/json";
 	
-	private AsyncHttpClient client;
+	private static AsyncHttpClient client = new AsyncHttpClient();
 	
-	public InkClient(final String token) {
-		client = new AsyncHttpClient();
-		client.addHeader(HTTP_HEADER_AUTHORIZATION, "OAuth " + token);
-	}
-
-	public void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+	public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
 		client.get(getAbsoluteUrl(url), params, responseHandler);
 	}
 
-	private void post(Context context, String url, HttpEntity entity, String contentType, AsyncHttpResponseHandler responseHandler) {
+	private static void post(Context context, String url, HttpEntity entity, String contentType, AsyncHttpResponseHandler responseHandler) {
 		client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
 	}
 	
-	public void postJson(Context context, String url, JSONObject entity, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
+	public static void postJson(Context context, String url, JSONObject entity, AsyncHttpResponseHandler responseHandler) throws UnsupportedEncodingException {
 		Log.d(TAG, "POST " + url + ":" + entity);
-		this.post(context, url, new StringEntity(entity.toString()), HTTP_CONTENT_TYPE_JSON, responseHandler);
+		post(context, url, new StringEntity(entity.toString()), HTTP_CONTENT_TYPE_JSON, responseHandler);
 	}
 
-	private String getAbsoluteUrl(String relativeUrl) {
+	private static String getAbsoluteUrl(String relativeUrl) {
 		return BASE_URL + relativeUrl;
+	}
+	
+	public static void setAuthorizationToken(String token) {
+		client.addHeader(HTTP_HEADER_AUTHORIZATION, "OAuth " + token);		
 	}
 }

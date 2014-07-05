@@ -17,9 +17,10 @@ public class Login {
 	
 	public static final String RESPONSE_ACCESS_TOKEN = "access_token";
 	public static final String RESPONSE_REFRESH_TOKEN = "refresh_token";
+	public static final String RESPONSE_EXPIRES_IN = "expires_in";
 	
 	public interface PostHandler {
-		public void onSuccess(String accessToken, String refreshToken);
+		public void onSuccess(String accessToken, String refreshToken, String expires_in);
 		public void onFailure(int statusCode);
 		public void onFailureInvalid();
 	}

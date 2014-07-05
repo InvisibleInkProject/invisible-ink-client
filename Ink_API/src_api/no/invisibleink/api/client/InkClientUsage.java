@@ -26,15 +26,9 @@ public class InkClientUsage {
 	
 	public static final int STATUS_CODE_CONVERTING_ERROR = -1;
 	
-	private InkClient inkClient;
-	
-	public InkClientUsage(final String token) {
-		inkClient = new InkClient(token);
-	}
-		
-	public void getInk(final Location location, final Ink.GetHandler getHandler) {
+	public static void getInk(final Location location, final Ink.GetHandler getHandler) {
 		final RequestParams rq = new RequestParams(InkClient.PARAMETER_NO_META, true);
-		inkClient.get(Ink.ENDPOINT + location.getLatitude() + "," + location.getLongitude() + ",2000.0/", rq, new JsonHttpResponseHandler() {
+		InkClient.get(Ink.ENDPOINT + location.getLatitude() + "," + location.getLongitude() + ",2000.0/", rq, new JsonHttpResponseHandler() {
 			
 			@Override
 			public void onSuccess(JSONArray inks) {
@@ -54,7 +48,7 @@ public class InkClientUsage {
 		});
 	}
 	
-	public void postInk(final String message, final int radius, final Date expires, final Location location, final Ink.PostHandler postHandler) {
+	public static void postInk(final String message, final int radius, final Date expires, final Location location, final Ink.PostHandler postHandler) {
 		try {
 			JSONObject jo = new JSONObject();
 			jo.put(Ink.TEXT, message);
@@ -63,7 +57,7 @@ public class InkClientUsage {
 			jo.put(Ink.LOCATION_LAT, location.getLatitude());
 			SimpleDateFormat sdf = new SimpleDateFormat(InkClient.DATE_FORMAT);
 			jo.put(Ink.EXPIRES, sdf.format(expires));
-			inkClient.postJson(null, Ink.ENDPOINT, jo, new AsyncHttpResponseHandler() {
+			InkClient.postJson(null, Ink.ENDPOINT, jo, new AsyncHttpResponseHandler() {
 				
 				@Override
 				public void onSuccess(int statusCode, org.apache.http.Header[] headers, byte[] responseBody) {
@@ -98,7 +92,7 @@ public class InkClientUsage {
 	 * @param nationality nationality
 	 * @return json-String
 	 */
-	public void registration(final String username, final String password, final String email, final String birthday, final String gender, final String nationality, final Registration.PostHandler postHandler){
+	public static void registration(final String username, final String password, final String email, final String birthday, final String gender, final String nationality, final Registration.PostHandler postHandler){
 		try {
 			JSONObject jo = new JSONObject();
 			jo.put(User.USERNAME, username);
@@ -107,7 +101,7 @@ public class InkClientUsage {
 			jo.put(User.BIRTHDAY, birthday);
 //			jo.put(User.GENDER, gender);
 //			jo.put(User.NATIONAITY, nationality);
-			inkClient.postJson(null, Registration.ENDPOINT, jo, new JsonHttpResponseHandler() {
+			InkClient.postJson(null, Registration.ENDPOINT, jo, new JsonHttpResponseHandler() {
 
 				@Override
 				public void onSuccess(int statusCode, JSONObject response) {
@@ -140,8 +134,44 @@ public class InkClientUsage {
 			postHandler.onFailure(-1);
 		}
 	}
+
+	public static void login(final String username, final String password, final String client_id, final String client_secret, final Login.PostHandler postHandler) {
+		RequestParams rp = new RequestParams();
+		rp.put(Login.HEADER_GRANT_TYPE, Login.GRANT_TYPE_PASSWORD);
+		rp.put(Login.HEADER_USERNAME, username);
+		rp.put(Login.HEADER_PASSWORD, password);
+		rp.put(Login.HEADER_CLIENT_ID, client_id);
+		rp.put(Login.HEADER_CLIENT_SECRET, client_secret);
+		rp.put(Login.HEADER_SCOPE, Login.SCOPE_READ);
+		AuthClient.post(Login.ENDPOINT, rp, new JsonHttpResponseHandler() {
+
+			@Override
+			public void onSuccess(int statusCode, JSONObject response) {
+				try {
+					postHandler.onSuccess(response.getString(Login.RESPONSE_ACCESS_TOKEN), response.getString(Login.RESPONSE_REFRESH_TOKEN), response.getString(Login.RESPONSE_EXPIRES_IN));
+					// TODO:
+					//SessionManager.login(ACCESS_TOKEN, REFRESH_TOKEN);
+
+				} catch (JSONException e) {
+					Log.w(TAG, "login:" + e.getMessage());
+					postHandler.onFailure(-1);
+				}				
+			}
+			
+			@Override
+			public void onFailure(int statusCode, org.apache.http.Header[] headers, String responseString, Throwable e) {
+				//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + responseString);
+				if (statusCode == HttpURLConnection.HTTP_BAD_REQUEST) {
+					postHandler.onFailureInvalid();
+					return;
+				}
+				postHandler.onFailure(statusCode);
+			}
+
+		});
+	}
 	
-	public void loginRefresh(final String client_id, final String client_secret, final String refresh_token, final Login.PostHandler postHandler) {
+	public static void loginRefresh(final String client_id, final String client_secret, final String refresh_token, final Login.PostHandler postHandler) {
 		RequestParams rp = new RequestParams();
 		rp.put(Login.HEADER_GRANT_TYPE, Login.GRANT_TYPE_REFRESH_TOKEN);
 		rp.put(Login.HEADER_CLIENT_ID, client_id);
@@ -152,7 +182,7 @@ public class InkClientUsage {
 			@Override
 			public void onSuccess(int statusCode, JSONObject response) {
 				try {
-					postHandler.onSuccess(response.getString(Login.RESPONSE_ACCESS_TOKEN), response.getString(Login.RESPONSE_REFRESH_TOKEN));
+					postHandler.onSuccess(response.getString(Login.RESPONSE_ACCESS_TOKEN), response.getString(Login.RESPONSE_REFRESH_TOKEN), response.getString(Login.RESPONSE_EXPIRES_IN));
 					// TODO:
 					//SessionManager.login(ACCESS_TOKEN, REFRESH_TOKEN);
 				} catch (JSONException e) {
@@ -175,39 +205,7 @@ public class InkClientUsage {
 
 	}
 	
-	public void login(final String username, final String password, final String client_id, final String client_secret, final Login.PostHandler postHandler) {
-		RequestParams rp = new RequestParams();
-		rp.put(Login.HEADER_GRANT_TYPE, Login.GRANT_TYPE_PASSWORD);
-		rp.put(Login.HEADER_USERNAME, username);
-		rp.put(Login.HEADER_PASSWORD, password);
-		rp.put(Login.HEADER_CLIENT_ID, client_id);
-		rp.put(Login.HEADER_CLIENT_SECRET, client_secret);
-		rp.put(Login.HEADER_SCOPE, Login.SCOPE_READ);
-		AuthClient.post(Login.ENDPOINT, rp, new JsonHttpResponseHandler() {
-
-			@Override
-			public void onSuccess(int statusCode, JSONObject response) {
-				try {
-					postHandler.onSuccess(response.getString(Login.RESPONSE_ACCESS_TOKEN), response.getString(Login.RESPONSE_REFRESH_TOKEN));
-					// TODO:
-					//SessionManager.login(ACCESS_TOKEN, REFRESH_TOKEN);
-
-				} catch (JSONException e) {
-					Log.w(TAG, "login:" + e.getMessage());
-					postHandler.onFailure(-1);
-				}				
-			}
-			
-			@Override
-			public void onFailure(int statusCode, org.apache.http.Header[] headers, String responseString, Throwable e) {
-				//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + responseString);
-				if (statusCode == HttpURLConnection.HTTP_BAD_REQUEST) {
-					postHandler.onFailureInvalid();
-					return;
-				}
-				postHandler.onFailure(statusCode);
-			}
-
-		});
-	}
+	public static void setAuthorizationToken(String token) {
+		InkClient.setAuthorizationToken(token);
+	}	
 }
