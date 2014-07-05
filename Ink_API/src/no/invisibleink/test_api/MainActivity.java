@@ -1,7 +1,5 @@
 package no.invisibleink.test_api;
 
-import java.util.Calendar;
-
 import no.invisibleink.api.client.InkClientUsage;
 import no.invisibleink.api.model.Ink;
 import no.invisibleink.api.model.Login;
