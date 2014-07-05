@@ -32,5 +32,6 @@ Our application
 LogCat filter
 ´´´
 tag:^(?!.*(dalvikvm|libEGL|GooglePlayServicesUtil|EGL_genymotion|OpenGLRenderer)).*$
+tag:^(?!.*(AwContents|chromium|dalvikvm|EGL_genymotion|eglCodecCommon|IInputConnectionWrapper|libEGL|OpenGLRenderer)).*$
 ´´´
 

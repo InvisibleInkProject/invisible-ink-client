@@ -1,0 +1,105 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,400,300italic);
+
+body {
+	padding: 0;
+	margin: 0;
+}
+html, body, #map {
+	height: 100%;
+}
+body {
+	background: url('http://www.tom-carden.co.uk/wp-content/uploads/2008/10/osm-yahoo-flash.png');
+}
+
+ul, li {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+
+/*
+ * Overlay with gradient
+ */
+div.content {
+	position:fixed;
+	top:0px;
+	right:0px;
+	
+	height: 100%;
+	width: 100%;
+	background: linear-gradient(rgba(193,194,255,0.5), rgba(0,255,223,0.5));
+	display: block;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+}
+
+/*
+ *
+ */
+div.notepaper {
+	margin: 17px;
+	padding-top: 33px; /* hight of the background */
+	background: url('../images/notepaper_top.png') repeat-x;
+	box-shadow:2px 2px 2px #666;
+}
+
+#inkList {
+	background: white;
+	font-size: 20px;
+	display: block;
+}
+
+#inkList li {
+	margin-left: 17px;
+	padding-left: 30px;
+	padding-right: 17px;
+	padding-bottom: 15px;
+
+
+	margin-bottom: 5px;
+	vertical-align: middle;
+}
+
+#inkList li:not(:last-child) {
+	border-bottom: 2px #999999 dashed;	
+}
+
+
+#inkList li.drop {
+	background: url('../images/drop_list.png') no-repeat top left;
+}
+#inkList li.drop_expires {
+	background: url('../images/drop_list_expires.png') no-repeat top left;
+}
+#inkList li.drop_viewed {
+	background: url('../images/drop_list_viewed.png') no-repeat top left;
+}
+
+#inkList li img.enlarge {
+	margin: 5px auto 0px auto;
+	display: block;
+}
+
+/*
+ * Info
+ */
+#inkList ul {
+	padding: 0px;
+	padding-top: 1px;
+	margin: 0px;
+	font-size: 15px;
+	list-style: none;
+
+	color: #999999;
+}
+
+#inkList ul li {
+	padding: 0px;
+	border: 0px;	
+	margin: 0px;
+}
+
+.blueHighlighted {
+	color: #2bc7b5;
+	font-style: italic;
+}
