@@ -13,7 +13,32 @@ import android.widget.Toast;
 
 public class ServerManager {
 	
-	private static final String LOG = "ServerManager";
+	public static final String TAG = ServerManager.class.getName();
+	
+	/**
+	 * If the distance between the current location and the last
+	 * location is greater as this value, the server will be requested.
+	 * 
+	 * unit: meters
+	 */
+	public static final float REQUEST_DISTANCE_CHANGE = 30;
+	
+	/**
+	 * If the time since the last server request is greater as this
+	 * value, the server will be requested.
+	 * 
+	 * unit: seconds
+	 */
+	public static final long REQUEST_TIME_PERIOD = 20;
+	
+	
+	/**
+	 * The server returns all inks, which are in this radius.
+	 * 
+	 * unit: meters
+	 */
+	public static final float REQUEST_INKS_RADIUS_IN_METERS = 2000;
+	
 
 	/**
 	 * Location, when the last request was send.
@@ -61,7 +86,7 @@ public class ServerManager {
 				}
 			});
 		} else {
-			Log.w(LOG, "requst with null location");
+			Log.w(TAG, "requst with null location");
 		}
 	}
 
@@ -73,7 +98,7 @@ public class ServerManager {
 	 */	
 	public void requestIfNecessary(Context context, Location location) {
 		float distanceInMeters = location.distanceTo(this.lastRequestLocation);
-		if(distanceInMeters > Settings.REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
+		if(distanceInMeters > REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
 			this.request(context, location);
 		}
 	}
@@ -112,7 +137,7 @@ public class ServerManager {
 	 * @return True, if server should requested again.
 	 */
 	private boolean checkTimerToRequestServer() {
-		return (System.currentTimeMillis() - this.lastRequestTime) > (Settings.REQUEST_TIME_PERIOD * 1000);
+		return (System.currentTimeMillis() - this.lastRequestTime) > (REQUEST_TIME_PERIOD * 1000);
 	}
 	
 }

@@ -129,13 +129,13 @@ final LoginActivity self = this;
 			
 			final SessionManager sm = new SessionManager(getApplicationContext());
 
-			InkClientUsage.login(mUsername, mPassword, sm.getClientId(), sm.getClientSecret(), new Login.PostHandler() {
+			InkClientUsage.login(mUsername, mPassword, sm.getClientID(), sm.getClientSecret(), new Login.PostHandler() {
 				
 				@Override
 				public void onSuccess(String accessToken, String refreshToken,
 						String expires_in) {
 					// TODO Auto-generated method stub
-					sm.login(accessToken, refreshToken, expires_in, mUsername);
+					sm.storeLoginData(accessToken, refreshToken, expires_in, mUsername);
 					
 					showProgress(false);
 					Intent intent = new Intent(self, MainActivity.class);

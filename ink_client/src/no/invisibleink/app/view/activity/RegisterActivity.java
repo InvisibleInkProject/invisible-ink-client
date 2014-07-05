@@ -7,13 +7,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
+
 import no.invisibleink.api.client.InkClientUsage;
 import no.invisibleink.api.model.Login;
 import no.invisibleink.api.model.Registration;
 import no.invisibleink.app.MainActivity;
 import no.invisibleink.app.R;
 import no.invisibleink.app.controller.SessionManager;
-import no.invisibleink.app.view.fragment.DatePickerFragment;
+import no.invisibleink.app.view.dialog.DatePickerFragment;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -212,14 +213,14 @@ final RegisterActivity self = this;
 				
 				@Override
 				public void onSuccess(String client_id, String client_secret) {
-					mg.register(client_id, client_secret);
+					mg.storeRegisterData(client_id, client_secret);
 					
-					InkClientUsage.login(mUsername, mPassword, mg.getClientId(), mg.getClientSecret(), new Login.PostHandler() {
+					InkClientUsage.login(mUsername, mPassword, mg.getClientID(), mg.getClientSecret(), new Login.PostHandler() {
 						
 						@Override
 						public void onSuccess(String accessToken, String refreshToken,
 								String expires_in) {
-							mg.login(accessToken, refreshToken, expires_in, mUsername);
+							mg.storeLoginData(accessToken, refreshToken, expires_in, mUsername);
 							// then start main activity 
 							Intent intent = new Intent(self, MainActivity.class);
 							startActivity(intent);
