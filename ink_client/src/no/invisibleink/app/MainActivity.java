@@ -19,16 +19,13 @@ package no.invisibleink.app;
 
 import java.util.Date;
 
+import no.invisibleink.app.controller.ServerManager;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.controller.location.LocationManager;
 import no.invisibleink.app.controller.location.NoLocationException;
-import no.invisibleink.app.controller.server_comm.ServerManager;
-import no.invisibleink.app.model.DatabaseHelper;
-import no.invisibleink.app.model.InkList;
-import no.invisibleink.app.view.section.ListViewFragment;
-import no.invisibleink.app.view.section.MapViewFragment;
-import no.invisibleink.app.view.section.PostViewFragment;
-
+import no.invisibleink.app.view.fragment.ListViewFragment;
+import no.invisibleink.app.view.fragment.MapViewFragment;
+import no.invisibleink.app.view.fragment.PostViewFragment;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -50,7 +47,7 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.MapsInitializer;
 
 public class MainActivity extends FragmentActivity implements
-		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener, ListViewFragment.OnListSectionFragmentListener {
+		ActionBar.TabListener, LocationListener, PostViewFragment.OnPostSectionFragmentListener {
 
 	private static final String TAG = "MainActivity";
     
@@ -81,10 +78,6 @@ public class MainActivity extends FragmentActivity implements
     private LocationManager locationManager;
     /** Server manager */
     private ServerManager serverManager;
-	/** List with all local inks */
-	private InkList inkList;
-    
-	private DatabaseHelper db;
 	
 	final Context context = this;
 	
@@ -95,10 +88,8 @@ public class MainActivity extends FragmentActivity implements
         
         /* -------------------------------- Init ---------------- */
         serverManager = new ServerManager();
-        inkList = new InkList();
         locationManager = new LocationManager(this);
         locationManager.onCreate();
-        db = new DatabaseHelper(getApplicationContext());
         
         /* -------------------------------- Swipe view with taps ---------------- */
         fragmentManager = getSupportFragmentManager();
@@ -293,48 +284,6 @@ public class MainActivity extends FragmentActivity implements
         }
     }
 	
-	public void onReceivedInkList(InkList inkList, Location oldLocation) {
-		if (inkList != null) {
-			Log.d(TAG, "received: " + inkList.size() + " inks");
-
-			this.inkList.clear();
-			this.inkList.addAll(inkList);
-			
-			Location location;
-			try {
-				if (oldLocation == null) {
-					location = locationManager.getLocation();
-				} else {
-					location = oldLocation;
-				}
-				Log.w(TAG, location.toString());
-				inkList.updateVisibility(location);
-		    	listSectionFragment.update(inkList, location);
-		    	mapSectionFragment.update(inkList);		
-			} catch (NoLocationException e) {
-				Log.w(TAG, "onReceivedInkList: no location");				
-			}
-		} else {
-			Log.d(TAG, "onReceivedInkList: Receive null inkList");
-			
-			// TODO: comment
-	        InkList tmpInkList = db.getInkList();
-	        //for(Ink i : tmpInkList) {
-	        //	Log.i(LOG, i.toString());
-	        //}
-	        if (!tmpInkList.isEmpty()) {
-	        	Log.i(TAG, "recover " + tmpInkList.size() + " inks form db");
-	        	try {
-					onReceivedInkList(tmpInkList, locationManager.getSavedLocation());
-				} catch (NoLocationException e) {
-		        	Log.d(TAG, "recover " + e.getMessage());
-				}
-	        }
-
-	        
-		}
-	}
-	
 	/*
 	 * (non-Javadoc)
 	 * @see com.google.android.gms.location.LocationListener#onLocationChanged(android.location.Location)
@@ -358,38 +307,4 @@ public class MainActivity extends FragmentActivity implements
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see no.invisibleink.listener.OnListSectionFragmentListener#onRequestInks()
-	 */
-	@Override
-	public void onRequestInks() {
-		try {
-			Location location = locationManager.getLocation();
-			serverManager.request(this, location);
-		} catch (NoLocationException e) {
-			Log.w(TAG, "onRequestInks: " + e.getMessage());
-		}		
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see no.invisibleink.listener.OnListSectionFragmentListener#doLocationUpdates(boolean)
-	 */
-	@Override
-	public void doLocationUpdates(boolean yes) {
-		if (yes) {
-			locationManager.startUpdates();
-		} else {
-			locationManager.stopUpdates();
-		}
-		
-	}
-
-
-	public void onReceiveInks(InkList inkList) {
-		// TODO Auto-generated method stub
-		
-	}
-    
 }

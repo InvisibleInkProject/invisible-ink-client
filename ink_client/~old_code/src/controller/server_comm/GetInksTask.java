@@ -69,7 +69,7 @@ public class GetInksTask extends AsyncTask<URI, Void, InkList>{
 			Gson gsonBuilder = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
 			
 			DatabaseHelper db = new DatabaseHelper(mContext);
-			db.clearTableInk();
+			db.clearTableCars();
 
 			for(int i=0;i<ar.length();i++){
 				Ink ink = gsonBuilder.fromJson(ar.get(i).toString(), GsonInk.class).toInk();

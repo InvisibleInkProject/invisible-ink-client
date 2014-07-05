@@ -42,6 +42,74 @@ GooglePlayServicesClient.OnConnectionFailedListener {
     
     MainActivity activity;
     
+
+    
+    
+    
+    
+    
+    
+    
+    
+    // Name of shared preferences repository that stores persistent state
+    public static final String SHARED_PREFERENCES =
+            "com.example.android.location.SHARED_PREFERENCES";
+
+    // Key for storing the "updates requested" flag in shared preferences
+    public static final String KEY_UPDATES_REQUESTED =
+            "com.example.android.location.KEY_UPDATES_REQUESTED";
+
+    // TODO: comment
+    public static final String KEY_LAST_LONGITUDE = "no.invisibleink.KEY_LAST_LONGITUDE";
+    public static final String KEY_LAST_LATIDUTE = "no.invisibleink.KEY_LAST_LATIDUTE";
+    
+    /*
+     * Define a request code to send to Google Play services
+     * This code is returned in Activity.onActivityResult
+     */
+    public final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
+
+    /*
+     * Constants for location update parameters
+     */
+    // Milliseconds per second
+    public static final int MILLISECONDS_PER_SECOND = 1000;
+
+    // The update interval
+    public static final int UPDATE_INTERVAL_IN_SECONDS = 5;
+
+    // A fast interval ceiling
+    public static final int FAST_CEILING_IN_SECONDS = 1;
+
+    // Update interval in milliseconds
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS =
+            MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
+
+    // A fast ceiling of update intervals, used when the app is visible
+    public static final long FAST_INTERVAL_CEILING_IN_MILLISECONDS =
+            MILLISECONDS_PER_SECOND * FAST_CEILING_IN_SECONDS;
+
+    // Create an empty string for initializing strings
+    public static final String EMPTY_STRING = new String();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
 	public LocationManager(MainActivity activity) {
 		this.activity = activity;
@@ -54,19 +122,19 @@ GooglePlayServicesClient.OnConnectionFailedListener {
         /*
          * Set the update interval
          */
-        mLocationRequest.setInterval(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setInterval(UPDATE_INTERVAL_IN_MILLISECONDS);
 
         // Use high accuracy
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         // Set the interval ceiling to one minute
-        mLocationRequest.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FAST_INTERVAL_CEILING_IN_MILLISECONDS);
 
         // Note that location updates are off until the user turns them on
         mUpdatesRequested = false;
 
         // Open Shared Preferences
-        mPrefs = activity.getSharedPreferences(LocationUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        mPrefs = activity.getSharedPreferences(SHARED_PREFERENCES, Context.MODE_PRIVATE);
 
         // Get an editor
         mEditor = mPrefs.edit();
@@ -91,7 +159,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	
 	public void onPause() {
         // Save the current setting for updates
-        mEditor.putBoolean(LocationUtils.KEY_UPDATES_REQUESTED, mUpdatesRequested);
+        mEditor.putBoolean(KEY_UPDATES_REQUESTED, mUpdatesRequested);
         mEditor.commit();
 	}
 	
@@ -105,12 +173,12 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	
 	public void onResume() {
         // If the app already has a setting for getting location updates, get it
-        if (mPrefs.contains(LocationUtils.KEY_UPDATES_REQUESTED)) {
-            mUpdatesRequested = mPrefs.getBoolean(LocationUtils.KEY_UPDATES_REQUESTED, false);
+        if (mPrefs.contains(KEY_UPDATES_REQUESTED)) {
+            mUpdatesRequested = mPrefs.getBoolean(KEY_UPDATES_REQUESTED, false);
 
         // Otherwise, turn off location updates until requested
         } else {
-            mEditor.putBoolean(LocationUtils.KEY_UPDATES_REQUESTED, false);
+            mEditor.putBoolean(KEY_UPDATES_REQUESTED, false);
             mEditor.commit();
         }		
 	}
@@ -134,7 +202,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
                 // Start an Activity that tries to resolve the error
                 connectionResult.startResolutionForResult(
                         activity,
-                        LocationUtils.CONNECTION_FAILURE_RESOLUTION_REQUEST);
+                        CONNECTION_FAILURE_RESOLUTION_REQUEST);
 
                 /*
                 * Thrown if Google Play services canceled the original
@@ -278,8 +346,8 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	
 	private void saveCurrentLocation() {
         try {
-        	mEditor.putLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToRawLongBits(getLocation().getLatitude()));
-        	mEditor.putLong(LocationUtils.KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(getLocation().getLongitude()));
+        	mEditor.putLong(KEY_LAST_LATIDUTE, Double.doubleToRawLongBits(getLocation().getLatitude()));
+        	mEditor.putLong(KEY_LAST_LONGITUDE, Double.doubleToRawLongBits(getLocation().getLongitude()));
         	mEditor.commit();
         	Log.d(LOG, "Save location in SharedPreferences");
 		} catch (NoLocationException e) {
@@ -288,8 +356,8 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	}
 	
 	public Location getSavedLocation() throws NoLocationException {
-		Double lastLocationLat = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
-		Double lastLocationLon = Double.longBitsToDouble(mPrefs.getLong(LocationUtils.KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
+		Double lastLocationLat = Double.longBitsToDouble(mPrefs.getLong(KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
+		Double lastLocationLon = Double.longBitsToDouble(mPrefs.getLong(KEY_LAST_LATIDUTE, Double.doubleToLongBits(0)));
 		if (lastLocationLat != Double.NaN && lastLocationLon != Double.NaN) {
 			Location lastLoc = new Location("");
     		lastLoc.setLatitude(lastLocationLat);

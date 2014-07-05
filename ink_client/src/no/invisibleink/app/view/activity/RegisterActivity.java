@@ -1,4 +1,4 @@
-package no.invisibleink.app.view.user;
+package no.invisibleink.app.view.activity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.concurrent.ExecutionException;
-
+import no.invisibleink.api.client.InkClientUsage;
+import no.invisibleink.api.model.Login;
+import no.invisibleink.api.model.Registration;
 import no.invisibleink.app.MainActivity;
 import no.invisibleink.app.R;
 import no.invisibleink.app.controller.SessionManager;
-import no.invisibleink.app.controller.Settings;
-import no.invisibleink.app.controller.server_comm.RegistrationTask;
-import no.invisibleink.app.controller.server_comm.UserLoginTask;
-import no.invisibleink.app.view.section.DatePickerFragment;
+import no.invisibleink.app.view.fragment.DatePickerFragment;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -147,6 +145,8 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 	 * TODO: add progress spinner
 	 */
 	public void attemptRegistration(){
+final RegisterActivity self = this;
+		
 		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
@@ -206,33 +206,48 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 			focusView.requestFocus();
 		} else {
 
-			SessionManager mg = new SessionManager(getApplicationContext());
+			final SessionManager mg = new SessionManager(getApplicationContext());
 			
-			RegistrationTask register = new RegistrationTask(mg);
-			register.execute(Settings.API_URL + "register/", mUsername, mPassword, mEmail, mDate,mGender, mNation);
-			try {
-				if(register.get()){
-					//automatically log in
-					UserLoginTask login = new UserLoginTask(mg);
-					login.execute(Settings.OAUTH_URL, mUsername, mPassword);
+			InkClientUsage.registration(mUsername, mPassword, mEmail, mDate, mGender, mNation, new Registration.PostHandler() {
+				
+				@Override
+				public void onSuccess(String client_id, String client_secret) {
+					mg.register(client_id, client_secret);
 					
-					if(login.get()){
-						// then start main activity 
-						Intent intent = new Intent(this, MainActivity.class);
-						startActivity(intent);
-						finish();
-					}else{
-						//TODO: error output
-					}
-					
-				}else{
+					InkClientUsage.login(mUsername, mPassword, mg.getClientId(), mg.getClientSecret(), new Login.PostHandler() {
+						
+						@Override
+						public void onSuccess(String accessToken, String refreshToken,
+								String expires_in) {
+							mg.login(accessToken, refreshToken, expires_in, mUsername);
+							// then start main activity 
+							Intent intent = new Intent(self, MainActivity.class);
+							startActivity(intent);
+							finish();
+						}
+						
+						@Override
+						public void onFailureInvalid() {
+							//TODO: error output
+						}
+						
+						@Override
+						public void onFailure(int statusCode) {
+							//TODO: error output
+						}
+					});					
+				}
+				
+				@Override
+				public void onFailureUserAlreadyExits() {
 					//TODO: error output 
 				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
+				
+				@Override
+				public void onFailure(int statusCode) {
+					//TODO: error output 
+				}
+			});
 			
 		}
 	}

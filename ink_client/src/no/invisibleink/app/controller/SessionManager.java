@@ -65,27 +65,27 @@ public class SessionManager {
 	
 	/**
 	 * saves the oAuth client id and secret to the device's shared preferences
-	 * @param id client_id
-	 * @param secret client_secret
+	 * @param client_id client_id
+	 * @param client_secret client_secret
 	 */
-	public void register(String id, String secret){
-		editor.putString(KEY_ID, id);
-		editor.putString(KEY_SECRET, secret);
+	public void register(String client_id, String client_secret){
+		editor.putString(KEY_ID, client_id);
+		editor.putString(KEY_SECRET, client_secret);
 		editor.commit();
 	}
 	
 	/**
 	 * saves all relevant login information to the device's shared preferences
-	 * @param access the new access token
-	 * @param refresh the new refresh token
-	 * @param expires time until expiration 
-	 * @param name username
+	 * @param accessToken the new access token
+	 * @param refreshToken the new refresh token
+	 * @param expiresIn time until expiration 
+	 * @param username username
 	 */
-	public void login(String access, String refresh, String expires, String name){
-		editor.putString(KEY_NAME, name);	
-		editor.putString(KEY_ACCESS, access);
-		editor.putString(KEY_REFRESH, refresh);
-		editor.putString(KEY_EXP, expires);
+	public void login(String accessToken, String refreshToken, String expiresIn, String username) {
+		editor.putString(KEY_NAME, username);	
+		editor.putString(KEY_ACCESS, accessToken);
+		editor.putString(KEY_REFRESH, refreshToken);
+		editor.putString(KEY_EXP, expiresIn);
 		editor.commit();
 	}
 	

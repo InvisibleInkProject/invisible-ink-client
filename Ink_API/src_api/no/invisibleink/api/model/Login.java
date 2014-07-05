@@ -20,7 +20,7 @@ public class Login {
 	public static final String RESPONSE_EXPIRES_IN = "expires_in";
 	
 	public interface PostHandler {
-		public void onSuccess(String accessToken, String refreshToken, String expires_in);
+		public void onSuccess(String accessToken, String refreshToken, String expiresIn);
 		public void onFailure(int statusCode);
 		public void onFailureInvalid();
 	}

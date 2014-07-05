@@ -1,12 +1,10 @@
-package no.invisibleink.app.view.user;
+package no.invisibleink.app.view.activity;
 
-import java.util.concurrent.ExecutionException;
-
+import no.invisibleink.api.client.InkClientUsage;
+import no.invisibleink.api.model.Login;
 import no.invisibleink.app.MainActivity;
 import no.invisibleink.app.R;
 import no.invisibleink.app.controller.SessionManager;
-import no.invisibleink.app.controller.Settings;
-import no.invisibleink.app.controller.server_comm.UserLoginTask;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
@@ -88,6 +86,7 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
+final LoginActivity self = this;
 
 		// Reset errors.
 		mNameView.setError(null);
@@ -128,27 +127,35 @@ public class LoginActivity extends Activity {
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			
-			SessionManager sm = new SessionManager(getApplicationContext());
-			
-			UserLoginTask login = new UserLoginTask(sm);
-			login.execute(Settings.OAUTH_URL, mUsername, mPassword);
-			
-			try {
-				if(login.get()){ //task completed successfully
+			final SessionManager sm = new SessionManager(getApplicationContext());
+
+			InkClientUsage.login(mUsername, mPassword, sm.getClientId(), sm.getClientSecret(), new Login.PostHandler() {
+				
+				@Override
+				public void onSuccess(String accessToken, String refreshToken,
+						String expires_in) {
+					// TODO Auto-generated method stub
+					sm.login(accessToken, refreshToken, expires_in, mUsername);
+					
 					showProgress(false);
-					Intent intent = new Intent(this, MainActivity.class);
+					Intent intent = new Intent(self, MainActivity.class);
 					startActivity(intent);
 					finish();
-				}else{
-					showProgress(false);
-					//TODO: show error
 				}
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-			
+				
+				@Override
+				public void onFailureInvalid() {
+					// TODO Auto-generated method stub
+					showProgress(false);
+					
+				}
+				
+				@Override
+				public void onFailure(int statusCode) {
+					// TODO Auto-generated method stub
+					showProgress(false);					
+				}
+			});			
 		}
 	}
 
