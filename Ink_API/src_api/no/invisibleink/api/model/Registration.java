@@ -10,5 +10,6 @@ public class Registration {
 	public interface PostHandler {
 		public void onSuccess(String client_id, String client_secret);
 		public void onFailure(int statusCode);
+		public void onFailureUserAlreadyExits();
 	}
 }
