@@ -24,6 +24,7 @@ import java.util.Date;
 
 import no.invisibleink.api.client.InkClientUsage;
 import no.invisibleink.api.model.Ink;
+import no.invisibleink.api.model.Registration;
 import no.invisibleink.app.controller.SessionManager;
 import no.invisibleink.app.controller.location.LocationManager;
 import no.invisibleink.app.controller.location.NoLocationException;
@@ -173,12 +174,31 @@ public class MainActivity extends FragmentActivity implements
         
         
         
+        
        
        	Location loc = new Location("");
        	loc.setLatitude(59.94);
        	loc.setLongitude(10.72);
        	
        	InkClientUsage inkClientUsage = new InkClientUsage("77db8444e1dc145575f0b168dc2aad715fc1e0c0");
+       	
+       	
+       	inkClientUsage.registration("myUser", "myPassword", "myMail@myDomain.com", "2007-11-2", "Female", "VNM", new Registration.PostHandler() {
+			
+			@Override
+			public void onSuccess(String client_id, String client_secret) {
+				Log.i(TAG, "registration");
+				Log.i(TAG, client_id + ", " + client_secret);
+			}
+			
+			@Override
+			public void onFailure(int statusCode) {
+				Log.i(TAG, "registration");
+				Log.i(TAG, statusCode + "");
+			}
+		});
+       	
+       	
        	
        	inkClientUsage.getInk(loc, new Ink.GetHandler() {
 			
@@ -244,28 +264,6 @@ public class MainActivity extends FragmentActivity implements
         return true;
     }
     
-/*	public void getInk() throws JSONException {
-//		rp.put("no_meta", "true");
-		RequestParams rq = new RequestParams("no_meta", true);
-		InkClient.get("message/59.94,10.72,2000.0/", rq, new JsonHttpResponseHandler() {
-			
-			@Override
-			public void onSuccess(JSONArray inks) {
-				try {
-					Toast.makeText(getApplicationContext(), ((JSONObject) inks.get(0)).getString("text"), Toast.LENGTH_LONG).show();
-				} catch (JSONException e) {
-					Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-				}
-			}
-
-			@Override
-			public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
-				Toast.makeText(getApplicationContext(), statusCode, Toast.LENGTH_LONG).show();				
-			}
-			
-		});
-	}
-*/    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection

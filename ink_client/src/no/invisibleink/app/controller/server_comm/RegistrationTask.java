@@ -17,6 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 /**
  * Represents an asynchronous login task used to register the user
@@ -38,6 +39,7 @@ public class RegistrationTask extends AsyncTask<String, Void, Boolean> {
 		
 		try {
 			StringEntity ent = new StringEntity(buildJson(params[1], params[2], params[3], params[4], params[5], params[6]));
+Log.i("RegistrationTask", buildJson(params[1], params[2], params[3], params[4], params[5], params[6]));
 			ent.setContentType("application/json");
 			request.setEntity(ent);
 			
