@@ -30,4 +30,16 @@
 		<nature>com.android.ide.eclipse.adt.AndroidNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>api</name>
+			<type>2</type>
+			<location>/home/fabian/code/android/ink-app/Ink_API/src/no/invisibleink/api</location>
+		</link>
+		<link>
+			<name>src_api</name>
+			<type>2</type>
+			<location>/home/fabian/code/android/ink-app/Ink_API/src_api</location>
+		</link>
+	</linkedResources>
 </projectDescription>
