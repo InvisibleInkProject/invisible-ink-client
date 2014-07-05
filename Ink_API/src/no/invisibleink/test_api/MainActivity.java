@@ -6,6 +6,8 @@ import no.invisibleink.api.client.InkClientUsage;
 import no.invisibleink.api.model.Ink;
 import no.invisibleink.api.model.Login;
 import no.invisibleink.api.model.Registration;
+import no.invisibleink.test_api.stub.InkStub;
+import no.invisibleink.test_api.stub.UserStub;
 
 import org.json.JSONArray;
 
@@ -27,7 +29,7 @@ public class MainActivity extends Activity {
 		/*
 		 * Test
 		 */
-		//testGetInk();
+		testGetInk();
 		//testPostInk();
 		//testRegistration();
 		//testLogin();
@@ -35,7 +37,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testGetInk() {      	
-       	inkClientUsage.getInk(Stub.getLocation(), new Ink.GetHandler() {
+       	inkClientUsage.getInk(UserStub.getLocation(), new Ink.GetHandler() {
 			
 			@Override
 			public void onSucess(JSONArray inks) {
@@ -76,11 +78,16 @@ public class MainActivity extends Activity {
 			public void onFailure(int statusCode) {
 				Log.e(TAG, "getInk failure: " + statusCode);
 			}
+
+			@Override
+			public void onFailureUnauthorized() {
+				Log.w(TAG, "getInk failure: " + "unauthorized");				
+			}
 		});
 	}
 	
 	private void testPostInk() {
-		inkClientUsage.postInk("Hey neightbor", 500, Calendar.getInstance().getTime(), Stub.getLocation(), new Ink.PostHandler() {
+		inkClientUsage.postInk(InkStub.message, InkStub.radius, InkStub.expires, UserStub.getLocation(), new Ink.PostHandler() {
 
 			@Override
 			public void onSucess() {
@@ -90,12 +97,17 @@ public class MainActivity extends Activity {
 			@Override
 			public void onFailure(int statusCode) {
 				Log.e(TAG, "postInk failed: " + statusCode);
+			}
+
+			@Override
+			public void onFailureUnauthorized() {
+				Log.w(TAG, "getInk failure: " + "unauthorized");
 			}     		
 		});		
 	}
 
 	private void testRegistration() {
-       	inkClientUsage.registration(Stub.username, Stub.password, "myMail@myDomain.com", "2007-11-2", "Female", "VNM", new Registration.PostHandler() {
+       	inkClientUsage.registration(UserStub.username, UserStub.password, UserStub.email, UserStub.birthday, UserStub.gender, UserStub.nationality, new Registration.PostHandler() {
 			
 			@Override
 			public void onSuccess(String client_id, String client_secret) {
@@ -116,7 +128,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testLogin() {
-		inkClientUsage.login(Stub.username, Stub.password, Stub.client_id, Stub.client_secret, new Login.PostHandler() {
+		inkClientUsage.login(UserStub.username, UserStub.password, UserStub.client_id, UserStub.client_secret, new Login.PostHandler() {
 			
 			@Override
 			public void onSuccess(String accessToken, String refreshToken) {
@@ -137,7 +149,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testLoginRefresh() {
-		inkClientUsage.loginRefresh(Stub.client_id, Stub.client_secret, Stub.refresh_token, new Login.PostHandler() {
+		inkClientUsage.loginRefresh(UserStub.client_id, UserStub.client_secret, UserStub.refresh_token, new Login.PostHandler() {
 			@Override
 			public void onSuccess(String accessToken, String refreshToken) {
 				Log.i(TAG, "loginRefresh success: accessToken, refreshToken");

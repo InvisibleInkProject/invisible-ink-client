@@ -23,6 +23,9 @@ import com.loopj.android.http.RequestParams;
 public class InkClientUsage {
 	
 	public static final String TAG = InkClientUsage.class.getName();
+	
+	public static final int STATUS_CODE_CONVERTING_ERROR = -1;
+	
 	private InkClient inkClient;
 	
 	public InkClientUsage(final String token) {
@@ -39,7 +42,11 @@ public class InkClientUsage {
 			}
 
 			@Override
-			public void onFailure(int statusCode, Throwable e, JSONObject errorResponse) {
+			public void onFailure(int statusCode, org.apache.http.Header[] headers, String responseString, Throwable e) {
+				if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+					getHandler.onFailureUnauthorized();
+					return;
+				}
 				//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + errorResponse.toString());
 				getHandler.onFailure(statusCode);
 			}
@@ -52,7 +59,6 @@ public class InkClientUsage {
 			JSONObject jo = new JSONObject();
 			jo.put(Ink.TEXT, message);
 			jo.put(Ink.RADIUS, radius);
-//			jo.put(Ink.USER_ID, 1);
 			jo.put(Ink.LOCATION_LON, location.getLongitude());
 			jo.put(Ink.LOCATION_LAT, location.getLatitude());
 			SimpleDateFormat sdf = new SimpleDateFormat(InkClient.DATE_FORMAT);
@@ -66,6 +72,10 @@ public class InkClientUsage {
 
 				@Override
 				public void onFailure(int statusCode, org.apache.http.Header[] headers, byte[] responseBody, Throwable error) {
+					if (statusCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+						postHandler.onFailureUnauthorized();
+						return;
+					}
 					Log.w(TAG, statusCode + ", " + error.getMessage() + ", " + responseBody.toString());
 					postHandler.onFailure(statusCode);
 				}		
@@ -73,8 +83,8 @@ public class InkClientUsage {
 			});
 			
 		} catch (Exception e) {
-			e.printStackTrace();
-			postHandler.onFailure(-1);
+			Log.e(TAG, "postInk:" + e.getMessage());
+			postHandler.onFailure(STATUS_CODE_CONVERTING_ERROR);
 		}
 	}
 	
@@ -107,13 +117,12 @@ public class InkClientUsage {
 						//SessionManager.register(ID, SECRET);
 					} catch (JSONException e) {
 						Log.w(TAG, "postJson: " + e.getMessage());
-						postHandler.onFailure(-1);
+						postHandler.onFailure(STATUS_CODE_CONVERTING_ERROR);
 					}
-					
 				}
 				
 				@Override
-				public void onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString, java.lang.Throwable e) {
+				public void onFailure(int statusCode, org.apache.http.Header[] headers, String responseString, Throwable e) {
 					//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + responseString);
 					if (statusCode == HttpURLConnection.HTTP_BAD_REQUEST) {
 						// Message: (1062, "Duplicate entry 'USERNAME' for key 'username'")
@@ -122,7 +131,6 @@ public class InkClientUsage {
 							return;
 						}
 					}
-					
 					postHandler.onFailure(statusCode);
 				}				
 				
@@ -154,7 +162,7 @@ public class InkClientUsage {
 			}
 			
 			@Override
-			public void onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString, java.lang.Throwable e) {
+			public void onFailure(int statusCode, org.apache.http.Header[] headers, String responseString, Throwable e) {
 				//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + responseString);
 				if (statusCode == HttpURLConnection.HTTP_BAD_REQUEST) {
 					postHandler.onFailureInvalid();
@@ -191,7 +199,7 @@ public class InkClientUsage {
 			}
 			
 			@Override
-			public void onFailure(int statusCode, org.apache.http.Header[] headers, java.lang.String responseString, java.lang.Throwable e) {
+			public void onFailure(int statusCode, org.apache.http.Header[] headers, String responseString, Throwable e) {
 				//Log.e(TAG, statusCode + ", " + e.getMessage() + ", " + responseString);
 				if (statusCode == HttpURLConnection.HTTP_BAD_REQUEST) {
 					postHandler.onFailureInvalid();

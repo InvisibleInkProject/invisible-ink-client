@@ -13,12 +13,16 @@ public class Ink {
 	public static final String LOCATION_LAT = "location_lat";
 	public static final String EXPIRES = "expires";
 	
-	public interface GetHandler {
+	public interface OAuthHandler {
+		public void onFailureUnauthorized();
+	}
+	
+	public interface GetHandler extends OAuthHandler {
 		public void onSucess(JSONArray inks);
 		public void onFailure(int statusCode);
 	}
 	
-	public interface PostHandler {
+	public interface PostHandler extends OAuthHandler {
 		public void onSucess();
 		public void onFailure(int statusCode);		
 	}

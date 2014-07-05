@@ -1,11 +1,16 @@
-package no.invisibleink.test_api;
+package no.invisibleink.test_api.stub;
 
 import android.location.Location;
 
-public class Stub {
+public class UserStub {
 
 	public static String username = "sample";
 	public static String password = "sample";
+	public static String email = "myMail@myDomain.com";
+	public static String birthday = "2007-11-2";
+	public static String gender = "Female";
+	public static String nationality = "VNM";
+	
 	public static String client_id = "7e880aa6a2b8cad31bd1";
 	public static String client_secret = "d0b25b572fe1338f6d406ed7edb7372b600787bd";
 	public static String access_token = "226b5f1bf60700ba6e8a5126bcf0a66c8562e84f";
