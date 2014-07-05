@@ -135,13 +135,13 @@ public class InkClientUsage {
 		}
 	}
 
-	public static void login(final String username, final String password, final String client_id, final String client_secret, final Login.PostHandler postHandler) {
+	public static void login(final String username, final String password, final String clientID, final String clientSecret, final Login.PostHandler postHandler) {
 		RequestParams rp = new RequestParams();
 		rp.put(Login.HEADER_GRANT_TYPE, Login.GRANT_TYPE_PASSWORD);
 		rp.put(Login.HEADER_USERNAME, username);
 		rp.put(Login.HEADER_PASSWORD, password);
-		rp.put(Login.HEADER_CLIENT_ID, client_id);
-		rp.put(Login.HEADER_CLIENT_SECRET, client_secret);
+		rp.put(Login.HEADER_CLIENT_ID, clientID);
+		rp.put(Login.HEADER_CLIENT_SECRET, clientSecret);
 		rp.put(Login.HEADER_SCOPE, Login.SCOPE_READ);
 		AuthClient.post(Login.ENDPOINT, rp, new JsonHttpResponseHandler() {
 
@@ -171,12 +171,12 @@ public class InkClientUsage {
 		});
 	}
 	
-	public static void loginRefresh(final String client_id, final String client_secret, final String refresh_token, final Login.PostHandler postHandler) {
+	public static void loginRefresh(final String client_id, final String clientSecret, final String refreshToken, final Login.PostHandler postHandler) {
 		RequestParams rp = new RequestParams();
 		rp.put(Login.HEADER_GRANT_TYPE, Login.GRANT_TYPE_REFRESH_TOKEN);
 		rp.put(Login.HEADER_CLIENT_ID, client_id);
-		rp.put(Login.HEADER_CLIENT_SECRET, client_secret);
-		rp.put(Login.HEADER_REFRESH_TOKEN, refresh_token);
+		rp.put(Login.HEADER_CLIENT_SECRET, clientSecret);
+		rp.put(Login.HEADER_REFRESH_TOKEN, refreshToken);
 		AuthClient.post(Login.ENDPOINT, rp, new JsonHttpResponseHandler() {
 
 			@Override
@@ -205,7 +205,7 @@ public class InkClientUsage {
 
 	}
 	
-	public static void setAuthorizationToken(String token) {
-		InkClient.setAuthorizationToken(token);
+	public static void setAuthorizationToken(String accessToken) {
+		InkClient.setAuthorizationToken(accessToken);
 	}	
 }
