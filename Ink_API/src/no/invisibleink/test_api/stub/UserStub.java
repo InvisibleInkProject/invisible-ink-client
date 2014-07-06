@@ -1,5 +1,10 @@
 package no.invisibleink.test_api.stub;
 
+import no.invisibleink.api.model.Login;
+import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.location.Location;
 
 public class UserStub {
@@ -10,11 +15,14 @@ public class UserStub {
 	public static String birthday = "2007-11-2";
 	public static String gender = "Female";
 	public static String nationality = "VNM";
+
+	private SharedPreferences prefs;
+	private Editor editor;	
 	
-	public static String client_id = "7e880aa6a2b8cad31bd1";
-	public static String client_secret = "d0b25b572fe1338f6d406ed7edb7372b600787bd";
-	public static String access_token = "226b5f1bf60700ba6e8a5126bcf0a66c8562e84f";
-	public static String refresh_token = "e9201113453e019ac6cfcefec9ea4992295692ef";
+	public UserStub(Activity activity) {
+		prefs = activity.getPreferences(Context.MODE_PRIVATE);
+		editor = prefs.edit();
+	}
 	
 	public static Location getLocation() {
        	Location loc = new Location("");
@@ -22,5 +30,29 @@ public class UserStub {
        	loc.setLongitude(10.72);
        	return loc;
 	}
+	
+	public String getClientID() {
+		return prefs.getString(Login.HEADER_CLIENT_ID, "");
+	}
+	
+	public String getClientSecret() {
+		return prefs.getString(Login.HEADER_CLIENT_SECRET, "");		
+	}
+
+	public String getAccessToken() {
+		return prefs.getString(Login.RESPONSE_ACCESS_TOKEN, "");		
+	}
+
+	public String getRefreshToken() {
+		return prefs.getString(Login.RESPONSE_REFRESH_TOKEN, "");		
+	}
+	
+	public void storeValues(String clientID, String clientSecret, String accessToken, String refreshToken) {		
+		if (clientID != null) editor.putString(Login.HEADER_CLIENT_ID, clientID);
+		if (clientSecret != null) editor.putString(Login.HEADER_CLIENT_SECRET, clientSecret);
+		if (accessToken != null) editor.putString(Login.RESPONSE_ACCESS_TOKEN, accessToken);
+		if (refreshToken != null) editor.putString(Login.RESPONSE_REFRESH_TOKEN, refreshToken);
+		editor.commit();
+	}	
 
 }

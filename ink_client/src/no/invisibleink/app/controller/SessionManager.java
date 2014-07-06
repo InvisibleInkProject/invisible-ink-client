@@ -1,6 +1,5 @@
 package no.invisibleink.app.controller;
 
-import java.util.HashMap;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -16,6 +16,7 @@ import android.util.Log;
 public class MainActivity extends Activity {
 	
 	public static final String TAG = "Test";
+	private UserStub userStub;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +26,7 @@ public class MainActivity extends Activity {
 		/*
 		 * Before test
 		 */
-		InkClientUsage.setAuthorizationToken("77db8444e1dc145575f0b168dc2aad715fc1e0c0");
+		userStub = new UserStub(this);
 		
 		/*
 		 * Test
@@ -38,6 +39,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testGetInk() {
+		InkClientUsage.setAuthorizationToken(userStub.getAccessToken());
 		InkClientUsage.getInk(UserStub.getLocation(), new Ink.GetHandler() {
 			
 			@Override
@@ -88,6 +90,7 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testPostInk() {
+		InkClientUsage.setAuthorizationToken(userStub.getAccessToken());		
 		InkClientUsage.postInk(InkStub.message, InkStub.radius, InkStub.expires, UserStub.getLocation(), new Ink.PostHandler() {
 
 			@Override
@@ -111,9 +114,10 @@ public class MainActivity extends Activity {
 		InkClientUsage.registration(UserStub.username, UserStub.password, UserStub.email, UserStub.birthday, UserStub.gender, UserStub.nationality, new Registration.PostHandler() {
 			
 			@Override
-			public void onSuccess(String client_id, String client_secret) {
+			public void onSuccess(String clientID, String clientSecret) {
 				Log.i(TAG, "registration success");
-				Log.i(TAG, client_id + ", " + client_secret);
+				Log.i(TAG, clientID + ", " + clientSecret);
+				userStub.storeValues(clientID, clientSecret, null, null);
 			}
 			
 			@Override
@@ -129,12 +133,13 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testLogin() {
-		InkClientUsage.login(UserStub.username, UserStub.password, UserStub.client_id, UserStub.client_secret, new Login.PostHandler() {
+		InkClientUsage.login(UserStub.username, UserStub.password, userStub.getClientID(), userStub.getClientSecret(), new Login.PostHandler() {
 			
 			@Override
 			public void onSuccess(String accessToken, String refreshToken, String expires_in) {
 				Log.i(TAG, "login success: accessToken, refreshToken, expires_in");
 				Log.i(TAG, accessToken + ", " + refreshToken + ", " + expires_in);
+				userStub.storeValues(null, null, accessToken, refreshToken);
 			}
 			
 			@Override
@@ -150,11 +155,12 @@ public class MainActivity extends Activity {
 	}
 	
 	private void testLoginRefresh() {
-		InkClientUsage.loginRefresh(UserStub.client_id, UserStub.client_secret, UserStub.refresh_token, new Login.PostHandler() {
+		InkClientUsage.loginRefresh(userStub.getClientID(), userStub.getClientSecret(), userStub.getRefreshToken(), new Login.PostHandler() {
 			@Override
 			public void onSuccess(String accessToken, String refreshToken, String expires_in) {
 				Log.i(TAG, "loginRefresh success: accessToken, refreshToken, expires_in");
 				Log.i(TAG, accessToken + ", " + refreshToken + ", " + expires_in);
+				userStub.storeValues(null, null, accessToken, refreshToken);
 			}
 			
 			@Override
