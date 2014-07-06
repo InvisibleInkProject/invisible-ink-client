@@ -46,36 +46,6 @@ public class MainActivity extends Activity {
 			@Override
 			public void onSucess(JSONArray inks) {
 				Log.i(TAG, "getInk success");
-/*				JSONObject o;
-				
-				if (inks.length() < 0) {
-					Log.i(TAG, "Empty inks");
-					return;
-				}
-				
-				try {
-					o = inks.getJSONObject(0);
-					Log.w(TAG, o.getString(Ink.TEXT));
-					
-					
-					String filename = "myfile";
-					String string = "Hello world!";
-					
-					File file = new File(getFilesDir(), filename);
-					FileOutputStream outputStream = openFileOutput(filename, MODE_PRIVATE);
-					outputStream.write(string.getBytes());
-					outputStream.close();
-					
-					Log.w(TAG, "" + file.getAbsoluteFile());
-					Log.w(TAG, "" + file.getAbsolutePath());
-					
-//					fileList()
-					
-				} catch (JSONException e) {
-					Log.w(TAG, e.getMessage());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}*/
 			}
 			
 			@Override
