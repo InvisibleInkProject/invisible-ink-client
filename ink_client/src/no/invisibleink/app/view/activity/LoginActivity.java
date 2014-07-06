@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -28,7 +29,7 @@ public class LoginActivity extends Activity {
 	private String mPassword;
 
 	// UI references.
-	private EditText mNameView;
+	private EditText mUsernameView;
 	private EditText mPasswordView;
 	private View mLoginFormView;
 	private View mLoginStatusView;
@@ -47,26 +48,32 @@ public class LoginActivity extends Activity {
 		
 		setContentView(R.layout.activity_login);
 
-		// Set up the login form.
-		mNameView = (EditText) findViewById(R.id.name);
+		/*
+		 * Set up the login form.
+		 */		
+		mUsernameView = (EditText) findViewById(R.id.username);
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
-		findViewById(R.id.sign_in_button).setOnClickListener(
+		Button buttonSignIn = (Button) findViewById(R.id.sign_in_button);
+		buttonSignIn.setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
 						attemptLogin();
 					}
 				});
-		findViewById(R.id.link_to_register).setOnClickListener(
+		TextView link_to_register = (TextView) findViewById(R.id.link_to_register);
+		link_to_register.setOnClickListener(
 			new View.OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					register();					
+					Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
+					startActivity(intent);
+					finish(); // -> do not return here on back-button press 
 				}
 			}
 		);
@@ -86,14 +93,12 @@ public class LoginActivity extends Activity {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	public void attemptLogin() {
-final LoginActivity self = this;
-
 		// Reset errors.
-		mNameView.setError(null);
+		mUsernameView.setError(null);
 		mPasswordView.setError(null);
 
 		// Store values at the time of the login attempt.
-		mUsername = mNameView.getText().toString();
+		mUsername = mUsernameView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 
 		boolean cancel = false;
@@ -112,8 +117,8 @@ final LoginActivity self = this;
 
 		// Check for a valid username
 		if (TextUtils.isEmpty(mUsername)) {
-			mNameView.setError(getString(R.string.error_field_required));
-			focusView = mNameView;
+			mUsernameView.setError(getString(R.string.error_field_required));
+			focusView = mUsernameView;
 			cancel = true;
 		}
 
@@ -134,11 +139,10 @@ final LoginActivity self = this;
 				@Override
 				public void onSuccess(String accessToken, String refreshToken,
 						String expires_in) {
-					// TODO Auto-generated method stub
 					sm.storeLoginData(accessToken, refreshToken, expires_in, mUsername);
 					
 					showProgress(false);
-					Intent intent = new Intent(self, MainActivity.class);
+					Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 					startActivity(intent);
 					finish();
 				}
@@ -147,7 +151,6 @@ final LoginActivity self = this;
 				public void onFailureInvalid() {
 					// TODO Auto-generated method stub
 					showProgress(false);
-					
 				}
 				
 				@Override
@@ -157,15 +160,6 @@ final LoginActivity self = this;
 				}
 			});			
 		}
-	}
-
-	/**
-	 * start the register activity
-	 */
-	public void register(){
-		Intent intent = new Intent(this, RegisterActivity.class);
-		startActivity(intent);
-		finish(); // -> do not return here on back-button press 
 	}
 	
 	/**

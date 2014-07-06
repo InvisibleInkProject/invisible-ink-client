@@ -23,9 +23,11 @@ import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 /**
  * Activity which displays a registration screen to the user
@@ -70,7 +72,7 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 		mNationView = (Spinner) findViewById(R.id.nationality);
 		
 		//populate nationality spinner:
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,createNationalityCollection());
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, createNationalityCollection());
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		mNationView.setAdapter(adapter);
 		mNationView.setSelection(adapter.getPosition(Locale.getDefault().getDisplayCountry()));
@@ -78,8 +80,10 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 //		int pos = adapter.getPosition(Locale.getDefault().getDisplayCountry());
 //		mNationView.setSelection(pos);
 		//mRegistrationFormView = findViewById(R.id.registration_form);
-		
-		findViewById(R.id.btnRegister).setOnClickListener(
+	
+	
+		Button btnRegister = (Button) findViewById(R.id.btnRegister);
+		btnRegister.setOnClickListener(
 				new View.OnClickListener() {
 
 					@Override
@@ -88,7 +92,8 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 					}
 				});
 
-		findViewById(R.id.link_to_login).setOnClickListener(
+		TextView link_to_login = (TextView) findViewById(R.id.link_to_login);
+		link_to_login.setOnClickListener(
 				new View.OnClickListener() {
 
 					@Override
@@ -102,8 +107,7 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 			@Override
 			public void onClick(View v) {
 				DialogFragment dialog = new DatePickerFragment();
-				dialog.show(getFragmentManager(), "date picker");
-
+				dialog.show(getFragmentManager(), DatePickerFragment.TAG);
 			}
 		});
 				
@@ -114,20 +118,22 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 	 * @return list of nationalities 
 	 */
 	private List<String> createNationalityCollection() {
-		 nat = new HashMap<String, String>();
+		nat = new HashMap<String, String>();
 		Locale[] locales = Locale.getAvailableLocales();
-		for(Locale l:locales){
-			try{
-				if(!l.getDisplayCountry().isEmpty()) nat.put(l.getDisplayCountry(), l.getISO3Country());
-			}catch (MissingResourceException e){
-				//simply don't add this country to the list ... for now, at least 
+		for (Locale l : locales) {
+			try {
+				if (!l.getDisplayCountry().isEmpty())
+					nat.put(l.getDisplayCountry(), l.getISO3Country());
+			} catch (MissingResourceException e) {
+				// simply don't add this country to the list ... for now, at
+				// least
 			}
-			
-			nat.put("--", ""); //offer no-country selection
+
+			nat.put("--", ""); // offer no-country selection
 		}
 		List<String> nations = new ArrayList<String>(nat.keySet());
 		Collections.sort(nations);
-		
+
 		return nations;
 	}
 
@@ -146,7 +152,6 @@ public class RegisterActivity extends FragmentActivity implements DatePickerDial
 	 * TODO: add progress spinner
 	 */
 	public void attemptRegistration(){
-final RegisterActivity self = this;
 		
 		// Reset errors.
 		mEmailView.setError(null);
@@ -222,7 +227,7 @@ final RegisterActivity self = this;
 								String expires_in) {
 							mg.storeLoginData(accessToken, refreshToken, expires_in, mUsername);
 							// then start main activity 
-							Intent intent = new Intent(self, MainActivity.class);
+							Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 							startActivity(intent);
 							finish();
 						}
@@ -253,15 +258,12 @@ final RegisterActivity self = this;
 		}
 	}
 	
-	//display the selected date from the dialog
-	private void updateDateDisplay(){
-		mDateView.setText(
-	            new StringBuilder()
-	                    // Month is 0 based so add 1
-	            		.append(mYear).append("-")
-	                    .append(mMonth + 1).append("-")
-	                    .append(mDay).append("")
-				);
+	// display the selected date from the dialog
+	private void updateDateDisplay() {
+		mDateView.setText(new StringBuilder()
+				// Month is 0 based so add 1
+				.append(mYear).append("-").append(mMonth + 1).append("-")
+				.append(mDay).append(""));
 	}
 	
 

@@ -13,6 +13,8 @@ import android.os.Bundle;
  *
  */
 public class DatePickerFragment extends DialogFragment {
+	
+	public static final String TAG = DatePickerFragment.class.getName();
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
