@@ -70,8 +70,7 @@ public class PostViewFragment extends Fragment {
         try {
             mCallback = (OnPostSectionFragmentListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnHeadlineSelectedListener");
+            throw new ClassCastException(activity.toString() + " must implement OnHeadlineSelectedListener");
         }
     }
 	
@@ -79,23 +78,21 @@ public class PostViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
     	setRetainInstance(true);
-        View rootView = inflater.inflate(R.layout.fragment_section_post, container, false);
-        
-        cal = Calendar.getInstance();
-        setupFormPostInk(rootView);
-                
-        return rootView;
+        View view = inflater.inflate(R.layout.fragment_section_post, container, false);
+        setupFormPostInk(view);
+        return view;
     }
     
-    private void setupFormPostInk(View rootView) {
-        form_message = (EditText) rootView.findViewById(R.id.editText1);
-        form_radius = (SeekBar) rootView.findViewById(R.id.seekBar1);
-        form_confirm = (Button) rootView.findViewById(R.id.button1);
-        form_radius_output = (TextView) rootView.findViewById(R.id.seekBarProgressOutput);   
+    private void setupFormPostInk(View view) {
+        cal = Calendar.getInstance();
+        form_message = (EditText) view.findViewById(R.id.editText1);
+        form_radius = (SeekBar) view.findViewById(R.id.seekBar1);
+        form_confirm = (Button) view.findViewById(R.id.button1);
+        form_radius_output = (TextView) view.findViewById(R.id.seekBarProgressOutput);   
 
-        activate_expire = (CheckBox) rootView.findViewById(R.id.checkBox1);
-        form_expire_time = (TimePicker) rootView.findViewById(R.id.timePicker1);
-        form_expire_date = (DatePicker) rootView.findViewById(R.id.datePicker1);
+        activate_expire = (CheckBox) view.findViewById(R.id.checkBox1);
+        form_expire_time = (TimePicker) view.findViewById(R.id.timePicker1);
+        form_expire_date = (DatePicker) view.findViewById(R.id.datePicker1);
     
         // ----------------- activate_expire       
         activate_expire.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -136,7 +133,7 @@ public class PostViewFragment extends Fragment {
 
         form_radius.setMax(2000);
         form_radius.setProgress(500);
-        form_radius_output.setText(String.format(rootView.getResources().getString(R.string.radius_output), form_radius.getProgress()));
+        form_radius_output.setText(String.format(view.getResources().getString(R.string.radius_output), form_radius.getProgress()));
         form_radius.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			
 			@Override

@@ -22,7 +22,7 @@ import com.loopj.android.http.RequestParams;
 
 public class InkClientUsage {
 	
-	public static final String TAG = InkClientUsage.class.getName();
+	public static final String TAG = InkClientUsage.class.getSimpleName();
 	
 	public static final int STATUS_CODE_CONVERTING_ERROR = -1;
 	

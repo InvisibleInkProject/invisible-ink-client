@@ -1,4 +1,4 @@
-package no.invisibleink.app.controller.location;
+package no.invisibleink.app.core.location;
 
 import no.invisibleink.app.MainActivity;
 import android.app.Dialog;

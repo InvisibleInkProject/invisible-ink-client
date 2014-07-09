@@ -1,4 +1,4 @@
-package no.invisibleink.app.view.activity;
+package no.invisibleink.app;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,9 +11,8 @@ import java.util.MissingResourceException;
 import no.invisibleink.api.client.InkClientUsage;
 import no.invisibleink.api.model.Login;
 import no.invisibleink.api.model.Registration;
-import no.invisibleink.app.MainActivity;
 import no.invisibleink.app.R;
-import no.invisibleink.app.controller.SessionManager;
+import no.invisibleink.app.core.SessionManager;
 import no.invisibleink.app.view.dialog.DatePickerFragment;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;

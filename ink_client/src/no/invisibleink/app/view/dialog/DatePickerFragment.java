@@ -14,16 +14,15 @@ import android.os.Bundle;
  */
 public class DatePickerFragment extends DialogFragment {
 	
-	public static final String TAG = DatePickerFragment.class.getName();
+	public static final String TAG = DatePickerFragment.class.getSimpleName();
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-//		//Use the current date as default values:
+		//Use the current date as default values:
 		Calendar c = Calendar.getInstance();
 		int day = c.get(Calendar.DAY_OF_YEAR);
 		int month = c.get(Calendar.MONTH)-2;
 		int year = c.get(Calendar.YEAR);
-
 		return new DatePickerDialog(getActivity(), (OnDateSetListener) getActivity(), year, month, day);
 	}
 }

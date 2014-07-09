@@ -19,10 +19,12 @@ package no.invisibleink.app;
 
 import java.util.Date;
 
-import no.invisibleink.app.controller.ServerManager;
-import no.invisibleink.app.controller.SessionManager;
-import no.invisibleink.app.controller.location.LocationManager;
-import no.invisibleink.app.controller.location.NoLocationException;
+import no.invisibleink.api.client.InkClientUsage;
+import no.invisibleink.api.model.Ink;
+import no.invisibleink.app.core.ServerManager;
+import no.invisibleink.app.core.SessionManager;
+import no.invisibleink.app.core.location.LocationManager;
+import no.invisibleink.app.core.location.NoLocationException;
 import no.invisibleink.app.view.fragment.ListViewFragment;
 import no.invisibleink.app.view.fragment.MapViewFragment;
 import no.invisibleink.app.view.fragment.PostViewFragment;
@@ -298,10 +300,25 @@ public class MainActivity extends FragmentActivity implements
 	 * @see no.invisibleink.listener.OnPostSectionFragmentListener#onPostInkForm(java.lang.String, int, android.content.Context)
 	 */
 	@Override
-	public void onPostInkForm(String message, int radius, Date expires) {
+	public void onPostInkForm(final String message, final int radius, final Date expires) {
 		try {
-			Location location = locationManager.getLocation();
-			serverManager.postInk(message, radius, expires, location, this);
+			InkClientUsage.postInk(message, radius, expires, locationManager.getLocation(), new Ink.PostHandler() {
+				
+				@Override
+				public void onFailureUnauthorized() {
+					Toast.makeText(context, "Fail (Unauthorized)", Toast.LENGTH_LONG).show();
+				}
+				
+				@Override
+				public void onSucess() {
+					Toast.makeText(context, "Sucessfull", Toast.LENGTH_LONG).show();
+				}
+				
+				@Override
+				public void onFailure(int statusCode) {
+					Toast.makeText(context, "Fail (" + statusCode + ")", Toast.LENGTH_LONG).show();				
+				}
+			});			
 		} catch (NoLocationException e) {
         	Toast.makeText(this, "No location. Turn on GPS.", Toast.LENGTH_SHORT).show();	            			
 		}

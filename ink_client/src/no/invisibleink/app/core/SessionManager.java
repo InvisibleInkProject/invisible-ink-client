@@ -1,4 +1,4 @@
-package no.invisibleink.app.controller;
+package no.invisibleink.app.core;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

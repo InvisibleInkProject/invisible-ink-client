@@ -1,6 +1,4 @@
-package no.invisibleink.app.controller;
-
-import java.util.Date;
+package no.invisibleink.app.core;
 
 import org.json.JSONArray;
 
@@ -9,11 +7,10 @@ import no.invisibleink.api.model.Ink;
 import android.content.Context;
 import android.location.Location;
 import android.util.Log;
-import android.widget.Toast;
 
 public class ServerManager {
 	
-	public static final String TAG = ServerManager.class.getName();
+	public static final String TAG = ServerManager.class.getSimpleName();
 	
 	/**
 	 * If the distance between the current location and the last
@@ -131,34 +128,6 @@ public class ServerManager {
 		if(distanceInMeters > REQUEST_DISTANCE_CHANGE || checkTimerToRequestServer()) {
 			this.request(context, location);
 		}
-	}
-	
-
-	/**
-	 * TODO: comment
-	 * @param message
-	 * @param radius
-	 * @param location
-	 * @param context To post response
-	 */
-	public void postInk(final String message, final int radius, final Date expires, final Location location, final Context context){
-		InkClientUsage.postInk(message, radius, expires, location, new Ink.PostHandler() {
-			
-			@Override
-			public void onFailureUnauthorized() {
-				Toast.makeText(context, "Fail (Unauthorized)", Toast.LENGTH_LONG).show();
-			}
-			
-			@Override
-			public void onSucess() {
-				Toast.makeText(context, "Sucessfull", Toast.LENGTH_LONG).show();
-			}
-			
-			@Override
-			public void onFailure(int statusCode) {
-				Toast.makeText(context, "Fail (" + statusCode + ")", Toast.LENGTH_LONG).show();				
-			}
-		});
 	}
 	
 	/**
